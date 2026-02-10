@@ -3,7 +3,8 @@ title: Corona Control Ultimate
 emoji: 👮
 colorFrom: blue
 colorTo: red
-sdk: static
+sdk: docker
+app_port: 8080
 pinned: false
 ---
 
