@@ -5,7 +5,10 @@ colorFrom: blue
 colorTo: red
 sdk: docker
 app_port: 8080
+sdk_version: 20.x
+app_file: server.cjs
 pinned: false
+license: mit
 ---
 
 # Corona Control Ultimate 🛡️🦠
