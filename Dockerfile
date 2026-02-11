@@ -1,7 +1,7 @@
 # ---------- deps (cache layer) ----------
 FROM node:20-alpine AS deps
 WORKDIR /app
-COPY corona-control-ultimate/package*.json ./
+COPY corona-control-ultimate/package.json corona-control-ultimate/package-lock.json ./
 RUN npm ci
 
 # ---------- build ----------
@@ -17,8 +17,9 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=7860
 
-COPY --from=build /app/package*.json ./
-RUN npm ci --only=production
+COPY --from=build /app/package.json ./
+COPY --from=build /app/package-lock.json ./
+RUN npm ci --omit=dev
 
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/server ./server
