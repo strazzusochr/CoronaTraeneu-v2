@@ -7,8 +7,6 @@ export const HUD = () => {
     const gameTimeSeconds = useTimeEngine(state => state.gameTimeSeconds);
     const { player, gameState } = useGameStore();
 
-    const { player, gameState } = useGameStore();
-
     const timeString = formatGameTime(gameTimeSeconds);
 
     return (
