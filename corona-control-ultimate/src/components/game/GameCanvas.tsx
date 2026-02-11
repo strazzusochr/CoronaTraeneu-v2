@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment } from '@react-three/drei';
-import { WebGPURenderer } from 'three/webgpu';
+// import { WebGPURenderer } from 'three/webgpu';
 import { useEngineLoop } from '@/core/EngineLoopManager';
 import DynamicLighting from '@/rendering/DynamicLighting';
 import { StephansplatzWorld } from '@/world/WienScene';
@@ -51,10 +51,6 @@ export const GameCanvas = () => {
         <Canvas
             shadows
             camera={{ position: [20, 20, 20], fov: 45 }}
-            gl={(canvas) => new WebGPURenderer({
-                canvas: canvas as unknown as HTMLCanvasElement,
-                antialias: true
-            })}
             style={{ background: '#050505' }}
         >
             <SceneContent />

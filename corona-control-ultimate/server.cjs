@@ -33,9 +33,9 @@ app.use((req, res, next) => {
         "default-src 'self' https://*.hf.space https://huggingface.co; " +
         "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.hf.space https://huggingface.co https://www.gstatic.com; " +
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.hf.space; " +
-        "font-src 'self' https://fonts.gstatic.com https://*.hf.space; " +
+        "font-src 'self' https://fonts.gstatic.com https://fonts.googleapis.com https://*.hf.space; " +
         "img-src 'self' data: blob: https://*.hf.space https://huggingface.co https://*.googleusercontent.com; " +
-        "connect-src 'self' https://*.hf.space https://huggingface.co https://*.googleapis.com https://*.run.app wss://*; " +
+        "connect-src 'self' https://*.hf.space https://huggingface.co https://*.googleapis.com https://*.run.app https://raw.githack.com wss://*; " +
         "worker-src 'self' blob:; " +
         "frame-src 'self' https://*.hf.space https://huggingface.co; " +
         "object-src 'none';"

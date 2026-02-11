@@ -138,3 +138,31 @@ You must provide an api_key to work with hyperbolic API or log in with `hf auth 
 You must provide an api_key to work with hyperbolic API or log in with `hf auth login`.
 2026-02-11 06:39:48,897 - INFO - Test Report saved: test_report_20260211_063948.json
 2026-02-11 06:39:48,898 - INFO - All Tests completed!
+2026-02-11 07:17:38,760 - INFO - Starting comprehensive React Three.js Tests...
+2026-02-11 07:17:38,761 - INFO - Using user data directory: C:\Users\newwo\AppData\Local\BraveSoftware\Brave-Browser\User Data
+2026-02-11 07:17:38,761 - INFO - Using custom browser path: C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe
+2026-02-11 07:17:41,549 - ERROR - Browser Setup failed: Message: session not created: Chrome failed to start: crashed.
+  (session not created: DevToolsActivePort file doesn't exist)
+  (The process started from chrome location C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe is no longer running, so ChromeDriver is assuming that Chrome has crashed.); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#sessionnotcreatedexception
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	0x7ff65d96f3d5
+	0x7ff65d96f430
+	0x7ff65d7110bd
+	0x7ff65d751ccb
+	0x7ff65d74cf99
+	0x7ff65d7a4091
+	0x7ff65d7a38f6
+	0x7ff65d75cb0c
+	0x7ff65d75da53
+	0x7ff65dc4b470
+	0x7ff65dc4586d
+	0x7ff65dc6621a
+	0x7ff65d98b235
+	0x7ff65d993a5c
+	0x7ff65d978844
+	0x7ff65d9789f6
+	0x7ff65d95eb87
+	0x7ffe2868e8d7
+	0x7ffe29a4c53c
+

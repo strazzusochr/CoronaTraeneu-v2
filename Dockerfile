@@ -23,8 +23,18 @@ RUN npm run build
 FROM node:20-slim AS runner
 WORKDIR /app
 
-# Install git for Hugging Face Dev Mode
-RUN apk add --no-cache git
+# Install tools for Hugging Face Dev Mode
+RUN apt-get update && apt-get install -y \
+    git \
+    git-lfs \
+    wget \
+    curl \
+    procps \
+    bash \
+    htop \
+    vim \
+    nano \
+    && rm -rf /var/lib/apt/lists/*
 
 ENV NODE_ENV=production
 ENV PORT=7860
