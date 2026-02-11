@@ -3,7 +3,7 @@ const compression = require('compression');
 const http = require('http');
 const path = require('path');
 const { Server } = require("socket.io");
-const db = require('./server/database');
+const db = require('./server/database.cjs');
 
 const app = express();
 const server = http.createServer(app);
