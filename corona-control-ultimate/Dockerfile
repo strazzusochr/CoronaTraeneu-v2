@@ -15,6 +15,10 @@ RUN npm run build   # erwartet: build -> dist
 # ---------- runtime ----------
 FROM node:20-alpine@sha256:c13b26e7a602ef2f1074aef304da809e53066606a463af4432a76f620f4f9812 AS runner
 WORKDIR /app
+
+# Install git for Hugging Face Dev Mode
+RUN apk add --no-cache git
+
 ENV NODE_ENV=production
 ENV PORT=8080
 

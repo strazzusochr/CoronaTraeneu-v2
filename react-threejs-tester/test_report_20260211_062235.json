@@ -1,0 +1,21 @@
+{
+  "timestamp": "2026-02-11T06:22:35.202525",
+  "url": "https://wrzzzrzr-corona-control-ultimate.hf.space",
+  "screenshots_taken": 1,
+  "results": {
+    "frameworks": {
+      "react": false,
+      "threejs": false,
+      "canvas_count": 0
+    },
+    "performance": {
+      "domReady": 759,
+      "memory": {
+        "total": 7.332725524902344,
+        "used": 5.0254364013671875
+      },
+      "pageLoadTime": 904
+    },
+    "agent_error": "Error in generating model output:\nYou must provide an api_key to work with hyperbolic API or log in with `hf auth login`."
+  }
+}

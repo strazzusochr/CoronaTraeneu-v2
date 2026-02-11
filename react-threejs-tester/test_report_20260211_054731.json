@@ -1,0 +1,21 @@
+{
+  "timestamp": "2026-02-11T05:47:31.270837",
+  "url": "https://huggingface.co/spaces/Wrzzzrzr/corona-control-ultimate",
+  "screenshots_taken": 1,
+  "results": {
+    "frameworks": {
+      "react": false,
+      "threejs": false,
+      "canvas_count": 0
+    },
+    "performance": {
+      "domReady": 1023,
+      "memory": {
+        "total": 14.345773696899414,
+        "used": 9.725015640258789
+      },
+      "pageLoadTime": 1029
+    },
+    "agent_error": "Error in generating model output:\nYou must provide an api_key to work with hyperbolic API or log in with `hf auth login`."
+  }
+}

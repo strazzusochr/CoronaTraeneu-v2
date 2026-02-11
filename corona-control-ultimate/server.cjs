@@ -20,33 +20,34 @@ const ONE_YEAR = 31536000;
 
 app.use(compression());
 
-// Health endpoint for Cloud Run
 app.get('/health', (_, res) => res.status(200).send('ok'));
+
+// Trust proxy for Hugging Face
+app.set('trust proxy', 1);
 
 // --- SECURITY HEADERS ---
 app.use((req, res, next) => {
-    // Content Security Policy (Strict Level)
+    // Content Security Policy (Relaxed for HF Spaces)
     res.setHeader(
         "Content-Security-Policy",
-        "default-src 'self'; " +
-        "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com; " +
-        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
-        "font-src 'self' https://fonts.gstatic.com; " +
-        "img-src 'self' data: blob: https://*.googleusercontent.com; " +
-        "connect-src 'self' https://*.googleapis.com https://*.run.app wss://*; " +
+        "default-src 'self' https://*.hf.space https://huggingface.co; " +
+        "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.hf.space https://huggingface.co https://www.gstatic.com; " +
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.hf.space; " +
+        "font-src 'self' https://fonts.gstatic.com https://*.hf.space; " +
+        "img-src 'self' data: blob: https://*.hf.space https://huggingface.co https://*.googleusercontent.com; " +
+        "connect-src 'self' https://*.hf.space https://huggingface.co https://*.googleapis.com https://*.run.app wss://*; " +
         "worker-src 'self' blob:; " +
-        "frame-src 'self'; " +
+        "frame-src 'self' https://*.hf.space https://huggingface.co; " +
         "object-src 'none';"
     );
     
-    // Cross-Origin Isolation (WASM/SharedArrayBuffer)
-    res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
-    res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
-    res.setHeader('Cross-Origin-Resource-Policy', 'same-origin');
+    // Cross-Origin Isolation (Disabled for now to prevent White Screens in Iframes)
+    // res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+    // res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+    // res.setHeader('Cross-Origin-Resource-Policy', 'same-origin');
 
     // Headers
     res.setHeader('X-Content-Type-Options', 'nosniff');
-    res.setHeader('X-Frame-Options', 'DENY');
     res.setHeader('X-XSS-Protection', '1; mode=block');
     res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
     res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');

@@ -1,0 +1,140 @@
+2026-02-11 05:13:54,718 - INFO - Starting comprehensive React Three.js Tests...
+2026-02-11 05:13:55,485 - INFO - Browser successfully initialized
+2026-02-11 05:13:55,485 - INFO - Opening https://huggingface.co/spaces/Wrzzzrzr/corona-control-ultimate
+2026-02-11 05:14:02,203 - INFO - Screenshot 1: screenshots/react_threejs/game_loaded_20260211_051402.png
+2026-02-11 05:14:02,225 - INFO - Framework Detection: React=False, Three.js=False
+2026-02-11 05:14:02,231 - INFO - Performance Metrics captured
+2026-02-11 05:15:23,974 - INFO - Starting comprehensive React Three.js Tests...
+2026-02-11 05:15:24,743 - INFO - Browser successfully initialized
+2026-02-11 05:15:24,743 - INFO - Opening https://huggingface.co/spaces/Wrzzzrzr/corona-control-ultimate
+2026-02-11 05:15:31,567 - INFO - Screenshot 1: screenshots/react_threejs/game_loaded_20260211_051531.png
+2026-02-11 05:15:31,589 - INFO - Framework Detection: React=False, Three.js=False
+2026-02-11 05:15:31,595 - INFO - Performance Metrics captured
+2026-02-11 05:17:21,798 - INFO - Starting comprehensive React Three.js Tests...
+2026-02-11 05:17:22,623 - INFO - Browser successfully initialized
+2026-02-11 05:17:22,623 - INFO - Opening https://huggingface.co/spaces/Wrzzzrzr/corona-control-ultimate
+2026-02-11 05:17:29,366 - INFO - Screenshot 1: screenshots/react_threejs/game_loaded_20260211_051728.png
+2026-02-11 05:17:29,387 - INFO - Framework Detection: React=False, Three.js=False
+2026-02-11 05:17:29,394 - INFO - Performance Metrics captured
+2026-02-11 05:21:00,070 - INFO - Starting comprehensive React Three.js Tests...
+2026-02-11 05:21:00,847 - INFO - Browser successfully initialized
+2026-02-11 05:21:00,847 - INFO - Opening https://huggingface.co/spaces/Wrzzzrzr/corona-control-ultimate
+2026-02-11 05:21:07,478 - INFO - Screenshot 1: screenshots/react_threejs/game_loaded_20260211_052107.png
+2026-02-11 05:21:07,501 - INFO - Framework Detection: React=False, Three.js=False
+2026-02-11 05:21:07,506 - INFO - Performance Metrics captured
+2026-02-11 05:28:59,441 - INFO - Starting comprehensive React Three.js Tests...
+2026-02-11 05:29:00,274 - INFO - Browser successfully initialized
+2026-02-11 05:29:00,274 - INFO - Opening https://huggingface.co/spaces/Wrzzzrzr/corona-control-ultimate
+2026-02-11 05:29:07,303 - INFO - Screenshot 1: screenshots/react_threejs/game_loaded_20260211_052906.png
+2026-02-11 05:29:07,325 - INFO - Framework Detection: React=False, Three.js=False
+2026-02-11 05:29:07,331 - INFO - Performance Metrics captured
+2026-02-11 05:29:07,454 - INFO - React Three.js Testing Agent created
+2026-02-11 05:29:08,181 - ERROR - Agent Test failed: Error in generating model output:
+You must provide an api_key to work with hyperbolic API or log in with `hf auth login`.
+2026-02-11 05:29:08,182 - INFO - Test Report saved: test_report_20260211_052908.json
+2026-02-11 05:29:08,183 - INFO - All Tests completed!
+2026-02-11 05:47:23,197 - INFO - Starting comprehensive React Three.js Tests...
+2026-02-11 05:47:24,033 - INFO - Browser successfully initialized
+2026-02-11 05:47:24,033 - INFO - Opening https://huggingface.co/spaces/Wrzzzrzr/corona-control-ultimate
+2026-02-11 05:47:30,329 - INFO - Screenshot 1: screenshots/react_threejs/game_loaded_20260211_054730.png
+2026-02-11 05:47:30,350 - INFO - Framework Detection: React=False, Three.js=False
+2026-02-11 05:47:30,356 - INFO - Performance Metrics captured
+2026-02-11 05:47:30,473 - INFO - React Three.js Testing Agent created
+2026-02-11 05:47:31,270 - ERROR - Agent Test failed: Error in generating model output:
+You must provide an api_key to work with hyperbolic API or log in with `hf auth login`.
+2026-02-11 05:47:31,271 - INFO - Test Report saved: test_report_20260211_054731.json
+2026-02-11 05:47:31,273 - INFO - All Tests completed!
+2026-02-11 05:52:57,847 - INFO - Starting comprehensive React Three.js Tests...
+2026-02-11 05:53:00,889 - INFO - Browser successfully initialized
+2026-02-11 05:53:00,890 - INFO - Opening https://huggingface.co/spaces/Wrzzzrzr/corona-control-ultimate
+2026-02-11 05:53:07,586 - INFO - Screenshot 1: screenshots/react_threejs/game_loaded_20260211_055307.png
+2026-02-11 05:53:07,615 - INFO - Framework Detection: React=False, Three.js=False
+2026-02-11 05:53:07,624 - INFO - Performance Metrics captured
+2026-02-11 05:53:07,810 - INFO - React Three.js Testing Agent created
+2026-02-11 05:53:08,915 - ERROR - Agent Test failed: Error in generating model output:
+You must provide an api_key to work with hyperbolic API or log in with `hf auth login`.
+2026-02-11 05:53:08,916 - INFO - Test Report saved: test_report_20260211_055308.json
+2026-02-11 05:53:08,917 - INFO - All Tests completed!
+2026-02-11 05:57:21,544 - INFO - Starting comprehensive React Three.js Tests...
+2026-02-11 05:57:22,400 - INFO - Browser successfully initialized
+2026-02-11 05:57:22,400 - INFO - Opening https://huggingface.co/spaces/Wrzzzrzr/corona-control-ultimate
+2026-02-11 05:57:28,691 - INFO - Screenshot 1: screenshots/react_threejs/game_loaded_20260211_055728.png
+2026-02-11 05:57:28,718 - INFO - Framework Detection: React=False, Three.js=False
+2026-02-11 05:57:28,725 - INFO - Performance Metrics captured
+2026-02-11 05:57:28,849 - INFO - React Three.js Testing Agent created
+2026-02-11 05:57:29,615 - ERROR - Agent Test failed: Error in generating model output:
+You must provide an api_key to work with hyperbolic API or log in with `hf auth login`.
+2026-02-11 05:57:29,616 - INFO - Test Report saved: test_report_20260211_055729.json
+2026-02-11 05:57:29,617 - INFO - All Tests completed!
+2026-02-11 05:58:42,032 - INFO - Starting comprehensive React Three.js Tests...
+2026-02-11 05:58:42,795 - INFO - Browser successfully initialized
+2026-02-11 05:58:42,795 - INFO - Opening https://huggingface.co/spaces/Wrzzzrzr/corona-control-ultimate
+2026-02-11 05:58:49,495 - INFO - Screenshot 1: screenshots/react_threejs/game_loaded_20260211_055849.png
+2026-02-11 05:58:49,519 - INFO - Framework Detection: React=False, Three.js=False
+2026-02-11 05:58:49,526 - INFO - Performance Metrics captured
+2026-02-11 05:58:49,637 - INFO - React Three.js Testing Agent created
+2026-02-11 05:58:50,419 - ERROR - Agent Test failed: Error in generating model output:
+You must provide an api_key to work with hyperbolic API or log in with `hf auth login`.
+2026-02-11 05:58:50,420 - INFO - Test Report saved: test_report_20260211_055850.json
+2026-02-11 05:58:50,421 - INFO - All Tests completed!
+2026-02-11 06:02:22,617 - INFO - Starting comprehensive React Three.js Tests...
+2026-02-11 06:02:23,520 - INFO - Browser successfully initialized
+2026-02-11 06:02:23,520 - INFO - Opening https://huggingface.co/spaces/Wrzzzrzr/corona-control-ultimate
+2026-02-11 06:02:29,611 - INFO - Screenshot 1: screenshots/react_threejs/game_loaded_20260211_060229.png
+2026-02-11 06:02:29,632 - INFO - Framework Detection: React=False, Three.js=False
+2026-02-11 06:02:29,639 - INFO - Performance Metrics captured
+2026-02-11 06:02:29,741 - INFO - React Three.js Testing Agent created
+2026-02-11 06:02:30,544 - ERROR - Agent Test failed: Error in generating model output:
+You must provide an api_key to work with hyperbolic API or log in with `hf auth login`.
+2026-02-11 06:02:30,546 - INFO - Test Report saved: test_report_20260211_060230.json
+2026-02-11 06:02:30,548 - INFO - All Tests completed!
+2026-02-11 06:05:38,132 - INFO - Starting comprehensive React Three.js Tests...
+2026-02-11 06:05:38,964 - INFO - Browser successfully initialized
+2026-02-11 06:05:38,964 - INFO - Opening https://huggingface.co/spaces/Wrzzzrzr/corona-control-ultimate
+2026-02-11 06:05:45,411 - INFO - Screenshot 1: screenshots/react_threejs/game_loaded_20260211_060545.png
+2026-02-11 06:05:45,433 - INFO - Framework Detection: React=False, Three.js=False
+2026-02-11 06:05:45,441 - INFO - Performance Metrics captured
+2026-02-11 06:05:45,540 - INFO - React Three.js Testing Agent created
+2026-02-11 06:05:46,295 - ERROR - Agent Test failed: Error in generating model output:
+You must provide an api_key to work with hyperbolic API or log in with `hf auth login`.
+2026-02-11 06:05:46,296 - INFO - Test Report saved: test_report_20260211_060546.json
+2026-02-11 06:05:46,297 - INFO - All Tests completed!
+2026-02-11 06:11:16,933 - INFO - Starting comprehensive React Three.js Tests...
+2026-02-11 06:11:16,934 - INFO - Using custom browser path: C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe
+2026-02-11 06:11:18,391 - INFO - Browser successfully initialized
+2026-02-11 06:11:18,392 - INFO - Opening https://huggingface.co/spaces/Wrzzzrzr/corona-control-ultimate
+2026-02-11 06:11:25,012 - INFO - Screenshot 1: screenshots/react_threejs/game_loaded_20260211_061124.png
+2026-02-11 06:11:25,035 - INFO - Framework Detection: React=False, Three.js=False
+2026-02-11 06:11:25,041 - INFO - Performance Metrics captured
+2026-02-11 06:11:25,151 - INFO - React Three.js Testing Agent created
+2026-02-11 06:11:25,978 - ERROR - Agent Test failed: Error in generating model output:
+You must provide an api_key to work with hyperbolic API or log in with `hf auth login`.
+2026-02-11 06:11:25,978 - INFO - Test Report saved: test_report_20260211_061125.json
+2026-02-11 06:11:25,980 - INFO - All Tests completed!
+2026-02-11 06:22:26,638 - INFO - Starting comprehensive React Three.js Tests...
+2026-02-11 06:22:26,638 - INFO - Using user data directory: C:\Users\newwo\AppData\Local\BraveSoftware\Brave-Browser\User Data
+2026-02-11 06:22:26,638 - INFO - Using custom browser path: C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe
+2026-02-11 06:22:28,142 - INFO - Browser successfully initialized
+2026-02-11 06:22:28,143 - INFO - Opening https://wrzzzrzr-corona-control-ultimate.hf.space
+2026-02-11 06:22:34,244 - INFO - Screenshot 1: screenshots/react_threejs/game_loaded_20260211_062234.png
+2026-02-11 06:22:34,266 - INFO - Framework Detection: React=False, Three.js=False
+2026-02-11 06:22:34,273 - INFO - Performance Metrics captured
+2026-02-11 06:22:34,401 - INFO - React Three.js Testing Agent created
+2026-02-11 06:22:35,202 - ERROR - Agent Test failed: Error in generating model output:
+You must provide an api_key to work with hyperbolic API or log in with `hf auth login`.
+2026-02-11 06:22:35,203 - INFO - Test Report saved: test_report_20260211_062235.json
+2026-02-11 06:22:35,204 - INFO - All Tests completed!
+2026-02-11 06:39:35,158 - INFO - Starting comprehensive React Three.js Tests...
+2026-02-11 06:39:35,158 - INFO - Using user data directory: C:\Users\newwo\AppData\Local\BraveSoftware\Brave-Browser\User Data
+2026-02-11 06:39:35,158 - INFO - Using custom browser path: C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe
+2026-02-11 06:39:36,478 - INFO - Browser successfully initialized
+2026-02-11 06:39:36,478 - INFO - Opening https://huggingface.co/spaces/Wrzzzrzr/corona-control-ultimate
+2026-02-11 06:39:47,890 - INFO - Screenshot 1: screenshots/react_threejs/game_loaded_20260211_063947.png
+2026-02-11 06:39:47,913 - INFO - Scan Result: React=False, Three.js=False, Canvas=0
+2026-02-11 06:39:47,913 - INFO - Frameworks not found in main content, searching in iframes...
+2026-02-11 06:39:47,964 - INFO - Performance Metrics captured
+2026-02-11 06:39:48,066 - INFO - React Three.js Testing Agent created
+2026-02-11 06:39:48,896 - ERROR - Agent Test failed: Error in generating model output:
+You must provide an api_key to work with hyperbolic API or log in with `hf auth login`.
+2026-02-11 06:39:48,897 - INFO - Test Report saved: test_report_20260211_063948.json
+2026-02-11 06:39:48,898 - INFO - All Tests completed!

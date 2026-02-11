@@ -1,0 +1,13 @@
+[36mrolldown-vite v7.2.5 [32mbuilding client environment for production...[36m[39m
+[2K
+transforming...Ô£ô 596 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                               0.81 kB Ôöé gzip:   0.39 kB
+dist/assets/index-CiUV1bZm.css                3.54 kB Ôöé gzip:   1.20 kB
+dist/assets/rolldown-runtime-DGruFWvd.js      0.63 kB Ôöé gzip:   0.38 kB
+dist/assets/vendor-BinAUWgL.js                1.91 kB Ôöé gzip:   0.95 kB
+dist/assets/index-oT9xjudk.js                30.38 kB Ôöé gzip:  10.74 kB
+dist/assets/react-vendor-tPoQXGYn.js        194.39 kB Ôöé gzip:  61.31 kB
+dist/assets/three-vendor-CEx_ge6k.js      1,437.87 kB Ôöé gzip: 394.46 kB
+[32mÔ£ô built in 826ms[39m

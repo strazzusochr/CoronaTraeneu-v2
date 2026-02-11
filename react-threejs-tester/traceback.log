@@ -1,0 +1,16 @@
+2026-02-11 05:21:00,070 - INFO - Starting comprehensive React Three.js Tests...
+2026-02-11 05:21:00,847 - INFO - Browser successfully initialized
+2026-02-11 05:21:00,847 - INFO - Opening https://huggingface.co/spaces/Wrzzzrzr/corona-control-ultimate
+2026-02-11 05:21:07,478 - INFO - Screenshot 1: screenshots/react_threejs/game_loaded_20260211_052107.png
+2026-02-11 05:21:07,501 - INFO - Framework Detection: React=False, Three.js=False
+2026-02-11 05:21:07,506 - INFO - Performance Metrics captured
+Traceback (most recent call last):
+  File "C:\Users\newwo\Desktop\corona-control-project\react-threejs-tester\start_tester.py", line 38, in main
+    success = tester.run_comprehensive_test()
+  File "C:\Users\newwo\Desktop\corona-control-project\react-threejs-tester\react_threejs_tester.py", line 340, in run_comprehensive_test
+    if self.create_testing_agent():
+       ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\newwo\Desktop\corona-control-project\react-threejs-tester\react_threejs_tester.py", line 308, in create_testing_agent
+    self.agent.python_executor("from helium import *", self.agent.state)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: LocalPythonExecutor.__call__() takes 2 positional arguments but 3 were given

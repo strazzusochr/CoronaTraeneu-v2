@@ -71,7 +71,7 @@ class MockDatabase {
 
     // Cloud Saves
     saveCloudData(userId, saveData) {
-        let user = this.data.users.find(u => u.id === id || u.socketId === userId);
+        let user = this.data.users.find(u => u.id === userId || u.socketId === userId);
         if (!user) {
             user = { id: userId, socketId: userId, joinedAt: Date.now() };
             this.data.users.push(user);
