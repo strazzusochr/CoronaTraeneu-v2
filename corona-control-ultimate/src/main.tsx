@@ -2,6 +2,10 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
 import './index.css'
+import { ErrorHandler } from './utils/ErrorHandler'
+
+// V6 Hybrid: Early Error Capture
+ErrorHandler.init();
 
 console.log('--- MAIN.TSX STARTING ---');
 

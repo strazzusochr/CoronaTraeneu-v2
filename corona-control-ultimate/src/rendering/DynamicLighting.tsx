@@ -184,7 +184,8 @@ const DynamicLighting: React.FC<DynamicLightingProps> = ({ quality, castShadows 
     return (
         <>
             {/* PBR Environment (Image Based Lighting) - CPU LIGHTWEIGHT */}
-            <Environment preset="city" background={false} />
+            {/* Using standard preset, ensuring CSP allows fonts.gstatic.com for assets */}
+            <Environment preset="apartment" background={false} />
 
             {/* Hemisphere Light (Himmel/Boden) - Best for CPU performance */}
             <hemisphereLight args={[0xB4D4FF, 0x504030, 0.7]} />

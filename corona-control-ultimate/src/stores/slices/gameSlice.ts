@@ -81,6 +81,18 @@ export const createGameSlice: StateCreator<GameStore, [], [], Pick<GameStore,
             outfitId: 'casual_01'
         }));
 
+        // V7.0: Register all NPCs in the POI system
+        [krause, ...crowd].forEach(npc => {
+            poiSystem.registerPOI({
+                id: `npc_${npc.id}`,
+                type: 'PERSON',
+                position: npc.position as [number, number, number],
+                interactionRadius: 2,
+                label: npc.type === NPCType.KRAUSE ? "Martin Krause" : "Bürger verhaften",
+                action: () => arrestSystem.startArrest(npc.id)
+            });
+        });
+
         return {
             gameState: {
                 ...state.gameState,
@@ -101,18 +113,6 @@ export const createGameSlice: StateCreator<GameStore, [], [], Pick<GameStore,
             projectiles: [],
             npcs: [krause, ...crowd]
         };
-
-        // V7.0 Nach dem Start: Alle NPCs im POI System registrieren
-        [krause, ...crowd].forEach(npc => {
-            poiSystem.registerPOI({
-                id: `npc_${npc.id}`,
-                type: 'PERSON',
-                position: npc.position as [number, number, number],
-                interactionRadius: 2,
-                label: npc.type === NPCType.KRAUSE ? "Martin Krause" : "Bürger verhaften",
-                action: () => arrestSystem.startArrest(npc.id)
-            });
-        });
     }),
 
     resetGame: () => set((state) => ({

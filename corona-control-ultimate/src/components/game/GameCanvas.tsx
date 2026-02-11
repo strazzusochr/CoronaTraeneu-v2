@@ -40,20 +40,44 @@ const SceneContent = () => {
                 <InstancedCrowd />
             </Suspense>
 
-            <Environment preset="city" />
             <OrbitControls makeDefault />
         </>
     );
 };
 
 export const GameCanvas = () => {
+    const [isInitialized, setIsInitialized] = React.useState(false);
+
     return (
         <Canvas
             shadows
             camera={{ position: [20, 20, 20], fov: 45 }}
             style={{ background: '#050505' }}
+            gl={{
+                powerPreference: 'high-performance',
+                antialias: true,
+                preserveDrawingBuffer: false,
+                alpha: false
+            }}
+            // V6 Hybrid: Robust Initialization Gate
+            onCreated={({ gl }) => {
+                const renderer = gl as any;
+                const finishInit = () => {
+                    console.log('[Build 55] Renderer Ready.');
+                    setIsInitialized(true);
+                };
+
+                if (renderer.init) {
+                    renderer.init().then(finishInit).catch((err: any) => {
+                        console.error('[Build 55] Renderer Init Failed, falling back:', err);
+                        finishInit();
+                    });
+                } else {
+                    finishInit();
+                }
+            }}
         >
-            <SceneContent />
+            {isInitialized && <SceneContent />}
         </Canvas>
     );
 };

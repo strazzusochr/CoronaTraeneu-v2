@@ -27,46 +27,57 @@ app.set('trust proxy', 1);
 
 // --- SECURITY HEADERS ---
 app.use((req, res, next) => {
-    // TEMPORARY: Extremely permissive CSP for deep-dive debugging
+    // ENHANCED CSP (V6 Hybrid): Relaxed for HF iframe compatibility
     res.setHeader(
         "Content-Security-Policy",
-        "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; " +
-        "script-src * 'unsafe-inline' 'unsafe-eval' data: blob:; " +
-        "connect-src * 'unsafe-inline' 'unsafe-eval' data: blob: wss:; " +
-        "img-src * data: blob:; " +
-        "style-src * 'unsafe-inline'; " +
-        "font-src * data:; " +
-        "frame-src *; " +
-        "worker-src * blob:; " +
+        "default-src 'self'; " +
+        "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
+        "connect-src 'self' wss: https://*.google.com https://*.googleapis.com https://raw.githack.com https://raw.githubusercontent.com; " +
+        "img-src 'self' data: blob: https://*.google.com https://*.gstatic.com https://raw.githack.com; " +
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+        "font-src 'self' https://fonts.gstatic.com data:; " +
+        "frame-src 'self' https://*.huggingface.co; " +
+        "worker-src 'self' blob:; " +
         "object-src 'none';"
     );
     
-    // Enforce Cross-Origin Isolation (Needed for SharedArrayBuffer/Rapier/WebGPU)
-    res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
-    res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
-    res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+    // Permissions-Policy: Suppress console noise for unrecognized features
+    res.setHeader('Permissions-Policy', 'ambient-light-sensor=(), battery=(), document-domain=(), layout-animations=(), legacy-image-formats=(), oversized-images=(), vr=(), wake-lock=()');
 
-    // Headers
+    // Headers (Relaxed for Iframe compatibility)
     res.setHeader('X-Content-Type-Options', 'nosniff');
     res.setHeader('X-XSS-Protection', '1; mode=block');
     res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
     res.setHeader('Referrer-Policy', 'no-referrer-when-downgrade');
 
-    // Ensure .wasm and .js correct MIME
-    if (req.path.endsWith('.wasm')) {
-        res.type('application/wasm');
-    } else if (req.path.endsWith('.js') || req.path.endsWith('.mjs')) {
-        res.type('application/javascript');
+    // Robust MIME Mapping (V6 Hybrid)
+    const ext = path.extname(req.path).toLowerCase();
+    const mimeMap = {
+        '.wasm': 'application/wasm',
+        '.js': 'application/javascript',
+        '.mjs': 'application/javascript',
+        '.hdr': 'image/vnd.radiance',
+        '.ktx2': 'image/ktx2',
+        '.glb': 'model/gltf-binary',
+        '.ttf': 'font/ttf',
+        '.woff': 'font/woff',
+        '.woff2': 'font/woff2'
+    };
+    if (mimeMap[ext]) {
+        res.type(mimeMap[ext]);
     }
     next();
 });
 
-// Robust Asset Routing: BEFORE static/spa fallback
-// If an asset is requested but doesn't exist, return 404, NOT index.html
-app.use(['/assets', '/src', '/node_modules'], (req, res, next) => {
-    const fullPath = path.join(distPath, req.baseUrl, req.path);
-    // Note: Simple check, express.static is better but this is for the "index.html fallback" trap
-    next();
+// Robust Asset Routing: Prevent index.html fallback for missing static files
+app.use(['/assets', '/src', '/node_modules', '/@fs'], (req, res, next) => {
+    const filePath = path.join(distPath, req.baseUrl, req.path);
+    // If it's a file request (has extension) but doesn't exist, kill it here with 404
+    if (req.path.includes('.')) {
+        res.status(404).send('Asset not found');
+    } else {
+        next();
+    }
 });
 
 // Static serving mit gezielten Cache-Headern
