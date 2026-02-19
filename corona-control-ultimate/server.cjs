@@ -57,12 +57,16 @@ const server = http.createServer((req, res) => {
   // Log every request
   console.log(`📡 ${req.method} ${req.url}`);
 
-  // Decode URL and strip query string
+  // Decode URL and strip query string, then remove leading slash for safe join
   let urlPath;
   try {
     urlPath = decodeURIComponent(req.url.split('?')[0]);
   } catch {
     urlPath = req.url.split('?')[0];
+  }
+  // Remove leading slash if present to avoid absolute path traversal
+  if (urlPath.startsWith('/')) {
+    urlPath = urlPath.slice(1);
   }
 
   // Serve static file or SPA fallback
