@@ -27,4 +27,4 @@ ENV PORT=7860
 
 EXPOSE 7860
 
-ENTRYPOINT ["node", "server.cjs"]
+CMD ["node", "server.cjs"]
