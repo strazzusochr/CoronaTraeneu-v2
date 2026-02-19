@@ -8,7 +8,7 @@
 
 @font-face {
     font-family: 'Outfit';
-    src: url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700&display=swap');
+    src: local('Outfit');
 }
 
 .hud-container {
@@ -26,12 +26,14 @@
     flex-direction: column;
     justify-content: space-between;
     z-index: 100;
+    background: transparent;
 }
 
 .hud-top-left {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    margin-left: 280px;
 }
 
 .hud-bar-wrapper {
@@ -65,9 +67,42 @@
     transition: width 0.3s ease-out;
 }
 
+.tension-bar {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
 .hp .hud-bar-inner { background: linear-gradient(90deg, #ff3c3c, #ff7b7b); }
+.armor .hud-bar-inner { background: linear-gradient(90deg, #9e9e9e, #e0e0e0); }
 .stamina .hud-bar-inner { background: linear-gradient(90deg, #00d2ff, #3ad9ff); }
 .karma .hud-bar-inner { background: linear-gradient(90deg, #ffca28, #ffe082); }
+.moral .hud-bar-inner { transition: background-color 0.5s ease; }
+.escalation .hud-bar-inner { transition: background-color 0.5s ease; }
+
+.hud-top-center {
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hud-phase-badge {
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid var(--neon-blue);
+    padding: 5px 15px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    box-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
+}
+
+.phase-number {
+    color: var(--neon-blue);
+    font-size: 16px;
+}
 
 .hud-objectives {
     position: absolute;

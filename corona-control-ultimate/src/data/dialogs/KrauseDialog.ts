@@ -1,5 +1,7 @@
 
 import { DialogTree } from '@/types/DialogTypes';
+import { useGameStore } from '@/stores/gameStore';
+import { arrestSystem } from '@/systems/ArrestSystem';
 
 export const KrauseDialog: DialogTree = {
     id: 'krause_confrontation',
@@ -10,6 +12,7 @@ export const KrauseDialog: DialogTree = {
             type: 'NPC',
             speakerId: 'Martin Krause',
             text: 'Ah, die Polizei. Was wollen Sie hier? Wir demonstrieren nur friedlich für unsere Rechte!',
+            voiceover: 'VOX_KRAUSE_SPEECH_01',
             emotion: 'ANGRY',
             nextNodeId: 'choice_1'
         },
@@ -87,19 +90,32 @@ export const KrauseDialog: DialogTree = {
         'end_arrest': {
             id: 'end_arrest',
             type: 'ACTION',
-            actions: () => console.log('ACTION: ARREST KRAUSE'),
+            actions: () => {
+                useGameStore.getState().setPrompt("Krause wird verhaftet.");
+                arrestSystem.startArrest(9999);
+                useGameStore.getState().setTension(40);
+                useGameStore.getState().setFlag('krause_arrested', true);
+            },
             nextNodeId: undefined // End
         },
         'end_evacuate': {
             id: 'end_evacuate',
             type: 'ACTION',
-            actions: () => console.log('ACTION: EVACUATE CROWD'),
+            actions: () => {
+                useGameStore.getState().setPrompt("Evakuierung der Menge initiiert. Spannung sinkt.");
+                useGameStore.getState().setTension(25);
+                useGameStore.getState().setFlag('crowd_evacuated', true);
+            },
             nextNodeId: undefined // End
         },
         'end_fail': {
             id: 'end_fail',
             type: 'ACTION',
-            actions: () => console.log('ACTION: DIALOG FAILED - RIOT STARTS'),
+            actions: () => {
+                useGameStore.getState().setPrompt("Dialog fehlgeschlagen. Die Lage eskaliert!");
+                useGameStore.getState().setTension(90);
+                useGameStore.getState().setFlag('riot_started', true);
+            },
             nextNodeId: undefined // End
         }
     }

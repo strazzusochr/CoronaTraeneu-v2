@@ -1,5 +1,6 @@
 import { MissionSystem } from '@/systems/core/MissionSystem';
 import { AudioManager, AudioLayer } from '@/managers/AudioManager';
+import { DYNAMIC_EVENTS } from '@/constants/GameBalance';
 
 /**
  * V6.0 EVENT SCHEDULER
@@ -9,10 +10,10 @@ import { AudioManager, AudioLayer } from '@/managers/AudioManager';
  */
 
 export const TimelineEvents = [
-    { time: 21600, id: 'DAWN', description: 'Stadt Erwacht', active: false },    // 06:00
-    { time: 50400, id: 'DEMO_START', description: 'Demo Beginn', active: false }, // 14:00
-    { time: 64800, id: 'ESCALATION', description: 'Eskalation', active: false },  // 18:00
-    { time: 75600, id: 'RIOT', description: 'Straßenschlacht', active: false },  // 21:00
+    { time: 21600, id: 'EVT_DAWN', description: DYNAMIC_EVENTS.EVT_DAWN.description, active: false },
+    { time: 50400, id: 'EVT_DEMO_START', description: DYNAMIC_EVENTS.EVT_DEMO_START.description, active: false },
+    { time: 64800, id: 'EVT_ESCALATION', description: DYNAMIC_EVENTS.EVT_ESCALATION.description, active: false },
+    { time: 75600, id: 'EVT_RIOT', description: DYNAMIC_EVENTS.EVT_RIOT.description, active: false },
 ];
 
 export class EventScheduler {
@@ -29,17 +30,17 @@ export class EventScheduler {
         console.log(`[EventScheduler] TRIGGER: ${id}`);
 
         switch (id) {
-            case 'DAWN':
+            case 'EVT_DAWN':
                 AudioManager.playSound('city_birds', AudioLayer.AMBIENT);
                 break;
-            case 'DEMO_START':
+            case 'EVT_DEMO_START':
                 MissionSystem.startMission('STAATSFEIND_01');
                 AudioManager.playSound('megaphone_shout', AudioLayer.CROWD);
                 break;
-            case 'ESCALATION':
+            case 'EVT_ESCALATION':
                 AudioManager.setGlobalVolume(AudioLayer.CROWD, 1.0);
                 break;
-            case 'RIOT':
+            case 'EVT_RIOT':
                 AudioManager.playSound('siren_distant', AudioLayer.EVENT);
                 break;
         }

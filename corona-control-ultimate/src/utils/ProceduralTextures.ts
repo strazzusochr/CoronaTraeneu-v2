@@ -4,8 +4,27 @@
  */
 import * as THREE from 'three';
 
+// Globaler Safe-Mode Schalter (kann via Console oder bei Fehlern aktiviert werden)
+const isSafeMode = () => (window as any).CC_SAFE_MODE === true;
+
 // Texture Cache to avoid recreation
 const textureCache = new Map<string, THREE.CanvasTexture>();
+
+/**
+ * Fallback Texture (Flat Color)
+ */
+function createFallbackTexture(color: string, cacheKey: string): THREE.CanvasTexture {
+    console.warn(`[ProceduralTextures] Safe-Mode active or error: Using fallback for ${cacheKey}`);
+    const canvas = document.createElement('canvas');
+    canvas.width = 2;
+    canvas.height = 2;
+    const ctx = canvas.getContext('2d')!;
+    ctx.fillStyle = color;
+    ctx.fillRect(0, 0, 2, 2);
+    const texture = new THREE.CanvasTexture(canvas);
+    textureCache.set(cacheKey, texture);
+    return texture;
+}
 
 /**
  * Simple Perlin-like Noise (2D)
@@ -61,15 +80,17 @@ function fractalNoise(x: number, y: number, octaves: number = 4): number {
  */
 export function createSkinTexture(
     tone: 'light' | 'medium' | 'dark' = 'medium',
-    size: number = 1024
+    size: number = 512
 ): THREE.CanvasTexture {
     const cacheKey = `skin_${tone}_${size}`;
     if (textureCache.has(cacheKey)) return textureCache.get(cacheKey)!;
+    if (isSafeMode()) return createFallbackTexture(tone === 'light' ? '#ffdbc3' : tone === 'medium' ? '#e6b48c' : '#b4825a', cacheKey);
 
-    const canvas = document.createElement('canvas');
-    canvas.width = size;
-    canvas.height = size;
-    const ctx = canvas.getContext('2d')!;
+    try {
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d', { willReadFrequently: true })!;
 
     // Base skin tones (RGB)
     const baseTones = {
@@ -129,6 +150,10 @@ export function createSkinTexture(
     texture.needsUpdate = true;
     textureCache.set(cacheKey, texture);
     return texture;
+    } catch (e) {
+        console.error(`[ProceduralTextures] Error creating skin texture:`, e);
+        return createFallbackTexture('#e6b48c', cacheKey);
+    }
 }
 
 /**
@@ -198,9 +223,66 @@ export function createFabricTexture(
 }
 
 /**
+ * Create facade texture for Viennese style buildings
+ */
+export function createFacadeTexture(size: number = 512, color: string = '#E3D9C6'): THREE.CanvasTexture {
+    const cacheKey = `facade_${color}_${size}`;
+    if (textureCache.has(cacheKey)) return textureCache.get(cacheKey)!;
+
+    const canvas = document.createElement('canvas');
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext('2d')!;
+
+    // Base color (typically cream/beige for Vienna)
+    ctx.fillStyle = color;
+    ctx.fillRect(0, 0, size, size);
+
+    // Windows
+    const windowColor = '#1a1a1a';
+    const rows = 4;
+    const cols = 4;
+    const padding = 20;
+    const winWidth = (size - padding * (cols + 1)) / cols;
+    const winHeight = (size - padding * (rows + 1)) / rows;
+
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+            const x = padding + c * (winWidth + padding);
+            const y = padding + r * (winHeight + padding);
+
+            // Window frame (white/cream)
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(x - 2, y - 2, winWidth + 4, winHeight + 4);
+
+            // Glass
+            ctx.fillStyle = windowColor;
+            ctx.fillRect(x, y, winWidth, winHeight);
+
+            // Reflection/Detail
+            ctx.fillStyle = 'rgba(255,255,255,0.1)';
+            ctx.fillRect(x, y, winWidth / 2, winHeight / 2);
+            
+            // Ornaments (Viennese style)
+            ctx.strokeStyle = '#d4c5a9';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(x - 5, y - 5, winWidth + 10, winHeight + 10);
+        }
+    }
+
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.colorSpace = THREE.SRGBColorSpace;
+    texture.needsUpdate = true;
+    textureCache.set(cacheKey, texture);
+    return texture;
+}
+
+/**
  * Create brick texture with mortar and weathering
  */
-export function createBrickTexture(size: number = 1024): THREE.CanvasTexture {
+export function createBrickTexture(size: number = 512): THREE.CanvasTexture {
     const cacheKey = `brick_${size}`;
     if (textureCache.has(cacheKey)) return textureCache.get(cacheKey)!;
 
@@ -262,14 +344,16 @@ export function createBrickTexture(size: number = 1024): THREE.CanvasTexture {
 /**
  * Create asphalt texture with cracks and repairs
  */
-export function createAsphaltTexture(size: number = 1024): THREE.CanvasTexture {
+export function createAsphaltTexture(size: number = 512): THREE.CanvasTexture {
     const cacheKey = `asphalt_${size}`;
     if (textureCache.has(cacheKey)) return textureCache.get(cacheKey)!;
+    if (isSafeMode()) return createFallbackTexture('#37373c', cacheKey);
 
-    const canvas = document.createElement('canvas');
-    canvas.width = size;
-    canvas.height = size;
-    const ctx = canvas.getContext('2d')!;
+    try {
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d', { willReadFrequently: true })!;
 
     // Base dark gray
     ctx.fillStyle = 'rgb(55, 55, 60)';
@@ -324,12 +408,16 @@ export function createAsphaltTexture(size: number = 1024): THREE.CanvasTexture {
     texture.needsUpdate = true;
     textureCache.set(cacheKey, texture);
     return texture;
+    } catch (e) {
+        console.error(`[ProceduralTextures] Error creating asphalt texture:`, e);
+        return createFallbackTexture('#37373c', cacheKey);
+    }
 }
 
 /**
  * Create Wiener Würfel (Viennese cobblestone) texture
  */
-export function createCobblestoneTexture(size: number = 1024): THREE.CanvasTexture {
+export function createCobblestoneTexture(size: number = 512): THREE.CanvasTexture {
     const cacheKey = `cobble_${size}`;
     if (textureCache.has(cacheKey)) return textureCache.get(cacheKey)!;
 

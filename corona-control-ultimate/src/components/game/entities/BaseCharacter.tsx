@@ -2,7 +2,7 @@ import React, { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useEngineLoop } from '@/core/EngineLoopManager';
-import { NPCState, NPCType } from '@/types/enums';
+import { NPCState, NPCType, type PlayerAnimationId } from '@/types/enums';
 
 interface BaseCharacterProps {
     position: [number, number, number];
@@ -14,6 +14,21 @@ interface BaseCharacterProps {
     lodLevel?: number;
     isPlayer?: boolean;
 }
+
+const getDefaultPlayerAnimationForState = (state: NPCState): PlayerAnimationId => {
+    switch (state) {
+        case NPCState.WALK:
+            return 'ANIM_002';
+        case NPCState.RUN:
+            return 'ANIM_003';
+        case NPCState.ATTACK:
+            return 'ANIM_023';
+        case NPCState.PANIC:
+            return 'ANIM_030';
+        default:
+            return 'ANIM_001';
+    }
+};
 
 /**
  * BaseCharacter (V7.0)
@@ -33,11 +48,11 @@ export const BaseCharacter: React.FC<BaseCharacterProps> = ({
     const meshRef = useRef<THREE.Group>(null);
     const bodyRef = useRef<THREE.Mesh>(null);
 
-    // V7.0 Animation State Logic
     const animationState = useMemo(() => ({
         mixer: null as THREE.AnimationMixer | null,
         currentAction: null as THREE.AnimationAction | null,
-        nextAction: null as string | null
+        nextAction: null as string | null,
+        currentAnimationId: null as PlayerAnimationId | null
     }), []);
 
     // 120Hz Physics & Animation Update
@@ -59,6 +74,10 @@ export const BaseCharacter: React.FC<BaseCharacterProps> = ({
             // Handle Wrap-around for rotation
             const targetQuat = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, rotation, 0));
             meshRef.current.quaternion.slerp(targetQuat, delta * 10);
+
+            if (isPlayer) {
+                animationState.currentAnimationId = getDefaultPlayerAnimationForState(state);
+            }
         }
     });
 

@@ -2,6 +2,7 @@
 import { create } from 'zustand';
 import type { DialogTree, DialogNode, DialogChoice } from '@/types/DialogTypes';
 import { useGameStore } from '@/stores/gameStore';
+import AudioManager from './AudioManager';
 
 interface DialogState {
     activeDialog: DialogTree | null;
@@ -29,6 +30,10 @@ export const useDialogStore = create<DialogState>((set, get) => ({
             isOpen: true
         });
 
+        const node = tree.nodes[tree.rootNodeId];
+        if (node.type === 'NPC' && node.voiceover) {
+            AudioManager.playVoice(node.voiceover as any);
+        }
         // Pause Game?
         // useGameStore.getState().setPaused(true);
     },
@@ -58,7 +63,11 @@ export const useDialogStore = create<DialogState>((set, get) => ({
             if (choice.consequences) {
                 if (choice.consequences.setFlag) {
                     console.log(`Flag Set: ${choice.consequences.setFlag}`);
-                    // TODO: Set flag in Quest/Game Manager
+                    useGameStore.getState().setFlag(choice.consequences.setFlag, true);
+                }
+                if (choice.consequences.reputationChange) {
+                    const amount = choice.consequences.reputationChange.amount || 0;
+                    useGameStore.getState().adjustKarma(amount);
                 }
             }
         } else if (currentNode.type === 'ACTION') {
@@ -74,6 +83,9 @@ export const useDialogStore = create<DialogState>((set, get) => ({
                     history: [...state.history, nextNodeId]
                 }));
 
+                if (nextNode.type === 'NPC' && nextNode.voiceover) {
+                    AudioManager.playVoice(nextNode.voiceover as any);
+                }
                 // Auto-advance Action nodes
                 if (nextNode.type === 'ACTION') {
                     get().advance();

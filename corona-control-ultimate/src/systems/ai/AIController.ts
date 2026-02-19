@@ -18,6 +18,7 @@ export abstract class AIController {
     protected lastPlayerPos: [number, number, number] | null = null;
     protected distanceToPlayer: number = Infinity;
     protected activeStimuli: Stimulus[] = [];
+    protected nearestThreatDistance: number = Infinity;
 
     constructor(npc: NPCData) {
         this.npc = npc;
@@ -35,20 +36,28 @@ export abstract class AIController {
     }
 
     public update(delta: number, _playerPos?: [number, number, number] | number[]) {
-        // Perception Update
+        this.nearestThreatDistance = Infinity;
+        
         this.activeStimuli = this.perception.update(delta);
         
         // Memory Update
         this.memory.update(delta, this.activeStimuli);
 
-        // Process Stimuli (Sync to legacy vars for now)
         for (const stim of this.activeStimuli) {
             if (stim.tags?.includes('PLAYER')) {
                 this.lastPlayerPos = stim.position;
-                // Recalc distance for backwards compatibility / utility
                 const dx = this.lastPlayerPos[0] - this.npc.position[0];
                 const dz = this.lastPlayerPos[2] - this.npc.position[2];
                 this.distanceToPlayer = Math.sqrt(dx*dx + dz*dz);
+            }
+            
+            if (stim.tags && stim.tags.some(t => t === 'EXPLOSION' || t === 'FIRE' || t === 'GAS' || t === 'MOLOTOV' || t === 'TEARGAS')) {
+                const dx = stim.position[0] - this.npc.position[0];
+                const dz = stim.position[2] - this.npc.position[2];
+                const dist = Math.sqrt(dx*dx + dz*dz);
+                if (dist < this.nearestThreatDistance) {
+                    this.nearestThreatDistance = dist;
+                }
             }
         }
         

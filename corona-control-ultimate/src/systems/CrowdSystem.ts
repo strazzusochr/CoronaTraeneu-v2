@@ -2,12 +2,13 @@ import { SpatialGrid } from './ai/SpatialGrid';
 import type { GridEntity } from './ai/SpatialGrid';
 import { useGameStore } from '@/stores/gameStore';
 import { FlowFieldSystem } from './FlowFieldSystem';
+import { EngineLoop } from '@/core/EngineLoopManager';
 
 class CrowdSystem {
     private static instance: CrowdSystem;
     private grid: SpatialGrid;
-    // private gridUpdateTimer: number = 0;
-    // private readonly GRID_UPDATE_RATE = 5; 
+    private lastFlowFieldUpdate = Number.NEGATIVE_INFINITY;
+    private readonly FLOWFIELD_INTERVAL = 100;
 
     private constructor() {
         this.grid = new SpatialGrid(4.0); // 4m cell size
@@ -33,13 +34,10 @@ class CrowdSystem {
 
         const playerPos = useGameStore.getState().player.position;
         if (playerPos) {
-            // Optimize: Update FlowField only every ~100ms (accumulating delta would be better, but strict throttling works)
-            // Using Date.now() is safer than random.
             const now = Date.now();
-            // Assuming explicit "lastUpdate" property on class for better persistence, 
-            // but here we can just check modulo of time for rough 10Hz.
-            if (Math.floor(now / 100) % 5 === 0) { // Approx every 500ms
+            if (now - this.lastFlowFieldUpdate >= this.FLOWFIELD_INTERVAL) {
                 FlowFieldSystem.getInstance().calculateFlowField(playerPos[0], playerPos[2]);
+                this.lastFlowFieldUpdate = now;
             }
         }
 
@@ -62,6 +60,14 @@ class CrowdSystem {
     public getNeighbors(x: number, z: number, radius: number): GridEntity[] {
         return this.grid.query(x, z, radius);
     }
+
+    public resetForTests() {
+        this.lastFlowFieldUpdate = Number.NEGATIVE_INFINITY;
+        this.grid.clear();
+    }
 }
+
+const crowdSystem = CrowdSystem.getInstance();
+EngineLoop.onAIUpdate((dt) => crowdSystem.update(dt));
 
 export default CrowdSystem;

@@ -1,12 +1,15 @@
 import type { StateCreator } from 'zustand';
 import type { GameStore } from '../types';
+import { GAME_BALANCE } from '@/constants/GameBalance';
 
 export const createPlayerSlice: StateCreator<GameStore, [], [], Pick<GameStore, 'player' | 'setPlayerPosition' | 'setPlayerHealth' | 'tensionLevel' | 'setTension' | 'toggleBinoculars'>> = (set) => ({
   player: {
-    health: 100,
-    maxHealth: 100,
-    stamina: 100,
-    maxStamina: 100,
+    health: GAME_BALANCE.player.maxHealth,
+    maxHealth: GAME_BALANCE.player.maxHealth,
+    stamina: GAME_BALANCE.player.maxStamina,
+    maxStamina: GAME_BALANCE.player.maxStamina,
+    armor: GAME_BALANCE.player.baseArmor,
+    maxArmor: GAME_BALANCE.player.baseArmor,
     position: [0, 0, 0],
     rotation: [0, 0, 0],
     isGrounded: true,

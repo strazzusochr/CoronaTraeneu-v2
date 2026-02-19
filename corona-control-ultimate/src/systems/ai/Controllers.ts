@@ -25,11 +25,11 @@ export class CivilianController extends AIController {
                 {
                     name: 'ThreatDistance',
                     weight: 2.0,
-                    curve: new UtilityCurve('EXPONENTIAL', 1, 2), // High reaction at close range
+                    curve: new UtilityCurve('EXPONENTIAL', 1, 2),
                     getValue: () => {
-                        // Normalize distance: 0m = 1.0 (High danger), 30m = 0.0 (Safe)
                         const maxDist = 30;
-                        const dist = this.distanceToPlayer;
+                        const threatDist = Math.min(this.distanceToPlayer, this.nearestThreatDistance);
+                        const dist = Number.isFinite(threatDist) ? threatDist : maxDist;
                         return Math.max(0, 1 - (dist / maxDist));
                     }
                 },

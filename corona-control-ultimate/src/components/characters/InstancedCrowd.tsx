@@ -24,42 +24,56 @@ export const InstancedCrowd = () => {
         if (!getFeatureState('CROWD_500')) return;
         if (!meshRef.current) return;
 
+        const time = state.clock.elapsedTime;
+
+        // Reset all matrices to hide unused instances (scale 0)
+        for (let i = npcs.length; i < 500; i++) {
+            tempObject.position.set(0, -100, 0);
+            tempObject.scale.set(0, 0, 0);
+            tempObject.updateMatrix();
+            meshRef.current.setMatrixAt(i, tempObject.matrix);
+        }
+
         npcs.forEach((npc, i) => {
-            if (i >= meshRef.current!.count) return;
+            if (i >= 500) return;
 
-            // 1. Position-Sync (Simple Velocity Simulation für V7.0 Placeholder)
+            // 1. Position-Sync
             tempObject.position.set(npc.position[0], npc.position[1], npc.position[2]);
+            
+            // Animation: Leichtes Wippen/Tanzen vor der Bühne
+            const distToStage = Math.sqrt(
+                Math.pow(npc.position[0], 2) + 
+                Math.pow(npc.position[2] - (-50), 2)
+            );
+            
+            if (distToStage < 40) {
+                // Bobbing animation based on distance to stage (simulating rhythm)
+                const freq = 2 + (Math.sin(time * 0.5) * 0.5);
+                const bob = Math.sin(time * 8 + i) * 0.05;
+                tempObject.position.y += Math.max(0, bob);
+                
+                // Slight swaying
+                tempObject.rotation.z = Math.sin(time * 4 + i) * 0.05;
+            } else {
+                tempObject.rotation.z = 0;
+            }
 
-            // LookAt (Placeholder für Blickrichtung)
             tempObject.rotation.y = npc.rotation;
+            tempObject.scale.set(1, 1, 1);
             tempObject.updateMatrix();
             meshRef.current!.setMatrixAt(i, tempObject.matrix);
 
             // 2. Emotionale Visualisierung
-            // Aggressive NPCs leuchten leicht rot, gestresste NPCs bläulich
             if (npc.emotions.current === EmotionalState.AGGRESSIVE) {
                 tempColor.set('#ff3333');
             } else if (npc.emotions.current === EmotionalState.STRESSED) {
                 tempColor.set('#8888ff');
+            } else if (npc.type === 'POLICE') {
+                tempColor.set('#112244');
             } else {
                 tempColor.set('#ffffff');
             }
             meshRef.current!.setColorAt(i, tempColor);
-
-            // 3. Grid Sync (Throttled via NPC Index & Time)
-            if ((state.clock.elapsedTime * 10 + i) % 10 < 1) {
-                const vx = npc.velocity[0];
-                const vz = npc.velocity[2];
-                // Update position logic (simplified for placeholder)
-                const nextPos: [number, number, number] = [
-                    npc.position[0] + vx * delta,
-                    npc.position[1],
-                    npc.position[2] + vz * delta
-                ];
-                // In einer echten V7.0 Engine würde hier der Physik-Loop greifen
-                // Wir synchronisieren hier nur den Grid-Zustand für die KI
-                grid.updateEntity(`npc_${npc.id}`, npc.position, nextPos);
-            }
         });
 
         meshRef.current.instanceMatrix.needsUpdate = true;

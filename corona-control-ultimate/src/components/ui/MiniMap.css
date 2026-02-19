@@ -1,0 +1,91 @@
+.minimap-container {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    pointer-events: auto;
+}
+
+.minimap-outer {
+    width: 150px;
+    height: 150px;
+    background: rgba(15, 15, 20, 0.8);
+    border: 2px solid rgba(0, 210, 255, 0.5);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+}
+
+.minimap-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.minimap-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(rgba(0, 210, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 210, 255, 0.1) 1px, transparent 1px);
+    background-size: 30px 30px;
+}
+
+.minimap-dot {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.minimap-dot.player {
+    width: 8px;
+    height: 8px;
+    background: #00d2ff;
+    box-shadow: 0 0 10px #00d2ff;
+    z-index: 10;
+}
+
+.player-arrow {
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 8px solid #fff;
+    position: absolute;
+    top: -10px;
+    left: 0;
+}
+
+.minimap-dot.npc {
+    background: #fff;
+}
+
+.minimap-dot.npc.rioter {
+    background: #ff3c3c;
+    box-shadow: 0 0 5px #ff3c3c;
+}
+
+.minimap-dot.npc.krause {
+    width: 6px;
+    height: 6px;
+    background: #ffca28;
+    box-shadow: 0 0 8px #ffca28;
+}
+
+.minimap-label {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 2px;
+    font-weight: 700;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}

@@ -2,7 +2,9 @@
 import { useGameStore } from '@/stores/gameStore';
 import * as THREE from 'three';
 import FireSystem from '@/systems/FireSystem';
-import { useParticleStore } from '@/components/Effects/ParticleSystem';
+import { useParticleStore, ParticleType } from '@/components/Effects/ParticleSystem';
+import AudioManager, { AudioLayer } from '@/managers/AudioManager';
+import GameEventSystem from '@/systems/GameEventSystem';
 
 export interface Projectile {
     id: string;
@@ -112,17 +114,67 @@ class CombatSystem {
         p.active = false;
         p.position = position; // Update final position
 
-        // Effekte basierend auf Typ auslösen
-        // Effekte basierend auf Typ auslösen
+        const MOLOTOV_FIRE_DURATION = 20;
+        const MOLOTOV_FIRE_RADIUS = 4;
+        const MOLOTOV_FIRE_INTENSITY = 15;
+
         if (p.type === 'MOLOTOV') {
             console.log(`[CombatSystem] BUMM! Molotow-Einschlag bei ${position}`);
             useGameStore.getState().setPrompt("ACHTUNG: Brandsatz detoniert!");
 
-            // Spawn Fire (20s duration, 4m radius, 15 damage)
-            FireSystem.spawnFire([position[0], 0.5, position[2]], 20, 4, 15);
+            GameEventSystem.getInstance().emit({
+                type: 'AUDIO',
+                position,
+                sourceId: 0,
+                intensity: 1.0,
+                timestamp: performance.now(),
+                tags: ['EXPLOSION', 'MOLOTOV']
+            });
 
-            // Explosion visual
-            useParticleStore.getState().spawnExplosion(position, 'orange', 50);
+            FireSystem.spawnFire([position[0], 0.5, position[2]], MOLOTOV_FIRE_DURATION, MOLOTOV_FIRE_RADIUS, MOLOTOV_FIRE_INTENSITY);
+
+            // Explosion visual & sound
+            useParticleStore.getState().spawnEffect(ParticleType.EXPLOSION, position, { color: 'orange', count: 50, size: 0.5 });
+            AudioManager.playSound('molotov_explode', AudioLayer.EVENT, { pos: position });
+        } else if (p.type === 'TEARGAS') {
+            console.log(`[CombatSystem] ZISCH! Tränengas-Einschlag bei ${position}`);
+            useGameStore.getState().setPrompt("Tränengas freigesetzt!");
+
+            GameEventSystem.getInstance().emit({
+                type: 'AUDIO',
+                position,
+                sourceId: 0,
+                intensity: 0.7,
+                timestamp: performance.now(),
+                tags: ['GAS', 'TEARGAS']
+            });
+
+            // Gas visual & sound
+            useParticleStore.getState().spawnEffect(ParticleType.TEARGAS, position, { 
+                color: '#e0e0e0', 
+                count: 100, 
+                size: 1.5, 
+                spread: 5.0 
+            });
+            AudioManager.playSound('teargas_hiss', AudioLayer.EVENT, { pos: position });
+
+            // TODO: Apply suppression area effect to NPCs in radius
+        } else if (p.type === 'STONE') {
+            // Sparks on impact & sound
+            useParticleStore.getState().spawnEffect(ParticleType.SPARKS, position, { 
+                color: '#aaaaaa', 
+                count: 5, 
+                size: 0.1 
+            });
+            AudioManager.playSound('stone_impact', AudioLayer.EVENT, { pos: position });
+            GameEventSystem.getInstance().emit({
+                type: 'AUDIO',
+                position,
+                sourceId: 0,
+                intensity: 0.3,
+                timestamp: performance.now(),
+                tags: ['IMPACT', 'STONE']
+            });
         }
 
         // Entferne inaktive Projektile zeitnah oder beim nächsten Update

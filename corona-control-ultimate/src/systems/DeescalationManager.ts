@@ -1,15 +1,15 @@
-/**
- * DeescalationManager - V6.0 Social Dynamics Engine
- * Handles relationship scores and non-violent interactions.
- */
 import { useGameStore } from '@/stores/gameStore';
 import * as THREE from 'three';
 import AISystem from './AISystem';
+import { GAME_BALANCE } from '@/constants/GameBalance';
 
 class DeescalationManager {
     private static instance: DeescalationManager;
     private lastInteractionTime: number = 0;
-    private readonly INTERACTION_COOLDOWN = 1000; // 1s
+    private readonly INTERACTION_COOLDOWN = 1000;
+    private static readonly ACTIVE_INTENSITY = GAME_BALANCE.weapons.deescalation.activeIntensity;
+    private static readonly PASSIVE_RELATION_RECOVERY_RATE = GAME_BALANCE.weapons.deescalation.passiveRelationRecoveryRate;
+    private static readonly PASSIVE_AGGRESSION_COOL_RATE = GAME_BALANCE.weapons.deescalation.passiveAggressionCoolRate;
 
     private constructor() {
         console.log("🤝 DEESCALATION ENGINE ACTIVE");
@@ -25,7 +25,7 @@ class DeescalationManager {
     /**
      * Process a social interaction (e.g. Talk, Calm Down)
      */
-    public attemptDeescalation(npcId: number, intensity: number = 10): void {
+    public attemptDeescalation(npcId: number, intensity: number = DeescalationManager.ACTIVE_INTENSITY): void {
         const now = Date.now();
         if (now - this.lastInteractionTime < this.INTERACTION_COOLDOWN) return;
         this.lastInteractionTime = now;
@@ -77,14 +77,14 @@ class DeescalationManager {
             if (npc.state !== 'RIOT' && npc.state !== 'ATTACK') {
                 // Recover relationship if it's negative
                 if (npc.relationshipScore !== undefined && npc.relationshipScore < 0) {
-                    const recovery = delta * 2.0; // 2 points per second
+                    const recovery = delta * DeescalationManager.PASSIVE_RELATION_RECOVERY_RATE;
                     const newScore = Math.min(0, npc.relationshipScore + recovery);
                     state.updateNpc(npc.id, { relationshipScore: newScore });
                 }
 
                 // Reduce aggression
                 if (npc.aggression !== undefined && npc.aggression > 0.1) {
-                    const cooling = delta * 0.05; // 5% per second
+                    const cooling = delta * DeescalationManager.PASSIVE_AGGRESSION_COOL_RATE;
                     const newAggression = Math.max(0.1, npc.aggression - cooling);
                     state.updateNpc(npc.id, { aggression: newAggression });
                 }

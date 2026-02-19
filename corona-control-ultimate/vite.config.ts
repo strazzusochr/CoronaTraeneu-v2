@@ -9,6 +9,7 @@ export default defineConfig({
     alias: {
       '@': '/src',
     },
+    dedupe: ['three'],
   },
   server: {
     port: 3000,
@@ -33,6 +34,6 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ['three', '@react-three/fiber', '@react-three/drei', 'zustand', '@dimforge/rapier-3d-compat'],
+    include: ['three', '@react-three/fiber', '@react-three/drei', 'zustand', '@dimforge/rapier3d-compat'],
   },
 })

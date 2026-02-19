@@ -5,6 +5,7 @@
 import React, { useState, useEffect } from 'react';
 import { saveManager, type SaveData } from '@/managers/SaveManager';
 import { useGameStore } from '@/stores/gameStore';
+import { LEVEL_DEFINITIONS, type LevelId } from '@/stores/types';
 
 // Lokale Definition um Vite ESM-Problem zu umgehen
 interface SaveSlot {
@@ -169,9 +170,16 @@ const SaveLoadUI: React.FC<SaveLoadUIProps> = ({ mode, onClose }) => {
                                     </div>
                                     {!slot.isEmpty && slot.data && (
                                         <div style={{ color: '#888', fontSize: '0.85rem' }}>
-                                            {formatDate(slot.data.timestamp)} •
-                                            Spielzeit: {saveManager.formatPlaytime(slot.data.playtime)} •
-                                            HP: {slot.data.gameState.health}%
+                                            {(() => {
+                                                const levelId = slot.data!.gameState.levelId as LevelId;
+                                                const levelMeta = LEVEL_DEFINITIONS[levelId];
+                                                const levelName = levelMeta ? levelMeta.name : 'Unbekanntes Level';
+                                                return (
+                                                    <>
+                                                        {formatDate(slot.data!.timestamp)} • Level: {levelName} • Spielzeit: {saveManager.formatPlaytime(slot.data!.playtime)} • HP: {slot.data!.gameState.health}%
+                                                    </>
+                                                );
+                                            })()}
                                         </div>
                                     )}
                                 </div>

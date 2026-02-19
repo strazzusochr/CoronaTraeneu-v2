@@ -24,4 +24,13 @@ describe('EndingManager', () => {
         expect(result.rank).toBe('F');
         expect(result.summary).toContain('GESCHEITERT');
     });
+
+    it('should map ranks to correct ending cutscenes', () => {
+        expect(EndingManager.getCutsceneForRank('S')).toBe('CS_OUTRO_S');
+        expect(EndingManager.getCutsceneForRank('A')).toBe('CS_OUTRO_A');
+        expect(EndingManager.getCutsceneForRank('B')).toBe('CS_OUTRO_B');
+        expect(EndingManager.getCutsceneForRank('C')).toBe('CS_OUTRO_C');
+        expect(EndingManager.getCutsceneForRank('D')).toBe('CS_OUTRO_D');
+        expect(EndingManager.getCutsceneForRank('F')).toBe('CS_OUTRO_F');
+    });
 });

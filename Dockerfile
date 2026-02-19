@@ -1,55 +1,18 @@
-# ---------- deps (cache layer) ----------
-FROM node:20-slim AS deps
+FROM node:20-alpine AS build
 WORKDIR /app
-
-# Install build dependencies for Debian
-RUN apt-get update && apt-get install -y \
-    python3 \
-    make \
-    g++ \
-    && rm -rf /var/lib/apt/lists/*
-
-COPY corona-control-ultimate/package.json corona-control-ultimate/package-lock.json ./
+COPY corona-control-ultimate/package*.json ./corona-control-ultimate/
+WORKDIR /app/corona-control-ultimate
 RUN npm ci
-
-# ---------- build ----------
-FROM node:20-slim AS build
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY corona-control-ultimate/ .
+COPY corona-control-ultimate ./
 RUN npm run build
 
-# ---------- runtime ----------
-FROM node:20-slim AS runner
+FROM node:20-alpine AS runner
 WORKDIR /app
-
-# Install tools for Hugging Face Dev Mode
-RUN apt-get update && apt-get install -y \
-    git \
-    git-lfs \
-    wget \
-    curl \
-    procps \
-    bash \
-    htop \
-    vim \
-    nano \
-    && rm -rf /var/lib/apt/lists/*
-
 ENV NODE_ENV=production
 ENV PORT=7860
-
-# Ensure /app is owned by user 1000 for Dev Mode
-RUN chown -R 1000:1000 /app
-
-COPY --from=build /app/package.json ./
-COPY --from=build /app/package-lock.json ./
-RUN npm ci --omit=dev
-
-COPY --from=build /app/dist ./dist
-COPY --from=build /app/server ./server
-COPY --from=build /app/server.cjs ./server.cjs
-
-USER 1000
+COPY corona-control-ultimate/package*.json ./corona-control-ultimate/
+RUN npm --prefix ./corona-control-ultimate ci --only=production
+COPY --from=build /app/corona-control-ultimate/dist ./corona-control-ultimate/dist
+COPY corona-control-ultimate/server.cjs ./corona-control-ultimate/server.cjs
 EXPOSE 7860
-CMD ["node", "server.cjs"]
+ENTRYPOINT ["node", "corona-control-ultimate/server.cjs"]

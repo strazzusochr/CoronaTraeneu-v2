@@ -1,6 +1,7 @@
 import { QuestState, QuestType, ObjectiveType } from '@/types/QuestData';
 import type { Quest } from '@/types/QuestData';
 import { useGameStore } from '@/stores/gameStore';
+import { EngineLoop } from '@/core/EngineLoopManager';
 
 class AdvancedQuestManager {
     private static instance: AdvancedQuestManager;
@@ -8,6 +9,7 @@ class AdvancedQuestManager {
 
     private constructor() {
         this.initializeQuests();
+        EngineLoop.onAIUpdate(dt => this.update(dt));
     }
 
     public static getInstance(): AdvancedQuestManager {
@@ -49,6 +51,32 @@ class AdvancedQuestManager {
                 { id: 'obj_protect_civ', description: 'Beschütze die Zivilisten', type: ObjectiveType.PROTECT, currentCount: 0, targetCount: 1, isCompleted: false }
             ],
             rewards: { xp: 500, money: 100, reputation: 20 }
+        });
+
+        // Side Quest: Friedlicher Ansatz fortsetzen (durch Flag)
+        this.addQuest({
+            id: 'Q_SIDE_PEACE',
+            name: 'Friedliche Lösung',
+            description: 'Beruhige die Menge durch Dialog und Präsenz.',
+            type: QuestType.SIDE,
+            state: QuestState.LOCKED,
+            objectives: [
+                { id: 'obj_keep_peace', description: 'Halte Spannung unter 30 für 60s', type: ObjectiveType.WAIT, currentCount: 0, targetCount: 60, isCompleted: false }
+            ],
+            rewards: { xp: 150, reputation: 10, achievementId: 'ACH_002' }
+        });
+
+        // Side Quest: Meldung nach Krause-Verhaftung
+        this.addQuest({
+            id: 'Q_SIDE_REPORT_ARREST',
+            name: 'Melde Verhaftung',
+            description: 'Berichte dem Einsatzleiter über die Verhaftung von Krause.',
+            type: QuestType.SIDE,
+            state: QuestState.LOCKED,
+            objectives: [
+                { id: 'obj_report_commander', description: 'Sprich mit dem Einsatzleiter', type: ObjectiveType.TALK, targetId: 'NPC_COMMANDER', currentCount: 0, targetCount: 1, isCompleted: false }
+            ],
+            rewards: { xp: 100, reputation: 8, achievementId: 'ACH_003' }
         });
     }
 
@@ -117,18 +145,32 @@ class AdvancedQuestManager {
 
         this.changeQuestState(questId, QuestState.COMPLETED);
 
-        // Belohnungen
         if (quest.rewards.xp) useGameStore.getState().addPoints(quest.rewards.xp);
-        // Mehr Belohnungslogik...
+        if (quest.rewards.achievementId) {
+            useGameStore.getState().unlockAchievement(quest.rewards.achievementId);
+        }
 
         useGameStore.getState().setPrompt(`QUEST ABGESCHLOSSEN: ${quest.name}`);
 
-        // Nächste Quest auto-starten in Kette?
         if (quest.nextQuestId) {
             const nextQ = this.quests.get(quest.nextQuestId);
             if (nextQ && nextQ.state === QuestState.LOCKED) {
-                // Wird beim nächsten Update verfügbar durch Voraussetzungen,
-                // oder wir erzwingen es hier falls strikt linear
+            }
+        }
+    }
+
+    public onFlag(flagKey: string) {
+        if (flagKey === 'tried_peaceful') {
+            const q = this.quests.get('Q_SIDE_PEACE');
+            if (q && q.state === QuestState.LOCKED) {
+                this.changeQuestState('Q_SIDE_PEACE', QuestState.AVAILABLE);
+                useGameStore.getState().setPrompt('NEBENQUEST VERFÜGBAR: Friedliche Lösung');
+            }
+        } else if (flagKey === 'krause_arrested') {
+            const q = this.quests.get('Q_SIDE_REPORT_ARREST');
+            if (q && q.state === QuestState.LOCKED) {
+                this.changeQuestState('Q_SIDE_REPORT_ARREST', QuestState.AVAILABLE);
+                useGameStore.getState().setPrompt('NEBENQUEST VERFÜGBAR: Verhaftung melden');
             }
         }
     }

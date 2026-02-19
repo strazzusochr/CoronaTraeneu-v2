@@ -1,0 +1,21 @@
+{
+  "timestamp": "2026-02-11T11:14:16.395147",
+  "url": "http://localhost:3000",
+  "screenshots_taken": 1,
+  "results": {
+    "frameworks": {
+      "react": false,
+      "threejs": false,
+      "canvas_count": 0
+    },
+    "performance": {
+      "domReady": 46,
+      "memory": {
+        "total": 2.9261369705200195,
+        "used": 1.6325044631958008
+      },
+      "pageLoadTime": 46
+    },
+    "agent_error": "Error in generating model output:\nlitellm.BadRequestError: HuggingfaceException - {\"error\":{\"message\":\"The requested model 'Qwen/Qwen2-VL-72B-Instruct' is not supported by any provider you have enabled.\",\"type\":\"invalid_request_error\",\"param\":\"model\",\"code\":\"model_not_supported\"}}"
+  }
+}

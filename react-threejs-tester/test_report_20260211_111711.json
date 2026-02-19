@@ -1,0 +1,20 @@
+{
+  "timestamp": "2026-02-11T11:17:11.106328",
+  "url": "http://localhost:3000",
+  "screenshots_taken": 1,
+  "results": {
+    "frameworks": {
+      "react": false,
+      "threejs": false,
+      "canvas_count": 0
+    },
+    "performance": {
+      "domReady": 63,
+      "memory": {
+        "total": 2.6761369705200195,
+        "used": 1.6325044631958008
+      },
+      "pageLoadTime": 63
+    }
+  }
+}

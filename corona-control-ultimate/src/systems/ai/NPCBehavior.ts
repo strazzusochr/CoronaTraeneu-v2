@@ -1,4 +1,5 @@
 import type { NPCData } from '@/types/npc';
+import { GAME_BALANCE } from '@/constants/GameBalance';
 
 // Hilfsfunktion für zufällige Position in Radius
 const getRandomPositionInRadius = (center: [number, number, number], radius: number): [number, number, number] => {
@@ -13,7 +14,12 @@ const getRandomPositionInRadius = (center: [number, number, number], radius: num
 
 export const updateNPCBehavior = (npc: NPCData, delta: number, playerPos?: [number, number, number] | number[]): NPCData => {
     const newState = { ...npc };
-    const speed = npc.type === 'RIOTER' ? 4.0 : npc.type === 'POLICE' ? 3.5 : 2.0;
+    const speed =
+        npc.type === 'RIOTER'
+            ? GAME_BALANCE.npc.rioter.walkSpeed
+            : npc.type === 'POLICE'
+                ? GAME_BALANCE.npc.police.walkSpeed
+                : GAME_BALANCE.npc.civilian.walkSpeed;
 
     // Distanz zum Spieler
     let distToPlayer = 1000;

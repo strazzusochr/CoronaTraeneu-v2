@@ -31,6 +31,7 @@ try:
     import requests
 except ImportError as e:
     print(f"FATAL IMPORT ERROR: {e}")
+    print("Please run: pip install -r requirements.txt")
     sys.exit(1)
 
 # Logging Configuration
@@ -44,10 +45,10 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# --- TOOLS DEFINITIONS (Module Level) ---
+# --- TOOLS DEFINITIONS ---
 
 @tool
-def analyze_react_app() -> str:
+def analyze_react_structure() -> str:
     """Analyzes React App structure, returns version and component count."""
     try:
         driver = helium.get_driver()
@@ -57,16 +58,7 @@ def analyze_react_app() -> str:
                 components: 0,
                 version: 'unknown'
             };
-            
-            if (window.React) {
-                info.version = window.React.version;
-            }
-            
-            if (window.__REACT_DEVTOOLS_GLOBAL_HOOK__ && 
-                window.__REACT_DEVTOOLS_GLOBAL_HOOK__.renderers) {
-                info.components = window.__REACT_DEVTOOLS_GLOBAL_HOOK__.renderers.length;
-            }
-            
+            if (window.React) info.version = window.React.version;
             return info;
         """)
         return f"React Analysis: {react_info}"
@@ -74,37 +66,72 @@ def analyze_react_app() -> str:
         return f"React Analysis failed: {str(e)}"
 
 @tool
-def test_threejs_scene() -> str:
-    """Tests Three.js 3D Scene and returns info about renderer and objects."""
+def inspect_threejs_scene() -> str:
+    """Detailed inspection of Three.js Scene, objects, and memory. Use this to detect missing NPCs or POIs."""
     try:
         driver = helium.get_driver()
-        threejs_info = driver.execute_script("""
-            const info = {
-                threejsDetected: false,
-                sceneObjects: 0,
-                renderer: null
+        scene_info = driver.execute_script("""
+            const stats = {
+                objects: 0,
+                meshes: 0,
+                lights: 0,
+                geometries: 0,
+                textures: 0,
+                memory: {}
             };
             
-            if (typeof THREE !== 'undefined' || window.THREE) {
-                info.threejsDetected = true;
-                
-                // Search for Three.js Scene
-                if (window.scene || window.THREE && window.THREE.Scene) {
-                    info.sceneObjects = 'Scene found';
-                }
-                
-                // Renderer Info
-                if (window.renderer) {
-                    info.renderer = 'Renderer found';
-                }
-            }
-            
-            return info;
-        """)
-        return f"Three.js Test: {threejs_info}"
-    except Exception as e:
-        return f"Three.js Test failed: {str(e)}"
+            // Standard Three.js Scene traversal
+            const scene = window.scene || (window.__THREE_DEVTOOLS_GLOBAL_HOOK__ && window.__THREE_DEVTOOLS_GLOBAL_HOOK__.scenes[0]);
+            if (!scene) return "No Three.js Scene detected in window.scene";
 
+            scene.traverse(obj => {
+                stats.objects++;
+                if (obj.isMesh) stats.meshes++;
+                if (obj.isLight) stats.lights++;
+            });
+
+            const renderer = window.renderer;
+            if (renderer && renderer.info) {
+                stats.memory = renderer.info.memory;
+                stats.render = renderer.info.render;
+            }
+
+            return stats;
+        """)
+        return f"Three.js Scene Analysis: {scene_info}"
+    except Exception as e:
+        return f"Three.js Inspection failed: {str(e)}"
+
+@tool
+def detect_rendering_issues() -> str:
+    """Checks for typical rendering errors like White Screens, Shaders failing, or context loss."""
+    try:
+        driver = helium.get_driver()
+        issues = driver.execute_script("""
+            const check = {
+                whiteScreen: false,
+                contextLost: false,
+                shaderErrors: []
+            };
+            
+            // 1. Simple pixel check for white screen (top-left)
+            const canvas = document.querySelector('canvas');
+            if (canvas) {
+                const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
+                if (gl && gl.isContextLost()) check.contextLost = true;
+            }
+
+            // 2. Check for error overlay
+            const errorOverlay = document.getElementById('error-overlay');
+            if (errorOverlay && errorOverlay.style.display !== 'none') {
+                check.shaderErrors.push(errorOverlay.innerText);
+            }
+
+            return check;
+        """)
+        return f"Rendering Issue Check: {issues}"
+    except Exception as e:
+        return f"Rendering check failed: {str(e)}"
 @tool
 def test_webgl_performance() -> str:
     """Tests WebGL Performance (Max Texture Size, Viewport) for 3D Rendering."""
@@ -335,23 +362,39 @@ class ReactThreeJS_Tester:
 
     def create_testing_agent(self):
         """Creates specialized Testing Agent for React Three.js"""
-        # Create Agent
-        from smolagents import InferenceClientModel
-        model = InferenceClientModel(model_id="Qwen/Qwen2-VL-72B-Instruct")
-        
-        self.agent = CodeAgent(
-            tools=[
-                analyze_react_app,
-                test_threejs_scene,
-                test_webgl_performance,
-                test_3d_interactions,
-                analyze_3d_rendering_quality
-            ],
-            model=model,
-            additional_authorized_imports=["helium", "cv2", "numpy", "PIL"],
-            max_steps=25,
-            name="ReactThreeJSTester"
-        )
+        try:
+            from smolagents import CodeAgent
+            try:
+                from smolagents import HfApiModel
+            except ImportError:
+                from smolagents.models import HfApiModel
+            
+            # Check for API Key
+            import os
+            hf_token = os.getenv("HF_TOKEN")
+            if not hf_token:
+                logger.warning("HF_TOKEN not found in environment. Agent might fail to generate output.")
+            
+            # Use a standard, widely supported model for reasoning
+            model = HfApiModel(model_id="meta-llama/Llama-3.2-3B-Instruct", token=hf_token)
+            
+            self.agent = CodeAgent(
+                tools=[
+                    analyze_react_structure,
+                    inspect_threejs_scene,
+                    detect_rendering_issues,
+                    test_webgl_performance,
+                    test_3d_interactions,
+                    analyze_3d_rendering_quality
+                ],
+                model=model,
+                additional_authorized_imports=["helium", "cv2", "numpy", "PIL"],
+                max_steps=25,
+                name="ReactThreeJSTester"
+            )
+        except Exception as e:
+            logger.error(f"Failed to create Testing Agent: {e}")
+            return False
         
         # Import Helium (Optional, removing to fix TypeError)
         # self.agent.python_executor("from helium import *", self.agent.state)
@@ -391,10 +434,11 @@ class ReactThreeJS_Tester:
             Run comprehensive tests for React Three.js 3D Game:
             
             1. Analyze React App Structure
-            2. Test Three.js 3D Scene
-            3. Test WebGL Performance
-            4. Test 3D Interactions
-            5. Analyze 3D Rendering Quality
+            2. Inspect Three.js Scene & Memory
+            3. Detect Rendering Issues (White Screen check)
+            4. Test WebGL Performance
+            5. Test 3D Interactions
+            6. Analyze 3D Rendering Quality
             
             URL: {self.game_url}
             

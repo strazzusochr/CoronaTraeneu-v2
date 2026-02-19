@@ -61,8 +61,8 @@ export const useEngineLoop = (callbacks?: EngineLoopCallbacks) => {
     });
 
     useFrame((_state, delta) => {
-        if (!getFeatureState('ENGINE_LOOP')) return;
-
+        // if (!getFeatureState('ENGINE_LOOP')) return; // Removed restrictive check
+        
         // 1. Global Time Engine Update
         tick(delta);
 
@@ -72,10 +72,17 @@ export const useEngineLoop = (callbacks?: EngineLoopCallbacks) => {
         acc.event += delta;
 
         // 2. Fixed Physics Loop (120Hz)
+        let panic = 0;
         while (acc.physics >= PHYSICS_STEP) {
             callbacks?.onPhysics?.(PHYSICS_STEP);
             EngineLoopRegistry.physics.forEach(cb => cb(PHYSICS_STEP));
             acc.physics -= PHYSICS_STEP;
+            
+            // Panic check to prevent "Spiral of Death"
+            if (++panic > 10) {
+                acc.physics = 0;
+                break;
+            }
         }
 
         // 3. AI Update (10Hz)

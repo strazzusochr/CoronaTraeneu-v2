@@ -2,6 +2,7 @@
 import * as THREE from 'three';
 import { useGameStore } from '@/stores/gameStore';
 import { NPCAIController } from './NPCAIController';
+import GameEventSystem from '@/systems/GameEventSystem';
 
 interface Squad {
     id: number;
@@ -132,6 +133,29 @@ export class TacticsManager {
         const leaderCtx = leader.getContext();
         const leaderPos = leaderCtx.position.clone();
         const leaderForward = leaderCtx.forward.clone().normalize();
+
+        // Gefahren-Check: Nächstes Ereignis (Feuer/Explosion/Gas) nahe Leader
+        const now = performance.now();
+        const stimuli = GameEventSystem.getInstance().getActiveStimuli(now);
+        let nearestHazard: { dx: number, dz: number, distSq: number } | null = null;
+        for (const s of stimuli) {
+            if (!(s.tags && (s.tags.includes('FIRE') || s.tags.includes('EXPLOSION') || s.tags.includes('GAS') || s.tags.includes('MOLOTOV') || s.tags.includes('TEARGAS')))) continue;
+            const dx = s.position[0] - leaderPos.x;
+            const dz = s.position[2] - leaderPos.z;
+            const d2 = dx*dx + dz*dz;
+            if (!nearestHazard || d2 < nearestHazard.distSq) {
+                nearestHazard = { dx, dz, distSq: d2 };
+            }
+        }
+        // Bei WALL-Formation weiche etwas zurück, wenn Gefahr sehr nah
+        if (tactic === 'WALL' && nearestHazard && nearestHazard.distSq < (6 * 6)) {
+            const dist = Math.max(0.001, Math.sqrt(nearestHazard.distSq));
+            const dirX = nearestHazard.dx / dist;
+            const dirZ = nearestHazard.dz / dist;
+            const retreat = 3.0;
+            leaderPos.x -= dirX * retreat;
+            leaderPos.z -= dirZ * retreat;
+        }
 
         // Right vector
         const right = new THREE.Vector3().crossVectors(new THREE.Vector3(0, 1, 0), leaderForward).normalize();

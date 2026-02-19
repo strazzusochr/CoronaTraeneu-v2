@@ -10,14 +10,14 @@ import { createAsphaltTexture } from '@/utils/ProceduralTextures';
 export const StephansplatzGround = (): React.ReactElement => {
     const texture = React.useMemo(() => {
         const tex = createAsphaltTexture();
-        tex.repeat.set(40, 40);
+        tex.repeat.set(200, 200); // Higher repeat for larger ground
         tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
         return tex;
     }, []);
 
     return (
-        <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-            <planeGeometry args={[200, 200]} />
+        <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow position={[0, -0.01, 0]}>
+            <planeGeometry args={[1000, 1000]} />
             <meshStandardMaterial
                 map={texture}
                 roughness={0.9}

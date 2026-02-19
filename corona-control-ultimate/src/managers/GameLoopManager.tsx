@@ -10,6 +10,7 @@ import { BehaviorTreeNode } from '@/ai/BehaviorTree';
 import * as THREE from 'three';
 import { TimeManager } from '@/managers/TimeManager';
 import { EventManager } from '@/managers/EventManager';
+import { EndingManager } from '@/managers/EndingManager';
 
 const GameLoopManager: React.FC = () => {
     // Selectors & State
@@ -19,6 +20,9 @@ const GameLoopManager: React.FC = () => {
     const setGameOver = useGameStore((state) => state.setGameOver);
     const setVictory = useGameStore((state) => state.setVictory);
     const setTime = useGameStore((state) => state.setTime);
+    const setPrompt = useGameStore((state) => state.setPrompt);
+    const startCutscene = useGameStore((state) => state.startCutscene);
+    const unlockAchievement = useGameStore((state) => state.unlockAchievement);
     const isPlaying = useGameStore((state) => state.gameState.isPlaying);
 
     // AI Controllers (Phase 9)
@@ -74,10 +78,13 @@ const GameLoopManager: React.FC = () => {
                 }
             }
         } else {
-            // Victory Condition
             if (!gameState.isVictory) {
+                const result = EndingManager.calculateEndingWithCutscene();
                 setVictory(true);
+                setPrompt(result.summary);
+                startCutscene(result.cutsceneId);
                 AudioManager.getInstance().playMissionComplete();
+                unlockAchievement('ACH_010');
             }
         }
 
@@ -87,7 +94,11 @@ const GameLoopManager: React.FC = () => {
 
         // 6. Game Over Condition
         if (gameState.health <= 0 && !gameState.isGameOver) {
+            const result = EndingManager.calculateEndingWithCutscene();
             setGameOver(true);
+            setPrompt(result.summary);
+            startCutscene(result.cutsceneId);
+            unlockAchievement('ACH_011');
         }
     });
 

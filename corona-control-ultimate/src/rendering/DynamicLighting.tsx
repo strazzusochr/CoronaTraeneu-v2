@@ -184,9 +184,8 @@ const DynamicLighting: React.FC<DynamicLightingProps> = ({ quality, castShadows 
 
     return (
         <>
-            {/* PBR Environment (Image Based Lighting) - CPU LIGHTWEIGHT */}
-            {/* Using standard preset, ensuring CSP allows fonts.gstatic.com for assets */}
-            <Environment preset="apartment" background={false} />
+            {/* PBR Environment (Image Based Lighting) - DISABLED FOR STABILITY */}
+            {/* <Environment preset="apartment" background={false} /> */}
 
             {/* Hemisphere Light (Himmel/Boden) - Best for CPU performance */}
             <hemisphereLight args={[0xB4D4FF, 0x504030, 0.7]} />
@@ -246,13 +245,19 @@ export const DynamicSky: React.FC = () => {
 
     return (
         <>
-            <Sky
-                ref={skyRef}
-                sunPosition={[100, 60, 50]}
-                turbidity={8}
-                rayleigh={0.5}
+            {/* Safety Light (Always on) */}
+            <hemisphereLight intensity={0.2} color="#ffffff" groundColor="#444444" />
+            
+            {/* Sky & Atmosphere */}
+            <Sky 
+                distance={450000} 
+                sunPosition={sunPosition} 
+                inclination={0} 
+                azimuth={0.25} 
                 mieCoefficient={0.005}
                 mieDirectionalG={0.8}
+                rayleigh={3}
+                turbidity={10}
             />
             <Stars
                 radius={300}

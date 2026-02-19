@@ -3,6 +3,7 @@
  * Phase 24: Anti-Cheat-Systems
  */
 import { useGameStore } from '@/stores/gameStore';
+import { GAME_BALANCE } from '@/constants/GameBalance';
 import { networkManager } from '@/managers/NetworkManager';
 
 class AntiCheatManager {
@@ -66,10 +67,10 @@ class AntiCheatManager {
         const state = useGameStore.getState();
 
         // Check for impossible stats
-        if (state.player.health > 100) { // Assuming 100 is max
+        if (state.player.health > GAME_BALANCE.player.maxHealth) {
             this.reportViolation(`Health Value Anomaly: ${state.player.health}`);
             // Auto-fix
-            useGameStore.getState().setPlayerHealth(100);
+            useGameStore.getState().setPlayerHealth(GAME_BALANCE.player.maxHealth);
         }
 
         if (state.gameState.points < 0) {
@@ -104,6 +105,10 @@ class AntiCheatManager {
 
         // Force disconnect
         networkManager.disconnect();
+    }
+
+    public runIntegrityChecksForTests() {
+        this.checkStats();
     }
 }
 

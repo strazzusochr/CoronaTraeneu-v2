@@ -1,4 +1,5 @@
 import { useGameStore } from '@/stores/gameStore';
+import type { CutsceneId } from '@/types/enums';
 
 export type GameRank = 'S' | 'A' | 'B' | 'C' | 'D' | 'F';
 
@@ -10,13 +11,25 @@ export interface GameResult {
     tensionLevel: number;
 }
 
+const RANK_THRESHOLDS: Record<GameRank, number> = {
+    S: 2500,
+    A: 2000,
+    B: 1500,
+    C: 1000,
+    D: 500,
+    F: 0
+};
+
+const ENDING_CUTSCENES: Record<GameRank, CutsceneId> = {
+    S: 'CS_OUTRO_S',
+    A: 'CS_OUTRO_A',
+    B: 'CS_OUTRO_B',
+    C: 'CS_OUTRO_C',
+    D: 'CS_OUTRO_D',
+    F: 'CS_OUTRO_F'
+};
+
 export class EndingManager {
-    // Scoring Thresholds (basierend auf 02_MISSION_ULTRA)
-    private static readonly RANK_S_THRESHOLD = 2500;
-    private static readonly RANK_A_THRESHOLD = 2000;
-    private static readonly RANK_B_THRESHOLD = 1500;
-    private static readonly RANK_C_THRESHOLD = 1000;
-    private static readonly RANK_D_THRESHOLD = 500;
 
     public static calculateEnding(): GameResult {
         const state = useGameStore.getState();
@@ -35,11 +48,11 @@ export class EndingManager {
             };
         }
 
-        if (score >= this.RANK_S_THRESHOLD) rank = 'S';
-        else if (score >= this.RANK_A_THRESHOLD) rank = 'A';
-        else if (score >= this.RANK_B_THRESHOLD) rank = 'B';
-        else if (score >= this.RANK_C_THRESHOLD) rank = 'C';
-        else if (score >= this.RANK_D_THRESHOLD) rank = 'D';
+        if (score >= RANK_THRESHOLDS.S) rank = 'S';
+        else if (score >= RANK_THRESHOLDS.A) rank = 'A';
+        else if (score >= RANK_THRESHOLDS.B) rank = 'B';
+        else if (score >= RANK_THRESHOLDS.C) rank = 'C';
+        else if (score >= RANK_THRESHOLDS.D) rank = 'D';
 
         let summary = '';
         switch (rank) {
@@ -58,5 +71,15 @@ export class EndingManager {
             objectivesCompleted: 0, // TODO: Count completed missions
             tensionLevel: tension
         };
+    }
+
+    public static getCutsceneForRank(rank: GameRank): CutsceneId {
+        return ENDING_CUTSCENES[rank];
+    }
+
+    public static calculateEndingWithCutscene(): GameResult & { cutsceneId: CutsceneId } {
+        const result = this.calculateEnding();
+        const cutsceneId = this.getCutsceneForRank(result.rank);
+        return { ...result, cutsceneId };
     }
 }

@@ -22,20 +22,24 @@ interface PhaseAnchorState {
 export const usePhaseAnchor = create<PhaseAnchorState>()(
     persist(
         (set, get) => ({
-            currentPhase: 1, // Start at Foundation
-            maxStablePhase: 0, // Nothing is stable yet
+            currentPhase: 14,
+        maxStablePhase: 13,
             phaseStatus: {
-                0: PhaseStatus.LOCKED, // Plan is locked
-                1: PhaseStatus.IN_PROGRESS,
-                2: PhaseStatus.PENDING,
-                3: PhaseStatus.PENDING,
-                4: PhaseStatus.PENDING,
-                5: PhaseStatus.PENDING,
-                6: PhaseStatus.PENDING,
-                7: PhaseStatus.PENDING,
-                8: PhaseStatus.PENDING,
-                9: PhaseStatus.PENDING,
-                10: PhaseStatus.PENDING
+                0: PhaseStatus.LOCKED,
+                1: PhaseStatus.LOCKED,
+                2: PhaseStatus.LOCKED,
+                3: PhaseStatus.LOCKED,
+                4: PhaseStatus.LOCKED,
+                5: PhaseStatus.LOCKED,
+                6: PhaseStatus.LOCKED,
+                7: PhaseStatus.LOCKED,
+                8: PhaseStatus.LOCKED,
+                9: PhaseStatus.LOCKED,
+                10: PhaseStatus.LOCKED,
+                11: PhaseStatus.LOCKED,
+                12: PhaseStatus.LOCKED,
+                13: PhaseStatus.LOCKED,
+                14: PhaseStatus.IN_PROGRESS
             },
 
             setPhaseMetrics: (phase, status) => set(state => ({

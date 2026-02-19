@@ -4,6 +4,7 @@ import * as THREE from 'three';
 import { useEngineLoop } from '@/core/EngineLoopManager';
 import { useGameStore } from '@/stores/gameStore';
 import { EmotionalState, NPCState } from '@/types/enums';
+import { GAME_BALANCE } from '@/constants/GameBalance';
 
 /**
  * WaterCannonSystem (V7.0)
@@ -18,6 +19,13 @@ export const WaterCannonSystem: React.FC<{ active?: boolean, position: [number, 
     const particlesRef = useRef<THREE.Points>(null);
     const npcs = useGameStore(state => state.npcs);
     const updateNpc = useGameStore(state => state.updateNpc);
+
+    const WATER_CANNON_FORCE = GAME_BALANCE.weapons.waterCannon.force;
+    const WATER_CANNON_GRAVITY = GAME_BALANCE.weapons.waterCannon.gravity;
+    const WATER_CANNON_HIT_RADIUS = GAME_BALANCE.weapons.waterCannon.hitRadius;
+    const WATER_CANNON_VERTICAL_TOLERANCE = GAME_BALANCE.weapons.waterCannon.verticalTolerance;
+    const WATER_CANNON_STRESS_INCREASE = GAME_BALANCE.weapons.waterCannon.stressIncrease;
+    const WATER_CANNON_AGGRESSION_REDUCTION = GAME_BALANCE.weapons.waterCannon.aggressionReduction;
 
     // Particle Data (V7.0 Placeholder: Instanced Points)
     const particleCount = 1000;
@@ -42,12 +50,12 @@ export const WaterCannonSystem: React.FC<{ active?: boolean, position: [number, 
 
             for (let i = 0; i < particleCount; i++) {
                 // Gravity & Movement
-                positions[i * 3 + 1] -= 9.81 * dt * 0.5; // Custom Gravity Sim
+                positions[i * 3 + 1] -= WATER_CANNON_GRAVITY * dt;
 
                 // Directional Force (Spray)
                 const angle = rotation;
-                positions[i * 3] += Math.sin(angle) * 20 * dt;
-                positions[i * 3 + 2] += Math.cos(angle) * 20 * dt;
+                positions[i * 3] += Math.sin(angle) * WATER_CANNON_FORCE * dt;
+                positions[i * 3 + 2] += Math.cos(angle) * WATER_CANNON_FORCE * dt;
 
                 // Simple Ground Collision
                 if (positions[i * 3 + 1] < 0) {
@@ -65,14 +73,14 @@ export const WaterCannonSystem: React.FC<{ active?: boolean, position: [number, 
                             Math.pow(positions[i * 3 + 2] - npc.position[2], 2)
                         );
 
-                        if (dist < 1.5 && Math.abs(positions[i * 3 + 1] - npc.position[1]) < 2) {
+                        if (dist < WATER_CANNON_HIT_RADIUS && Math.abs(positions[i * 3 + 1] - npc.position[1]) < WATER_CANNON_VERTICAL_TOLERANCE) {
                             // NPC wird getroffen: Stress hoch, Aggression runter
                             updateNpc(npc.id, {
                                 state: NPCState.FLEE,
                                 emotions: {
                                     ...npc.emotions,
-                                    stress: Math.min(1, npc.emotions.stress + 0.1),
-                                    aggression: Math.max(0, npc.emotions.aggression - 0.2),
+                                    stress: Math.min(1, npc.emotions.stress + WATER_CANNON_STRESS_INCREASE),
+                                    aggression: Math.max(0, npc.emotions.aggression - WATER_CANNON_AGGRESSION_REDUCTION),
                                     current: EmotionalState.TERRIFIED
                                 }
                             });

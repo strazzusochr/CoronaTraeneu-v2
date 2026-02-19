@@ -9,6 +9,7 @@
  * - localStorage-basierte Persistenz
  */
 import { useGameStore } from '@/stores/gameStore';
+import { LEVEL_DEFINITIONS, type LevelId } from '@/stores/types';
 import { networkManager } from './NetworkManager';
 
 export interface SaveData {
@@ -17,13 +18,13 @@ export interface SaveData {
     slotName: string;
     playtime: number; // Sekunden
 
-    // Core Game State
     gameState: {
         points: number;
         health: number;
         dayTime: number;
         currentMissionIndex: number;
         tension: number;
+        levelId: string;
     };
 
     // Player
@@ -112,10 +113,14 @@ class SaveManager {
 
         const currentPlaytime = Math.floor((Date.now() - this.sessionStartTime) / 1000);
 
+        const levelId = store.gameState.currentLevelId as LevelId;
+        const levelMeta = LEVEL_DEFINITIONS[levelId];
+        const levelName = levelMeta ? levelMeta.name : 'Unbekanntes Level';
+
         return {
             version: SAVE_VERSION,
             timestamp: Date.now(),
-            slotName: `Spielstand ${new Date().toLocaleString('de-DE')}`,
+            slotName: `Spielstand ${levelName} ${new Date().toLocaleString('de-DE')}`,
             playtime: this.totalPlaytime + currentPlaytime,
 
             gameState: {
@@ -124,6 +129,7 @@ class SaveManager {
                 dayTime: store.gameState.dayTime,
                 currentMissionIndex: store.gameState.currentMissionIndex,
                 tension: store.tensionLevel ?? 0,
+                levelId: store.gameState.currentLevelId,
             },
 
             player: {
@@ -224,6 +230,7 @@ class SaveManager {
                     currentMissionIndex: saveData.gameState.currentMissionIndex,
                     menuState: 'PLAYING',
                     isPlaying: true,
+                    currentLevelId: (saveData.gameState.levelId || state.gameState.currentLevelId) as any,
                 },
                 player: {
                     ...state.player,
@@ -371,6 +378,7 @@ class SaveManager {
                     currentMissionIndex: saveData.gameState.currentMissionIndex,
                     menuState: 'PLAYING',
                     isPlaying: true,
+                    currentLevelId: (saveData.gameState.levelId || state.gameState.currentLevelId) as any,
                 },
                 player: {
                     ...state.player,

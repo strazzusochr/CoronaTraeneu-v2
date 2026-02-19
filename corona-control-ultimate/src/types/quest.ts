@@ -1,7 +1,4 @@
-/**
- * Quest-Typen für Corona Control Ultimate
- * Basierend auf 02_MISSION_ULTRA.md
- */
+import type { AchievementId } from './enums';
 
 export type QuestType = 'MAIN' | 'MAIN_BRANCH' | 'SIDE' | 'HIDDEN';
 
@@ -17,7 +14,7 @@ export interface QuestReward {
     reputation?: number;
     bonus?: number;
     tensionModifier?: number;
-    achievement?: string;
+    achievement?: AchievementId;
     intel?: boolean;
     storyBranch?: boolean;
 }

@@ -8,15 +8,17 @@ export interface CutsceneStep {
     subtitle?: string;
 }
 
+import type { CutsceneId } from '@/types/enums';
+
 export interface CutsceneData {
-    id: string;
+    id: CutsceneId;
     totalDuration: number;
     steps: CutsceneStep[];
 }
 
-export const CUTSCENE_DATA: Record<string, CutsceneData> = {
-    "CS_STAATSFEIND_01_BRIEFING": {
-        id: "CS_STAATSFEIND_01_BRIEFING",
+export const CUTSCENE_DATA: Record<CutsceneId, CutsceneData> = {
+    CS_STAATSFEIND_01_BRIEFING: {
+        id: 'CS_STAATSFEIND_01_BRIEFING',
         totalDuration: 165000,
         steps: [
             {

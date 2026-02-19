@@ -1,5 +1,5 @@
 import type { AIState } from '../StateMachine';
-// import type { PoliceController } from '../PoliceController';
+import GameEventSystem from '@/systems/GameEventSystem';
 
 export class FormationHoldState implements AIState {
     name = 'FORMATION_HOLD';
@@ -19,24 +19,45 @@ export class FormationHoldState implements AIState {
     }
 
     update(controller: any, delta: number) {
-        // 1. Move to formation position
+        const now = performance.now();
+        const stimuli = GameEventSystem.getInstance().getActiveStimuli(now);
+        let nearest: { dx: number, dz: number, distSq: number } | null = null;
+        for (const s of stimuli) {
+            if (!(s.tags && (s.tags.includes('FIRE') || s.tags.includes('EXPLOSION') || s.tags.includes('GAS') || s.tags.includes('MOLOTOV') || s.tags.includes('TEARGAS')))) continue;
+            const dx = s.position[0] - controller.npc.position[0];
+            const dz = s.position[2] - controller.npc.position[2];
+            const d2 = dx*dx + dz*dz;
+            if (!nearest || d2 < nearest.distSq) {
+                nearest = { dx, dz, distSq: d2 };
+            }
+        }
+
+        const dangerRadius = 36; // 6m
+        if (nearest && nearest.distSq < dangerRadius) {
+            const dist = Math.max(0.001, Math.sqrt(nearest.distSq));
+            const dirX = nearest.dx / dist;
+            const dirZ = nearest.dz / dist;
+            const retreatDist = 4.0;
+            const safe: [number, number, number] = [
+                controller.npc.position[0] - dirX * retreatDist,
+                0.5,
+                controller.npc.position[2] - dirZ * retreatDist
+            ];
+            controller.moveTo(safe, 3.5, delta);
+            controller.npc.state = 'WALK';
+            return;
+        }
+
         if (this.targetPos) {
             const range = 0.5;
-            const distSq = 
-                Math.pow(controller.npc.position[0] - this.targetPos[0], 2) + 
-                Math.pow(controller.npc.position[2] - this.targetPos[2], 2);
-
+            const dx = controller.npc.position[0] - this.targetPos[0];
+            const dz = controller.npc.position[2] - this.targetPos[2];
+            const distSq = dx*dx + dz*dz;
             if (distSq > range * range) {
-                controller.moveTo(this.targetPos, 3.5, delta); // Jog to position
+                controller.moveTo(this.targetPos, 3.5, delta);
                 controller.npc.state = 'WALK';
             } else {
-                // At position, turn to face threat (or forward)
-                // For now, face -Z (default forward) or specific direction
-                // TODO: Add facing direction to formation command
                 controller.npc.state = 'IDLE';
-                
-                // Keep strictly at position ( resist push )
-                // Maybe add some "push back" logic here against Rioters
             }
         }
 

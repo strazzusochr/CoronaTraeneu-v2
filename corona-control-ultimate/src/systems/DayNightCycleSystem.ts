@@ -126,6 +126,12 @@ class DayNightCycleSystem {
         // Hier könnte man Events an den Renderer senden
         // z.B. Events.emit('lantern-update', { intensity: ... })
     }
+
+    public resetForTests(): void {
+        this.lastMinute = -1;
+        this.lanternFlickerActive = false;
+        this.lanternFlickerStartTime = 0;
+    }
 }
 
 export default DayNightCycleSystem.getInstance();

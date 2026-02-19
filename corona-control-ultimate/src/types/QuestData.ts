@@ -41,6 +41,7 @@ export interface QuestReward {
     reputation?: number;
     tensionModifier?: number;
     unlocksQuestId?: string;
+    achievementId?: import('./enums').AchievementId;
 }
 
 export interface Quest {

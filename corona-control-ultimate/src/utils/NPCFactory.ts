@@ -1,6 +1,4 @@
-/**
- * NPCFactory - Deterministic attribute generation for V6.0 NPCs
- */
+import { GAME_BALANCE } from '@/constants/GameBalance';
 
 export interface NPCAttributes {
     id: number;
@@ -80,17 +78,17 @@ class NPCFactory {
         const hairColors = [0x8B6914, 0x3D2314, 0x1A1A1A, 0x5E4B3C, 0xA0522D, 0xD4AF37, 0x4B3621];
         const hairColor = hairColors[Math.floor(rand(2) * hairColors.length)];
 
-        // Visual Layout based on sub-type
         let clothingColor: [number, number, number] = [100, 100, 100];
         let aggression = 0;
-        let speed = 2.0;
+        let speed = GAME_BALANCE.npc.civilian.walkSpeed;
         let relScore = 0;
 
         if (faction === 'POLICE') {
-            relScore = 60;
-            aggression = 0.2;
+            relScore = GAME_BALANCE.npc.police.baseRelation;
+            aggression = GAME_BALANCE.npc.police.baseAggression;
+            speed = GAME_BALANCE.npc.police.walkSpeed;
             if (subType === 'WEGA_STRIKE_FORCE') {
-                clothingColor = [20, 20, 30]; // Dark Navy
+                clothingColor = [20, 20, 30];
                 aggression = 0.8;
                 speed = 3.5;
             } else if (subType === 'RIOT_SQUAD') {
@@ -101,14 +99,15 @@ class NPCFactory {
                 clothingColor = [0, 34, 102];
             }
         } else if (faction === 'RIOTER') {
-            aggression = 0.6;
+            aggression = GAME_BALANCE.npc.rioter.baseAggression;
+            speed = GAME_BALANCE.npc.rioter.walkSpeed;
             if (subType === 'BLACK_BLOCK') {
-                clothingColor = [5, 5, 5]; // Deep Black
+                clothingColor = [5, 5, 5];
                 aggression = 1.0;
                 speed = 4.0;
                 relScore = -80;
             } else if (subType === 'HIPPIE_IDEALIST') {
-                clothingColor = [180, 100, 200]; // Purple/Bunt
+                clothingColor = [180, 100, 200];
                 aggression = 0.1;
                 speed = 1.8;
                 relScore = 20;
@@ -128,13 +127,12 @@ class NPCFactory {
             aggression = 0;
             relScore = 100;
         } else {
-            // Random Civilian
             clothingColor = [
                 Math.floor(rand(4) * 150 + 50),
                 Math.floor(rand(5) * 150 + 50),
                 Math.floor(rand(6) * 150 + 50)
             ];
-            relScore = 0;
+            relScore = GAME_BALANCE.npc.civilian.baseRelation;
         }
 
         return {

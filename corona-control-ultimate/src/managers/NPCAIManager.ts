@@ -2,13 +2,15 @@ import { EmotionalState, NPCState, NPCType } from '@/types/enums';
 import { NPCData } from '@/types/interfaces';
 import { EngineLoopRegistry } from '@/core/EngineLoopManager';
 import { useGameStore } from '@/stores/gameStore';
+import { btManager } from '@/systems/ai/bt/BTManager';
 
 /**
  * NPCAIManager (V7.0)
- * Verwaltet die stats-basierte KI für alle NPCs.
+ * Verwaltet die stats-basierte KI und Behavior Trees für alle NPCs.
  */
 export class NPCAIManager {
     private static instance: NPCAIManager;
+    private lastUpdate: number = Date.now();
 
     private constructor() {
         EngineLoopRegistry.ai.push(() => this.update());
@@ -29,9 +31,17 @@ export class NPCAIManager {
         const state = useGameStore.getState();
         if (!state.gameState.isPlaying) return;
 
+        const now = Date.now();
+        const dt = (now - this.lastUpdate) / 1000;
+        this.lastUpdate = now;
+
         const npcs = state.npcs;
         const playerPos = state.player.position;
 
+        // 1. Behavior Tree Updates (Movement & Decision Making)
+        btManager.update(npcs, playerPos, dt);
+
+        // 2. Stats & Emotions Updates
         npcs.forEach(npc => {
             if (npc.state === NPCState.DEAD || npc.state === NPCState.ARRESTED) return;
 

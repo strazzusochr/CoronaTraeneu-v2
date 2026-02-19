@@ -13,7 +13,7 @@ interface State {
  * GraphicsErrorBoundary
  * Fängt kritische Rendering-Fehler (WebGL Context Loss) ab.
  */
-class GraphicsErrorBoundary extends Component<Props, State> {
+export class GraphicsErrorBoundary extends Component<Props, State> {
     public state: State = {
         hasError: false,
         error: null
@@ -63,5 +63,3 @@ class GraphicsErrorBoundary extends Component<Props, State> {
         return this.props.children;
     }
 }
-
-export default GraphicsErrorBoundary;

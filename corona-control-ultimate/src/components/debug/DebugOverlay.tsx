@@ -1,10 +1,43 @@
 import React from 'react';
 import { usePhaseAnchor } from '@/core/PhaseAnchor';
 import { useFeatureFlags } from '@/core/FeatureFlags';
+import { useGameStore } from '@/stores/gameStore';
 
 export const DebugOverlay = () => {
     const { currentPhase, promotePhase, rollbackToStable, phaseStatus } = usePhaseAnchor();
     const flags = useFeatureFlags((state) => state.flags);
+    const triggerScenario = useGameStore(state => state.triggerScenario);
+    const npcCount = useGameStore(state => state.npcs.length);
+    const [fps, setFps] = React.useState(0);
+    const frameCount = React.useRef(0);
+    const lastTime = React.useRef(performance.now());
+
+    const debugButtonStyle: React.CSSProperties = {
+        background: 'rgba(255, 255, 255, 0.05)',
+        color: '#fff',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
+        padding: '4px 8px',
+        cursor: 'pointer',
+        borderRadius: '4px',
+        fontSize: '9px',
+        textAlign: 'center'
+    };
+
+    React.useEffect(() => {
+        let handle: number;
+        const loop = () => {
+            frameCount.current++;
+            const now = performance.now();
+            if (now > lastTime.current + 1000) {
+                setFps(Math.round((frameCount.current * 1000) / (now - lastTime.current)));
+                frameCount.current = 0;
+                lastTime.current = now;
+            }
+            handle = requestAnimationFrame(loop);
+        };
+        handle = requestAnimationFrame(loop);
+        return () => cancelAnimationFrame(handle);
+    }, []);
 
     return (
         <div style={{
@@ -28,7 +61,18 @@ export const DebugOverlay = () => {
 
             <div style={{ marginBottom: '15px', color: 'rgba(255,255,255,0.7)' }}>
                 <strong>PHASE:</strong> <span style={{ color: '#00d2ff' }}>{currentPhase}</span><br />
-                <strong>STATUS:</strong> {phaseStatus[currentPhase]}
+                <strong>STATUS:</strong> {phaseStatus[currentPhase]}<br />
+                <strong>PERFORMANCE:</strong> <span style={{ color: fps > 30 ? '#00ff00' : '#ff3c3c' }}>{fps} FPS</span><br />
+                <strong>NPCs:</strong> <span style={{ color: '#fff' }}>{npcCount}</span>
+            </div>
+
+            <div style={{ marginBottom: '15px' }}>
+                <strong style={{ display: 'block', marginBottom: '8px', opacity: 0.7 }}>SCENARIOS:</strong>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5px' }}>
+                    <button onClick={() => triggerScenario('DEMONSTRATION')} style={debugButtonStyle}>DEMO (+50)</button>
+                    <button onClick={() => triggerScenario('POLICE_UNIT')} style={debugButtonStyle}>POLICE (+50)</button>
+                    <button onClick={() => triggerScenario('CLASH')} style={debugButtonStyle}>CLASH (25/25)</button>
+                </div>
             </div>
 
             <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>

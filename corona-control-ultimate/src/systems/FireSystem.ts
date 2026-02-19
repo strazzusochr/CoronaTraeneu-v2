@@ -10,8 +10,10 @@
 
 import { EngineLoop } from '@/core/EngineLoopManager';
 import { useGameStore } from '@/stores/gameStore';
-import { useParticleStore } from '@/components/Effects/ParticleSystem';
+import { useParticleStore, ParticleType } from '@/components/Effects/ParticleSystem';
+import AudioManager, { AudioLayer } from '@/managers/AudioManager';
 import * as THREE from 'three';
+import GameEventSystem from '@/systems/GameEventSystem';
 
 interface ActiveFire {
     id: string;
@@ -25,10 +27,16 @@ interface ActiveFire {
 class FireSystem {
     private static instance: FireSystem;
     private fires: ActiveFire[] = [];
+    private tmpFire = new THREE.Vector3();
+    private tmpNpc = new THREE.Vector3();
+    private tmpPlayer = new THREE.Vector3();
 
-    // Konfiguration
-    private readonly DAMAGE_TICK_RATE = 1.0; // Schaden jede Sekunde
-    private readonly SPAWN_PARTICLE_RATE = 0.1; // Partikel alle 0.1s
+    private static readonly DAMAGE_TICK_RATE = 1.0;
+    private static readonly SPAWN_PARTICLE_RATE = 0.1;
+    private static readonly DEFAULT_DURATION = 20;
+    private static readonly DEFAULT_RADIUS = 3;
+    private static readonly DEFAULT_INTENSITY = 10;
+
     private particleTimer = 0;
 
     private constructor() {
@@ -51,7 +59,7 @@ class FireSystem {
     /**
      * Erzeugt ein neues Feuer an Position
      */
-    public spawnFire(position: [number, number, number], duration: number = 20, radius: number = 3, intensity: number = 10) {
+    public spawnFire(position: [number, number, number], duration: number = FireSystem.DEFAULT_DURATION, radius: number = FireSystem.DEFAULT_RADIUS, intensity: number = FireSystem.DEFAULT_INTENSITY) {
         const id = Math.random().toString(36).substr(2, 9);
         this.fires.push({
             id,
@@ -62,6 +70,15 @@ class FireSystem {
             tickTimer: 0
         });
         console.log(`[FireSystem] Feuer ausgebrochen bei ${position} (Radius: ${radius}m)`);
+        AudioManager.playSound('fire_start', AudioLayer.ENVIRONMENTAL, { pos: position });
+        GameEventSystem.getInstance().emit({
+            type: 'AUDIO',
+            position,
+            sourceId: 0,
+            intensity: 0.8,
+            timestamp: performance.now(),
+            tags: ['FIRE', 'IGNITION']
+        });
     }
 
     /**
@@ -76,7 +93,7 @@ class FireSystem {
 
         // Partikel-Timer
         this.particleTimer += delta;
-        const shouldSpawnParticles = this.particleTimer >= this.SPAWN_PARTICLE_RATE;
+        const shouldSpawnParticles = this.particleTimer >= FireSystem.SPAWN_PARTICLE_RATE;
         if (shouldSpawnParticles) this.particleTimer = 0;
 
         // Feuer-Update
@@ -84,8 +101,7 @@ class FireSystem {
             fire.duration -= delta;
             fire.tickTimer += delta;
 
-            // 1. Schaden verteilen (Jede Sekunde)
-            if (fire.tickTimer >= this.DAMAGE_TICK_RATE) {
+            if (fire.tickTimer >= FireSystem.DAMAGE_TICK_RATE) {
                 fire.tickTimer = 0;
                 this.applyAreaDamage(fire, store.npcs, playerPos);
             }
@@ -99,11 +115,20 @@ class FireSystem {
                         0.5,
                         (Math.random() - 0.5) * fire.radius
                     ];
-                    particleStore.spawnExplosion(
+                    particleStore.spawnEffect(
+                        ParticleType.FIRE,
                         [fire.position[0] + offset[0], fire.position[1] + offset[1], fire.position[2] + offset[2]],
-                        'orange', // Feuerfarbe
-                        1 // Einzelner Partikel, aber oft
+                        { color: 'orange', count: 1, size: 0.3 }
                     );
+                    
+                    // Rauch-Partikel (Phase 12)
+                    if (Math.random() > 0.5) {
+                        particleStore.spawnEffect(
+                            ParticleType.SMOKE,
+                            [fire.position[0] + offset[0], fire.position[1] + 1.5, fire.position[2] + offset[2]],
+                            { color: '#555555', count: 1, size: 0.5, spread: 0.5 }
+                        );
+                    }
                 }
             }
 
@@ -115,11 +140,10 @@ class FireSystem {
      * Wendet Schaden auf Entities im Radius an
      */
     private applyAreaDamage(fire: ActiveFire, npcs: any[], playerPos: any) {
-        const firePos = new THREE.Vector3(...fire.position);
+        this.tmpFire.set(fire.position[0], fire.position[1], fire.position[2]);
 
-        // A. Spieler Check
-        const pPos = new THREE.Vector3(...playerPos);
-        if (pPos.distanceTo(firePos) <= fire.radius) {
+        this.tmpPlayer.set(playerPos[0], playerPos[1], playerPos[2]);
+        if (this.tmpPlayer.distanceTo(this.tmpFire) <= fire.radius) {
             useGameStore.getState().takeDamage(fire.intensity);
             console.log("[FireSystem] Spieler verbrennt!");
             useGameStore.getState().setPrompt("FEUER! Raus da!");
@@ -129,8 +153,8 @@ class FireSystem {
         // Check nur NPCs die nah genug sind (Optimierung: Store sollte nur nahe liefern oder wir iterieren alle)
         // Bei 500 NPCs ist Iteration ok für 10Hz? Besser nur 1Hz (was wir hier tun).
         npcs.forEach(npc => {
-            const nPos = new THREE.Vector3(...npc.position);
-            if (nPos.distanceTo(firePos) <= fire.radius) {
+            this.tmpNpc.set(npc.position[0], npc.position[1], npc.position[2]);
+            if (this.tmpNpc.distanceTo(this.tmpFire) <= fire.radius) {
                 // Schaden Logik? NPC hat aktuell kein HP Feld im Store Array (nur position/state).
                 // Wir simulieren Panic State Änderung
                 if (npc.state !== 'FLEE' && npc.state !== 'ARRESTED') {
@@ -138,6 +162,11 @@ class FireSystem {
                 }
             }
         });
+    }
+
+    public resetForTests() {
+        this.fires = [];
+        this.particleTimer = 0;
     }
 }
 

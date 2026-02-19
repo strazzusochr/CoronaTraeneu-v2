@@ -54,6 +54,7 @@ export interface PlayerState {
     rotation: number;
     health: number;
     stamina: number;
+    armor: number; // 0-100
     karma: number; // -100 to 100
     inventory: string[];
 }

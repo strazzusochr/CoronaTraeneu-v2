@@ -3,11 +3,15 @@ import { useGameStore } from '@/stores/gameStore';
 import TacticsManager from '@/managers/TacticsManager';
 import AISystem from '@/systems/AISystem';
 import * as THREE from 'three';
+import { EngineLoop } from '@/core/EngineLoopManager';
 
 class CommanderSystem {
     private static instance: CommanderSystem;
     private lastDecisionTime: number = 0;
-    private readonly DECISION_INTERVAL = 2000; // Alle 2 Sekunden entscheiden
+    private readonly DECISION_INTERVAL = 2000;
+    private currentMode: 'HOLD' | 'WALL' | 'CHARGE' = 'HOLD';
+    private readonly CHARGE_ON = 80;
+    private readonly CHARGE_OFF = 65;
 
     // Simulation Log für Verifizierung
     public decisionLog: string[] = [];
@@ -40,24 +44,52 @@ class CommanderSystem {
 
         if (police.length === 0) return; // Keine Polizei, kein Befehl
 
-        // 2. Entscheidungs-Logik
-        if (tension > 70 && rioters.length > 5) {
-            // Hohe Gefahr -> Charge!
-            this.log(`[COMMANDER] High Tension (${tension.toFixed(1)}%) & ${rioters.length} Rioters. ORDER: CHARGE!`);
-            TacticsManager.getInstance().commandCharge(1); // Squad 1
+        if (rioters.length === 0) {
+            this.currentMode = 'HOLD';
+            return;
         }
-        else if (tension > 30 && rioters.length > 0) {
-            // Mittlere Gefahr -> Wall bilden
-            // Wir bilden die Wall zwischen den Riotern und dem Spieler (oder Zentrum)
-            // Vereinfacht: Wall bei Z=10
-            this.log(`[COMMANDER] Medium Tension (${tension.toFixed(1)}%). ORDER: FORM WALL.`);
-            TacticsManager.getInstance().formWall([-10, 0, 10], [10, 0, 10], 1);
+
+        if (this.currentMode !== 'CHARGE' && tension >= this.CHARGE_ON) {
+            this.currentMode = 'CHARGE';
+            this.log(`[COMMANDER] Tension ${tension.toFixed(1)} ≥ ${this.CHARGE_ON}. ORDER: CHARGE!`);
+        } else if (this.currentMode === 'CHARGE' && tension <= this.CHARGE_OFF) {
+            this.currentMode = 'WALL';
+            this.log(`[COMMANDER] Tension ${tension.toFixed(1)} ≤ ${this.CHARGE_OFF}. ORDER: FORM WALL.`);
+        } else if (this.currentMode === 'HOLD' && tension > 30) {
+            this.currentMode = 'WALL';
+            this.log(`[COMMANDER] Medium Tension (${tension.toFixed(1)}). ORDER: FORM WALL.`);
         }
-        else {
-            // Ruhig -> Patrouille (oder Disband Formation)
-            // Aktuell haben wir keinen expliziten "Patrol" Befehl im TacticsManager, 
-            // aber wir könnten "Clear Orders" implementieren.
-            // this.log(`[COMMANDER] Situation Calm. Holding.`);
+
+        if (this.currentMode === 'CHARGE') {
+            TacticsManager.getInstance().commandCharge(1);
+            return;
+        }
+
+        if (this.currentMode === 'WALL') {
+            const px = police.reduce((a, n) => a + n.position[0], 0) / police.length;
+            const pz = police.reduce((a, n) => a + n.position[2], 0) / police.length;
+            const rx = rioters.reduce((a, n) => a + n.position[0], 0) / rioters.length;
+            const rz = rioters.reduce((a, n) => a + n.position[2], 0) / rioters.length;
+            const dirX = rx - px;
+            const dirZ = rz - pz;
+            const len = Math.max(0.001, Math.hypot(dirX, dirZ));
+            const nx = -dirZ / len;
+            const nz = dirX / len;
+            const width = 12;
+            const cx = px + (dirX / len) * 2;
+            const cz = pz + (dirZ / len) * 2;
+            const start: [number, number, number] = [cx - nx * (width / 2), 0, cz - nz * (width / 2)];
+            const end: [number, number, number] = [cx + nx * (width / 2), 0, cz + nz * (width / 2)];
+
+            let frontWidth = 0;
+            if (rioters.length > 1) {
+                const projections = rioters.map(r => (r.position[0] * nx + r.position[2] * nz));
+                const minP = Math.min(...projections);
+                const maxP = Math.max(...projections);
+                frontWidth = Math.abs(maxP - minP);
+            }
+            const curvature = frontWidth > 15 ? Math.min(0.25, (frontWidth - 15) / 100) : 0;
+            TacticsManager.getInstance().formWall(start, end, 1, curvature);
         }
     }
 
@@ -75,5 +107,8 @@ class CommanderSystem {
         return this.decisionLog.join('\n');
     }
 }
+
+const commanderSystem = CommanderSystem.getInstance();
+EngineLoop.onAIUpdate((dt) => commanderSystem.update(dt));
 
 export default CommanderSystem;

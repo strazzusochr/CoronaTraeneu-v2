@@ -40,10 +40,15 @@ const Projectile = ({ position, velocity, type, onRemove }: {
         }
     }, [velocity]);
 
-    // Removal Timer
+    const PROJECTILE_LIFETIME = 5.0;
+    const MOLOTOV_PANIC_RANGE = 5;
+    const MOLOTOV_SPHERE_RADIUS = 0.15;
+    const MOLOTOV_LIGHT_INTENSITY = 2;
+    const MOLOTOV_LIGHT_DISTANCE = 5;
+
     useFrame((_, delta) => {
         timeRef.current += delta;
-        if (timeRef.current > 5.0) onRemove(); // Safety cleanup
+        if (timeRef.current > PROJECTILE_LIFETIME) onRemove();
     });
 
     const handleCollision = () => {
@@ -54,7 +59,8 @@ const Projectile = ({ position, velocity, type, onRemove }: {
             if (pos) {
                 // Visuals
                 import('@/components/Effects/ParticleSystem').then(mod => {
-                    mod.useParticleStore.getState().spawnExplosion([pos.x, pos.y, pos.z], 'orange', 50);
+                    const { useParticleStore, ParticleType } = mod as any;
+                    useParticleStore.getState().spawnEffect(ParticleType.EXPLOSION, [pos.x, pos.y, pos.z], { color: 'orange', count: 50, size: 0.5 });
                 });
                 
                 // Audio
@@ -64,7 +70,7 @@ const Projectile = ({ position, velocity, type, onRemove }: {
 
                 // AOE Logic (Panic nearby NPCs)
                 const store = useGameStore.getState();
-                const range = 5; 
+                const range = MOLOTOV_PANIC_RANGE;
                 store.npcs.forEach(npc => {
                     if (!npc.position) return;
                     const distSq = (npc.position[0] - pos.x) ** 2 + (npc.position[2] - pos.z) ** 2;
@@ -91,14 +97,14 @@ const Projectile = ({ position, velocity, type, onRemove }: {
             userData={{ type: 'projectile', subType: type }}
             onCollisionEnter={handleCollision}
         >
-            <Sphere args={[0.15, 8, 8]}>
+            <Sphere args={[MOLOTOV_SPHERE_RADIUS, 8, 8]}>
                 <meshStandardMaterial 
                     color={type === 'MOLOTOV' ? "orange" : "gray"} 
                     emissive={type === 'MOLOTOV' ? "red" : "black"} 
                     emissiveIntensity={type === 'MOLOTOV' ? 2 : 0} 
                 />
             </Sphere>
-            {type === 'MOLOTOV' && <pointLight intensity={2} color="orange" distance={5} />}
+            {type === 'MOLOTOV' && <pointLight intensity={MOLOTOV_LIGHT_INTENSITY} color="orange" distance={MOLOTOV_LIGHT_DISTANCE} />}
         </RigidBody>
     );
 };
