@@ -25,7 +25,10 @@ const ONE_YEAR = 31536000;
 
 app.use(compression());
 
-app.get('/health', (_, res) => res.status(200).send('ok'));
+app.get('/health', (_, res) => {
+  console.log('💓 Health check received');
+  res.status(200).send('ok');
+});
 
 // Trust proxy for Hugging Face
 app.set('trust proxy', 1);
@@ -189,6 +192,6 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(PORT, () => {
-  console.log(`🚀 Robust Production Server running on port ${PORT}`);
+server.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Robust Production Server running on port ${PORT} (Bound to 0.0.0.0)`);
 });
