@@ -14,9 +14,10 @@ FROM node:20-alpine AS runner
 RUN apk add --no-cache git
 
 # Hugging Face standard user/home setup
-RUN adduser -D -u 1000 user
+# node user in alpine already has UID 1000, so we delete it first to avoid conflict
+RUN deluser node && adduser -D -u 1000 user
 ENV HOME=/home/user
-WORKDIR $HOME/app
+WORKDIR /home/user/app
 
 # Copy production files
 COPY --from=build --chown=user:user /app/corona-control-ultimate/dist ./dist
@@ -28,7 +29,7 @@ COPY --chown=user:user corona-control-ultimate/package*.json ./
 RUN npm ci --only=production
 
 # Ensure everything is owned by the user
-RUN chown -R 1000:1000 $HOME
+RUN chown -R 1000:1000 /home/user
 
 # Switch to the non-root user HF expects
 USER user
