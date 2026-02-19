@@ -116,8 +116,10 @@ server.on('error', (err) => {
   }
 });
 
-server.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 Server running on port ${PORT} (0.0.0.0)`);
+server.listen(PORT, () => {
+  const address = server.address();
+  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`🔗 Address: ${typeof address === 'string' ? address : JSON.stringify(address)}`);
 });
 
 // Prevent crashes

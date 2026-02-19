@@ -1,5 +1,5 @@
 # Stage 1: Build
-FROM node:20-alpine AS build
+FROM node:22-alpine AS build
 WORKDIR /app
 COPY corona-control-ultimate/package*.json ./corona-control-ultimate/
 WORKDIR /app/corona-control-ultimate
@@ -8,7 +8,7 @@ COPY corona-control-ultimate ./
 RUN npm run build
 
 # Stage 2: Minimal Runner (NO npm install needed!)
-FROM node:20-alpine AS runner
+FROM node:22-alpine AS runner
 RUN apk add --no-cache git
 RUN deluser node 2>/dev/null; adduser -D -u 1000 user || true
 
