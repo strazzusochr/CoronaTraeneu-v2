@@ -19,7 +19,7 @@ const io = new Server(server, {
   }
 });
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 7860;
 const distPath = path.join(__dirname, 'dist');
 const ONE_YEAR = 31536000;
 
