@@ -8,6 +8,7 @@ RUN npm run build
 
 FROM node:20-alpine AS runner
 # Preparation for Hugging Face (UID 1000)
+RUN apk add --no-cache git
 WORKDIR /app
 COPY corona-control-ultimate/package*.json ./corona-control-ultimate/
 RUN npm --prefix ./corona-control-ultimate ci --only=production
