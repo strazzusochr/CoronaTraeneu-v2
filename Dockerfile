@@ -1,3 +1,4 @@
+# Stage 1: Build
 FROM node:20-alpine AS build
 WORKDIR /app
 COPY corona-control-ultimate/package*.json ./corona-control-ultimate/
@@ -6,24 +7,38 @@ RUN npm ci
 COPY corona-control-ultimate ./
 RUN npm run build
 
+# Stage 2: Runner
 FROM node:20-alpine AS runner
-# Preparation for Hugging Face (UID 1000)
-RUN apk add --no-cache git
-WORKDIR /app
-COPY corona-control-ultimate/package*.json ./corona-control-ultimate/
-RUN npm --prefix ./corona-control-ultimate ci --only=production
-COPY --from=build /app/corona-control-ultimate/dist ./corona-control-ultimate/dist
-COPY corona-control-ultimate/server.cjs ./corona-control-ultimate/server.cjs
-COPY corona-control-ultimate/server ./corona-control-ultimate/server
 
-# Hugging Face runs as user with UID 1000
-RUN chown -R 1000:1000 /app
-USER 1000
+# Install git for HF compatibility
+RUN apk add --no-cache git
+
+# Hugging Face standard user/home setup
+RUN adduser -D -u 1000 user
+ENV HOME=/home/user
+WORKDIR $HOME/app
+
+# Copy production files
+COPY --from=build --chown=user:user /app/corona-control-ultimate/dist ./dist
+COPY --chown=user:user corona-control-ultimate/server.cjs ./server.cjs
+COPY --chown=user:user corona-control-ultimate/server ./server
+COPY --chown=user:user corona-control-ultimate/package*.json ./
+
+# Selective install (production only)
+RUN npm ci --only=production
+
+# Ensure everything is owned by the user
+RUN chown -R 1000:1000 $HOME
+
+# Switch to the non-root user HF expects
+USER user
 
 ENV NODE_ENV=production
 ENV PORT=7860
 ENV HOST=0.0.0.0
 
+# Expose the HF port
 EXPOSE 7860
 
-ENTRYPOINT ["node", "corona-control-ultimate/server.cjs"]
+# No internal healthcheck to avoid conflict with HF
+ENTRYPOINT ["node", "server.cjs"]

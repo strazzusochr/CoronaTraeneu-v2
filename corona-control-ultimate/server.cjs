@@ -20,7 +20,9 @@ const io = new Server(server, {
 });
 
 const PORT = process.env.PORT || 7860;
+console.log(`📡 Initializing server... PORT=${PORT}, NODE_ENV=${process.env.NODE_ENV}`);
 const distPath = path.join(__dirname, 'dist');
+console.log(`📁 Static assets path: ${distPath}`);
 const ONE_YEAR = 31536000;
 
 app.use(compression());
@@ -199,6 +201,11 @@ io.on("connection", (socket) => {
   });
 });
 
+server.on('error', (err) => {
+  console.error('❌ SEVERE SERVER ERROR:', err);
+});
+
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Robust Production Server running on port ${PORT} (Bound to 0.0.0.0)`);
+  console.log('🔗 Visit http://localhost:' + PORT + ' if running locally');
 });
