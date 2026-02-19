@@ -29,6 +29,6 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ['three', '@react-three/fiber', '@react-three/drei', 'zustand', '@dimforge/rapier3d-compat'],
+    include: ['react', 'react-dom', 'three', '@react-three/fiber', '@react-three/drei', 'zustand', '@dimforge/rapier3d-compat'],
   },
 })
