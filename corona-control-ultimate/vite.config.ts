@@ -21,20 +21,10 @@ export default defineConfig({
   build: {
     target: 'es2022',
     chunkSizeWarningLimit: 5000,
+    minify: false, // TEMPORARY: Disable minification for better debugging
     rollupOptions: {
       output: {
-        manualChunks: (id) => {
-            if (id.includes('node_modules')) {
-              // Group React and Three together to avoid circular dependency issues
-              if (id.includes('react') || id.includes('scheduler') || id.includes('three') || id.includes('@react-three')) {
-                return 'vendor-core'; 
-              }
-              // Other large libs
-              if (id.includes('rapier')) return 'vendor-physics';
-              
-              return 'vendor-utils';
-            }
-          },
+        // manualChunks removed to let Vite handle splitting automatically
       },
     },
   },
