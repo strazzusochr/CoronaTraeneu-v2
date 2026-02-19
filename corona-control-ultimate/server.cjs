@@ -25,6 +25,12 @@ const ONE_YEAR = 31536000;
 
 app.use(compression());
 
+// Request Logging Middleware
+app.use((req, res, next) => {
+  console.log(`📡 [${new Date().toISOString()}] ${req.method} ${req.path}`);
+  next();
+});
+
 app.get('/health', (_, res) => {
   console.log('💓 Health check received');
   res.status(200).send('ok');
@@ -103,6 +109,7 @@ app.use(express.static(distPath, {
 
 // SPA-Fallback (React Router) - ONLY for non-file requests
 app.get('*', (req, res) => {
+  console.log('🏠 Serving index.html for root or SPA route');
   // Prevent fallback for files (anything with a dot in the last segment)
   if (req.path.includes('.') && !req.path.endsWith('.html')) {
     return res.status(404).send('Not Found');
