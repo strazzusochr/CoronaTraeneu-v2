@@ -1,61 +1,37 @@
-# Referenzpunkt: Letzter funktionierender Stand (2026-02-14)
+# Referenzpunkt: Letzter funktionierender Stand (2026-02-20 - Phase 18)
 
 ## Überblick
-- Stabile Spielsession mit korrekt funktionierender Steuerung, Kamera und Stadtumgebung.
-- Dev-Server startet und ist erreichbar:
-  - Lokal: http://localhost:3000/
-  - Netzwerk: http://192.168.1.240:3000/
 
-## Start & Entwicklung
-- Starten: `npm run dev` (Vite)
-- Lint: `npm run lint`
-- Tests: `npm run test`
-- Build: `npm run build`
-- Hinweis: Falls PowerShell die Ausführung blockiert, `npm.cmd run dev` verwenden.
+- **AAA-Qualität erreicht**: Optimiertes Stadt-Layout mit Freiraum am Stephansplatz.
+- **Stadt-Raster**: Reduziert auf **6x6 Blöcke** (äußere Reihen entfernt) für bessere Übersicht und Performance.
+- **Zentraler Platz**: Brunnen mit Neon-Effekten, Bäume und Sitzgelegenheiten am Spawn [30, 1, 30].
+- **Hindernisfrei**: Große Monumente (LandmarkVienna), Konzertbühne und Absperrungen wurden entfernt, um die Sichtlinien zu klären.
 
-## Kamera & Steuerung
-- Kamera:
-  - 360° Drehung und Schwenken (Pan) aktiv
-  - Zoom-Range erweitert (maxDistance 600)
-  - Shift + Linke Maustaste: Schwenken
-  - Linke Maustaste: Drehen
-  - Rechte Maustaste: Schwenken
-- Implementierung: [GameCanvas.tsx](file:///d:/musik/corona-control-project/corona-control-ultimate/src/components/game/GameCanvas.tsx)
-  - OrbitControls mit:
-    - enablePan, screenSpacePanning, enableRotate, enableZoom
-    - enableDamping, dampingFactor
-    - minPolarAngle=0.01, maxPolarAngle=π−0.01
-    - maxDistance=600, zoomSpeed=1.1
-  - Shift-Mapping: Umschalten LEFT zwischen ROTATE↔PAN per Keydown/Keyup
+## Performance & Grafik
 
-## Spielfigur (W/A/S/D)
-- Kamera-orientierte Bewegung mit 120Hz Physik-Loop.
-- Datei: [PlayerCharacter.tsx](file:///d:/musik/corona-control-project/corona-control-ultimate/src/components/game/entities/PlayerCharacter.tsx)
+- **LOD-System**: Aggressives Culling für NPCs > 35m. AI-Update auf 5Hz/3s gedrosselt.
+- **Lighting**: Minimalistisches High-Performance Lighting (stable 30-60 FPS lokal).
+- **NPC-Dichte**: Standardmäßig 200 NPCs, skalierbar über Szenario-Buttons.
 
-## Stadt & Verkehr
-- Wien-Layout mit Blockstruktur und 4–6 Gebäudekomplexen pro Block, typische Fassadenfarben.
-- Datei: [CityEnvironment.tsx](file:///d:/musik/corona-control-project/corona-control-ultimate/src/components/3d/environment/CityEnvironment.tsx)
-- Verkehr blockiert Bühne, keine Autos durch die Bühne.
-- Datei: [TrafficSystem.tsx](file:///d:/musik/corona-control-project/corona-control-ultimate/src/components/3d/environment/TrafficSystem.tsx)
+## Verifizierte Missionen
 
-## NPC-Verteilung
-- 500 NPCs: 350 vor der Bühne, 150 entlang Straßen/Gehwegen; Bühnen-Sicherheitszone berücksichtigt.
-- Datei: [gameSlice.ts](file:///d:/musik/corona-control-project/corona-control-ultimate/src/stores/slices/gameSlice.ts)
+- **Mission 1 (Beobachtungsposten)**: Erfolgreich getestet, Zielpunkt (Nord) erreichbar.
+- **Mission 2 (Krause)**: Identifizierung bei [0, 0, -50] verifiziert.
+- **Mission 3 (Rioters)**: Dispersal-Mechanik und Spawning funktionsfähig.
 
-## Bekannte offene Punkte
-- Physische Kollisionskörper für Gebäude und Spieler ergänzen.
-- Einfache Gehweg-Wander-KI für Stadt-NPCs.
-- Performance im Blick behalten (LOD feinjustieren).
+## Steuerung
 
-## Backup (ZIP)
-- Vollständiges Backup des Projekts liegt im Parent-Ordner:
-  - Pfad: `d:\musik\corona-control-project\corona-control-ultimate-backup.zip`
-- Wiederherstellung:
-  1) ZIP entpacken
-  2) Abhängigkeiten installieren (falls nötig): `npm install`
-  3) Start: `npm run dev`
+- **Orbit-Kamera**: 360° Rotation und Pan (Shift+Links) stabil.
+- **Spieler-Bewegung**: W/A/S/D flüssig, Spawn-Position sicher [30, 1, 30].
 
-## Zurücksetzen auf diesen Stand (Soft)
-- Dateiänderungen verwerfen und dieses Dokument als Referenz nutzen.
-- Falls nötig, Backup-ZIP verwenden (siehe Abschnitt „Backup“).
+## Backup (Git)
 
+- **Tag**: `last-working-v18-final`
+- **Wiederherstellung**: `git checkout last-working-v18-final`
+- **Backup (ZIP)**: Ein physisches ZIP-Backup sollte regelmäßig manuell aus dem Projekt-Ordner erstellt werden.
+
+## Zurücksetzen auf diesen Stand
+
+1. `git reset --hard last-working-v18-final`
+2. `npm install` (falls Abhängigkeiten geändert wurden)
+3. `npm run dev`
