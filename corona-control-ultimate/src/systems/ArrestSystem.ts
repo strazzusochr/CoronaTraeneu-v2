@@ -1,5 +1,6 @@
 import { useGameStore } from '@/stores/gameStore';
 import { poiSystem } from './POISystem';
+import { NPCType } from '@/types/enums';
 
 /**
  * ArrestSystem (V7.0)
@@ -34,6 +35,20 @@ export class ArrestSystem {
         setTimeout(() => {
             state.arrestNpc(npcId);
             state.setPrompt("NPC verhaftet! (+10 Karma)");
+
+            // Mission Progress for Mission 3
+            if (state.gameState.currentMissionIndex === 2 && npc.type === NPCType.RIOTER) {
+                state.updateMissionProgress(1);
+                
+                // Check if mission 3 is complete
+                const updatedState = useGameStore.getState();
+                const mission3 = updatedState.missions[2];
+                if (mission3 && mission3.currentAmount >= mission3.targetAmount) {
+                    updatedState.nextMission();
+                    updatedState.setVictory(true);
+                    updatedState.setPrompt("MISSION ERFÜLLT: Alle Randalierer zerstreut!");
+                }
+            }
 
             // Entferne POI nach Verhaftung
             poiSystem.unregisterPOI(`npc_${npcId}`);

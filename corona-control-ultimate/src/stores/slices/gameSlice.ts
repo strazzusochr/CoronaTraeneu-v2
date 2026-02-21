@@ -144,6 +144,10 @@ export const createGameSlice: StateCreator<GameStore, [], [], Pick<GameStore,
                 label: isKrause ? "Mit Krause sprechen" : "Bürger verhaften",
                 action: () => {
                     if (isKrause) {
+                        if (get().gameState.currentMissionIndex === 1) {
+                            get().updateMissionProgress(1);
+                            get().nextMission();
+                        }
                         useDialogStore.getState().startDialog(KrauseDialog);
                     } else {
                         arrestSystem.startArrest(npc.id);

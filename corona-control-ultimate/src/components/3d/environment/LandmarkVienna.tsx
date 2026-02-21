@@ -18,7 +18,7 @@ export const LandmarkVienna: React.FC<LandmarkViennaProps> = ({
 }) => {
     return (
         <group position={position} rotation={rotation}>
-            <Suspense fallback={<mesh><boxGeometry args={[10, 50, 10]} /><meshStandardMaterial color="gray" /></mesh>}>
+            <Suspense fallback={null}>
                 {landmarkId === 'stephansdom' && <Stephansdom />}
                 {/* Add other landmarks as they are implemented */}
             </Suspense>

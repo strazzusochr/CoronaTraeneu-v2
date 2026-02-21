@@ -52,6 +52,11 @@ export const PlayerCharacter: React.FC = () => {
             if (keys.current['KeyA'] || keys.current['ArrowLeft']) moveX -= 1;
             if (keys.current['KeyD'] || keys.current['ArrowRight']) moveX += 1;
 
+            // Sync rotation with camera
+            const cameraEuler = new THREE.Euler().setFromQuaternion(camera.quaternion, 'YXZ');
+            const targetRotation = cameraEuler.y + Math.PI; // Adjust for character facing
+            useGameStore.setState(s => ({ player: { ...s.player, rotation: targetRotation } }));
+
             if (moveX !== 0 || moveZ !== 0) {
                 const forward = new THREE.Vector3(0, 0, -1).applyQuaternion(camera.quaternion);
                 const right = new THREE.Vector3(1, 0, 0).applyQuaternion(camera.quaternion);

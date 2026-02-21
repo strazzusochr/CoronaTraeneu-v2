@@ -1,8 +1,8 @@
 import React from 'react';
-import { HighPolyBuilding } from '../components/buildings/HighPolyBuilding';
+// import { HighPolyBuilding } from '../components/buildings/HighPolyBuilding';
 import { CityLighting } from '../components/3d/environment/CityLighting';
 import { PostProcessingEffects } from '../components/3d/PostProcessingEffects';
-import Stephansdom from '../components/buildings/Stephansdom';
+// import Stephansdom from '../components/buildings/Stephansdom';
 import { getPolygonCount } from '../utils/3d/PolygonCounter';
 import { useThree } from '@react-three/fiber';
 
@@ -46,18 +46,18 @@ export const WienScene: React.FC = () => {
             <StephansplatzGround />
 
             {/* Landmark: Stephansdom (600k Polygons) */}
-            <group position={[0, 0, 0]}>
+            {/* <group position={[0, 0, 0]}>
                 <Stephansdom />
-            </group>
+            </group> */}
 
             {/* Modular Blocks */}
-            <group position={[-50, 0, -30]}>
+            {/* <group position={[-50, 0, -30]}>
                 <HighPolyBuilding position={[0, 0, 0]} width={20} floors={6} depth={15} />
             </group>
 
             <group position={[40, 0, -40]} rotation={[0, -Math.PI / 6, 0]}>
                 <HighPolyBuilding position={[0, 0, 0]} width={15} floors={4} depth={20} />
-            </group>
+            </group> */}
         </group>
     );
 };

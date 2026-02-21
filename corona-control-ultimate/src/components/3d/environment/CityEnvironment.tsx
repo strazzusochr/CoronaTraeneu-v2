@@ -1,9 +1,12 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useMemo } from 'react';
+import { useFrame } from '@react-three/fiber';
+import { Html } from '@react-three/drei';
+import { useGameStore } from '@/stores/gameStore';
 import { StephansplatzGround } from '@/world/WienScene';
 import { Fountain } from './Fountain';
-import Street from './Street';
+// import Street from './Street';
 import Building from './Building';
-import Sidewalk from './Sidewalk';
+// import Sidewalk from './Sidewalk';
 import InstancedProps from './InstancedProps';
 import Vegetation from './Vegetation';
 import StreetLight from './StreetLights';
@@ -11,13 +14,14 @@ import Interactables from './Interactables';
 import Destructibles from './Destructibles';
 import GroundDecals from './GroundDecals';
 import TrafficSystem from './TrafficSystem';
-import { CityLighting } from './CityLighting';
+// import { CityLighting } from './CityLighting';
 import { RigidBody, CuboidCollider } from '@react-three/rapier';
 import { PoliceCar } from '@/components/game/entities/PoliceCar';
 import { WaterCannon } from '@/components/game/entities/WaterCannon';
 import { Ambulance } from '@/components/game/entities/Ambulance';
 import ParticleSystem from '@/components/Effects/ParticleSystem';
 import AudioManager, { AudioLayer } from '@/managers/AudioManager';
+import { ConcertStage } from './ConcertStage';
 
 // Seeded random helper to keep render pure
 let citySeed = 42;
@@ -95,6 +99,45 @@ const LEVEL1_GROUND_DECALS: Array<{ id: string; position: [number, number, numbe
     { id: 'decal_crack_south', position: [2, 0.03, -5], type: 'crack' as const }
 ];
 
+const MissionTrigger = ({ position, radius, missionIndex, label }: { position: [number, number, number], radius: number, missionIndex: number, label: string }) => {
+    const playerPos = useGameStore(state => state.player.position);
+    const currentMissionIndex = useGameStore(state => state.gameState.currentMissionIndex);
+    const updateMissionProgress = useGameStore(state => state.updateMissionProgress);
+    const nextMission = useGameStore(state => state.nextMission);
+    const [triggered, setTriggered] = React.useState(false);
+
+    useFrame(() => {
+        if (currentMissionIndex === missionIndex && !triggered) {
+            const dist = Math.sqrt(
+                Math.pow(playerPos[0] - position[0], 2) +
+                Math.pow(playerPos[2] - position[2], 2)
+            );
+            if (dist < radius) {
+                setTriggered(true);
+                updateMissionProgress(1);
+                nextMission();
+                console.log(`Mission ${missionIndex + 1} completed!`);
+            }
+        }
+    });
+
+    if (currentMissionIndex !== missionIndex || triggered) return null;
+
+    return (
+        <group position={position}>
+            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.1, 0]}>
+                <ringGeometry args={[radius - 0.5, radius, 32]} />
+                <meshBasicMaterial color="cyan" transparent opacity={0.5} />
+            </mesh>
+            <Html position={[0, 2, 0]} center>
+                <div style={{ color: 'cyan', background: 'rgba(0,0,0,0.7)', padding: '4px 10px', borderRadius: '4px', whiteSpace: 'nowrap' }}>
+                    {label}
+                </div>
+            </Html>
+        </group>
+    );
+};
+
 export const CityEnvironment: React.FC = () => {
     React.useEffect(() => {
         const cityAmbient = AudioManager.playSound('city_ambient', AudioLayer.AMBIENT, { loop: true });
@@ -119,6 +162,9 @@ export const CityEnvironment: React.FC = () => {
             for (let z = -blocks / 2; z < blocks / 2; z++) {
                 // Clear the 2x2 center area for the square (radius 1 blocks = -1 to 1)
                 if (Math.abs(x) < 1 && Math.abs(z) < 1) continue;
+                
+                // Clear area for the ConcertStage (behind the center)
+                if (x === 0 && z === -1) continue;
 
                 const posX = x * spacing;
                 const posZ = z * spacing;
@@ -201,7 +247,7 @@ export const CityEnvironment: React.FC = () => {
                 <CuboidCollider args={[500, 0.05, 500]} />
             </RigidBody>
             
-            {[...Array(5)].map((_, i) => (
+            {/* {[...Array(5)].map((_, i) => (
                 <React.Fragment key={`grid-${i}`}>
                     <Street position={[(i - 2) * 50, 0.01, 0]} length={1000} />
                     <Sidewalk position={[(i - 2) * 50 + 6, 0.02, 0]} length={1000} />
@@ -210,11 +256,19 @@ export const CityEnvironment: React.FC = () => {
                     <Sidewalk position={[0, 0.02, (i - 2) * 50 + 6]} rotation={[0, Math.PI / 2, 0]} length={1000} />
                     <Sidewalk position={[0, 0.02, (i - 2) * 50 - 6]} rotation={[0, Math.PI / 2, 0]} length={1000} />
                 </React.Fragment>
-            ))}
+            ))} */}
             
             {/* Removed Stage and Barriers as requested */}
-            {/* <ConcertStage position={[0, 0, -50]} rotation={[0, 0, 0]} />
-            <Barriers position={[-10, 0.6, -35]} type="police" rotation={[0, Math.PI/4, 0]} />
+            <MissionTrigger 
+                position={[0, 0, -80]} 
+                radius={5} 
+                missionIndex={0} 
+                label="BEOBACHTUNGSPPOSTEN NORD" 
+            />
+            
+            <ConcertStage position={[0, 0, -50]} rotation={[0, 0, 0]} />
+
+            {/* <Barriers position={[-10, 0.6, -35]} type="police" rotation={[0, Math.PI/4, 0]} />
             <Barriers position={[10, 0.6, -35]} type="police" rotation={[0, -Math.PI/4, 0]} />
             <Barriers position={[0, 0.6, -30]} type="police" rotation={[0, 0, 0]} /> */}
             

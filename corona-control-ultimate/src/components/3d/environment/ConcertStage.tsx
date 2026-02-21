@@ -22,123 +22,144 @@ export const ConcertStage: React.FC<ConcertStageProps> = ({
     const screenMaterial = useMemo(() => new THREE.MeshStandardMaterial({ 
         color: '#ffffff', 
         emissive: '#00d2ff', 
-        emissiveIntensity: 2 
+        emissiveIntensity: 3 
     }), []);
+    const singerMaterial = useMemo(() => new THREE.MeshStandardMaterial({ color: '#ffcc00', emissive: '#aa5500', roughness: 0.3 }), []);
+    const dancerMaterial = useMemo(() => new THREE.MeshStandardMaterial({ color: '#ff22aa', emissive: '#550033', roughness: 0.4 }), []);
+
+    // Animation / Zeit für dynamische Lichter (einfach über useFrame, falls gewollt, hier statisch bunt)
 
     return (
-        <group position={position} rotation={rotation}>
+        <group position={position} rotation={rotation} scale={[1.8, 1.8, 1.8]}>
             {/* Haupt-Plattform */}
             <mesh position={[0, 1, 0]} receiveShadow castShadow>
-                <boxGeometry args={[15, 2, 8]} />
+                <boxGeometry args={[16, 2, 10]} />
                 <primitive object={stageMaterial} attach="material" />
             </mesh>
 
             {/* Rückwand */}
-            <mesh position={[0, 4.5, -3.8]} castShadow>
-                <boxGeometry args={[14.5, 5, 0.2]} />
+            <mesh position={[0, 5.5, -4.8]} castShadow>
+                <boxGeometry args={[15.5, 7, 0.2]} />
                 <meshStandardMaterial color="#050505" />
             </mesh>
 
             {/* KILL THE BILL Banner */}
             <Text
-                position={[0, 6, -3.6]}
-                fontSize={1.2}
-                color="#ff3c3c"
+                position={[0, 7.5, -4.6]}
+                fontSize={1.8}
+                color="#ff1111"
                 anchorX="center"
                 anchorY="middle"
+                outlineWidth={0.05}
+                outlineColor="#ffaa00"
             >
                 KILL THE BILL
             </Text>
             <Text
-                position={[0, 4.8, -3.6]}
-                fontSize={0.4}
+                position={[0, 5.8, -4.6]}
+                fontSize={0.6}
                 color="#ffffff"
                 anchorX="center"
                 anchorY="middle"
             >
-                LIVE AT STEPHANSPLATZ
+                THE ULTIMATE RESISTANCE
             </Text>
 
             {/* Truss-System (Pfeiler) */}
-            {[[-7, 4, 3.5], [7, 4, 3.5], [-7, 4, -3.5], [7, 4, -3.5]].map((pos, i) => (
+            {[[-7.5, 5, 4.5], [7.5, 5, 4.5], [-7.5, 5, -4.5], [7.5, 5, -4.5]].map((pos, i) => (
                 <mesh key={i} position={pos as [number, number, number]}>
-                    <cylinderGeometry args={[0.2, 0.2, 8, 8]} />
+                    <cylinderGeometry args={[0.25, 0.25, 10, 8]} />
                     <primitive object={trussMaterial} attach="material" />
                 </mesh>
             ))}
 
             {/* Dach-Truss */}
-            <mesh position={[0, 8, 0]}>
-                <boxGeometry args={[15, 0.4, 8]} />
+            <mesh position={[0, 10, 0]}>
+                <boxGeometry args={[16, 0.5, 10]} />
                 <primitive object={trussMaterial} attach="material" />
             </mesh>
 
             {/* Große Bildschirme (Seitlich) */}
-            <mesh position={[-8.5, 4.5, 0]} rotation={[0, Math.PI / 4, 0]}>
-                <boxGeometry args={[0.1, 5, 3]} />
+            <mesh position={[-9.5, 5.5, 0]} rotation={[0, Math.PI / 5, 0]}>
+                <boxGeometry args={[0.2, 6, 4]} />
                 <primitive object={screenMaterial} attach="material" />
             </mesh>
-            <mesh position={[8.5, 4.5, 0]} rotation={[0, -Math.PI / 4, 0]}>
-                <boxGeometry args={[0.1, 5, 3]} />
+            <mesh position={[9.5, 5.5, 0]} rotation={[0, -Math.PI / 5, 0]}>
+                <boxGeometry args={[0.2, 6, 4]} />
                 <primitive object={screenMaterial} attach="material" />
             </mesh>
 
             {/* Lautsprecher-Türme */}
-            {[[-6, 4, 4.5], [6, 4, 4.5]].map((pos, i) => (
+            {[[-6.5, 4.5, 5.5], [6.5, 4.5, 5.5]].map((pos, i) => (
                 <group key={i} position={pos as [number, number, number]}>
                     <mesh position={[0, 0, 0]}>
-                        <boxGeometry args={[1.5, 4, 1.5]} />
+                        <boxGeometry args={[2, 5, 2]} />
                         <meshStandardMaterial color="#000000" />
                     </mesh>
                     {/* Speaker Holes */}
-                    {[1, 0, -1].map(y => (
-                        <mesh key={y} position={[0, y * 1.2, 0.8]} rotation={[Math.PI / 2, 0, 0]}>
-                            <cylinderGeometry args={[0.5, 0.5, 0.1, 16]} />
+                    {[1.5, 0, -1.5].map(y => (
+                        <mesh key={y} position={[0, y, 1.05]} rotation={[Math.PI / 2, 0, 0]}>
+                            <cylinderGeometry args={[0.6, 0.6, 0.1, 16]} />
                             <meshStandardMaterial color="#111111" />
                         </mesh>
                     ))}
                 </group>
             ))}
 
-            {/* Band-Mitglieder (Dummies) */}
-            {/* Sänger */}
-            <mesh position={[0, 2.9, 0]} castShadow>
-                <capsuleGeometry args={[0.3, 1.2, 4, 8]} />
-                <meshStandardMaterial color="#ff3c3c" />
-            </mesh>
-            {/* Gitarrist */}
-            <mesh position={[-2.5, 2.9, -1]} castShadow>
-                <capsuleGeometry args={[0.3, 1.2, 4, 8]} />
-                <meshStandardMaterial color="#333333" />
-            </mesh>
-            {/* Bassist */}
-            <mesh position={[2.5, 2.9, -1]} castShadow>
-                <capsuleGeometry args={[0.3, 1.2, 4, 8]} />
-                <meshStandardMaterial color="#333333" />
-            </mesh>
-            {/* Schlagzeuger */}
-            <mesh position={[0, 2.9, -3]} castShadow>
-                <boxGeometry args={[1.2, 1.2, 1.2]} />
-                <meshStandardMaterial color="#555555" />
+            {/* Band-Mitglieder */}
+            
+            {/* Leadsänger (Zentral) */}
+            <mesh position={[0, 2.9, 2]} castShadow>
+                <capsuleGeometry args={[0.35, 1.3, 4, 8]} />
+                <primitive object={singerMaterial} attach="material" />
             </mesh>
 
-            {/* Stage Lights (Visual only) */}
-            {[[-5, 7.5, 3], [0, 7.5, 3], [5, 7.5, 3]].map((pos, i) => (
-                <group key={i} position={pos as [number, number, number]}>
-                    <mesh rotation={[Math.PI / 4, 0, 0]}>
-                        <cylinderGeometry args={[0.3, 0.5, 0.8, 16]} />
-                        <meshStandardMaterial color="#333" emissive={i === 1 ? "#ff0000" : "#00d2ff"} emissiveIntensity={5} />
+            {/* Go-Go Tänzerinnen auf Podesten */}
+            {[[-3.5, 2.5, 0], [3.5, 2.5, 0], [0, 2.8, -2]].map((pos, i) => (
+                <group key={`gogo-${i}`} position={pos as [number, number, number]}>
+                    {/* Podest */}
+                    <mesh position={[0, 0, 0]} receiveShadow castShadow>
+                        <cylinderGeometry args={[0.8, 0.8, 0.5, 16]} />
+                        <meshStandardMaterial color={i === 2 ? "#cc00ff" : "#00ffff"} emissive={i === 2 ? "#330044" : "#003333"} />
+                    </mesh>
+                    {/* Tänzerin */}
+                    <mesh position={[0, 1.1, 0]} castShadow>
+                        <capsuleGeometry args={[0.25, 1.1, 4, 8]} />
+                        <primitive object={dancerMaterial} attach="material" />
+                    </mesh>
+                </group>
+            ))}
+
+            {/* Dynamische Bunte Stage Lights */}
+            {/* Vorne (Bunt) */}
+            {[
+                { pos: [-6, 9.5, 4], color: '#ff0055' },
+                { pos: [-2, 9.5, 4.5], color: '#00ffaa' },
+                { pos: [2, 9.5, 4.5], color: '#ffee00' },
+                { pos: [6, 9.5, 4], color: '#aa00ff' }
+            ].map((light, i) => (
+                <group key={`light-f-${i}`} position={light.pos as [number, number, number]}>
+                    <mesh rotation={[Math.PI / 3, 0, 0]}>
+                        <cylinderGeometry args={[0.4, 0.6, 1, 16]} />
+                        <meshStandardMaterial color="#222" emissive={light.color} emissiveIntensity={4} />
                     </mesh>
                     <spotLight 
                         position={[0, 0, 0]} 
-                        angle={0.5} 
-                        penumbra={0.5} 
-                        intensity={10} 
-                        color={i === 1 ? "#ff0000" : "#00d2ff"} 
+                        target-position={[light.pos[0] * 0.5, 1, 0]}
+                        angle={0.6} 
+                        penumbra={0.8} 
+                        intensity={15} 
+                        color={light.color} 
                         castShadow
                     />
                 </group>
             ))}
+
+            {/* Hinten (Backlight/Laser) */}
+            {[[-5, 2, -4.5], [0, 2, -4.5], [5, 2, -4.5]].map((pos, i) => (
+                <pointLight key={`light-b-${i}`} position={pos as [number, number, number]} color={i === 1 ? "#ff0000" : "#0055ff"} intensity={25} distance={15} />
+            ))}
+
         </group>
     );
 };
