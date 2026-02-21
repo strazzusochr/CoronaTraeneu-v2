@@ -73,6 +73,7 @@ export class IsPlayerNearbyCondition extends ConditionNode {
         this.radius = radius;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     tick(blackboard: Blackboard, _dt: number): BTStatus {
         const npc = blackboard.get<NPCData>('self');
         const playerPos = blackboard.get<[number, number, number]>('playerPos');
@@ -110,5 +111,115 @@ export class WaitAction extends ActionNode {
             return BTStatus.SUCCESS;
         }
         return BTStatus.RUNNING;
+    }
+}
+
+/**
+ * SelectWanderTargetAction - Bestimmt ein zufälliges Ziel für NPC im vorgegebenen Radius
+ */
+export class SelectWanderTargetAction extends ActionNode {
+    private radius: number;
+    
+    constructor(radius: number = 20) {
+        super(`SelectWanderTarget(${radius}m)`);
+        this.radius = radius;
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    tick(blackboard: Blackboard, _dt: number): BTStatus {
+        const npc = blackboard.get<NPCData>('self');
+        if (!npc) return BTStatus.FAILURE;
+
+        // Nutze World-Building Raster: Rotiere grob entlang der Straßen (X/Z +/-)
+        const currentTarget = blackboard.get<[number, number, number]>('targetPos');
+        if (currentTarget) return BTStatus.SUCCESS; // Ziel existiert bereits
+
+        const dx = (Math.random() - 0.5) * this.radius * 2;
+        const dz = (Math.random() - 0.5) * this.radius * 2;
+        
+        const targetX = npc.position[0] + dx;
+        const targetZ = npc.position[2] + dz;
+
+        // Optional: Hier könnten spätere Kollisions-Prüfungen des World-Building-Protokolls rein
+        blackboard.set('targetPos', [targetX, 0, targetZ]);
+        
+        return BTStatus.SUCCESS;
+    }
+}
+
+/**
+ * SelectFleeTargetAction - Bestimmt ein Fluchtziel weg vom Spieler
+ */
+export class SelectFleeTargetAction extends ActionNode {
+    private fleeDistance: number;
+
+    constructor(fleeDistance: number = 30) {
+        super(`SelectFleeTarget(${fleeDistance}m)`);
+        this.fleeDistance = fleeDistance;
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    tick(blackboard: Blackboard, _dt: number): BTStatus {
+        const npc = blackboard.get<NPCData>('self');
+        const playerPos = blackboard.get<[number, number, number]>('playerPos');
+        
+        if (!npc || !playerPos) return BTStatus.FAILURE;
+
+        const currentTarget = blackboard.get<[number, number, number]>('targetPos');
+        if (currentTarget) return BTStatus.SUCCESS; // Flüchtet bereits
+
+        const dx = npc.position[0] - playerPos[0];
+        const dz = npc.position[2] - playerPos[2];
+        const dist = Math.sqrt(dx * dx + dz * dz) || 1; // ||1 vermeidet div by 0
+
+        // Flieht in die entgegengesetzte Richtung des Spielers
+        const targetX = npc.position[0] + (dx / dist) * this.fleeDistance;
+        const targetZ = npc.position[2] + (dz / dist) * this.fleeDistance;
+
+        blackboard.set('targetPos', [targetX, 0, targetZ]);
+
+        return BTStatus.SUCCESS;
+    }
+}
+
+/**
+ * SelectPatrolTargetAction - Bestimmt das nächste Patrol-Target basierend auf einer Route
+ */
+export class SelectPatrolTargetAction extends ActionNode {
+    constructor() {
+        super('SelectPatrolTarget');
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    tick(blackboard: Blackboard, _dt: number): BTStatus {
+        const npc = blackboard.get<NPCData>('self');
+        if (!npc) return BTStatus.FAILURE;
+
+        let patrolPoints = blackboard.get<[number, number, number][]>('patrolPoints');
+        let patrolIndex = blackboard.get<number>('patrolIndex');
+
+        // Initialisiere Patrouillen-Route (einfaches Quadrat um Spawn für den Anfang)
+        if (!patrolPoints || patrolIndex === undefined) {
+            const bX = Math.round(npc.position[0] / 10) * 10;
+            const bZ = Math.round(npc.position[2] / 10) * 10;
+            const off = 10;
+            patrolPoints = [
+                [bX - off, 0, bZ - off],
+                [bX - off, 0, bZ + off],
+                [bX + off, 0, bZ + off],
+                [bX + off, 0, bZ - off]
+            ];
+            patrolIndex = 0;
+            blackboard.set('patrolPoints', patrolPoints);
+            blackboard.set('patrolIndex', patrolIndex);
+        }
+
+        const currentTarget = blackboard.get<[number, number, number]>('targetPos');
+        if (currentTarget) return BTStatus.SUCCESS;
+
+        const nextPoint = patrolPoints[patrolIndex % patrolPoints.length];
+        blackboard.set('targetPos', nextPoint);
+
+        return BTStatus.SUCCESS;
     }
 }

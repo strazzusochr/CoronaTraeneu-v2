@@ -22,6 +22,7 @@ import { Ambulance } from '@/components/game/entities/Ambulance';
 import ParticleSystem from '@/components/Effects/ParticleSystem';
 import AudioManager, { AudioLayer } from '@/managers/AudioManager';
 import { ConcertStage } from './ConcertStage';
+import { LandmarkVienna } from './LandmarkVienna';
 
 // Seeded random helper to keep render pure
 let citySeed = 42;
@@ -163,8 +164,8 @@ export const CityEnvironment: React.FC = () => {
                 // Clear the 2x2 center area for the square (radius 1 blocks = -1 to 1)
                 if (Math.abs(x) < 1 && Math.abs(z) < 1) continue;
                 
-                // Clear area for the ConcertStage (behind the center)
-                if (x === 0 && z === -1) continue;
+                // Clear area for the ConcertStage at z = 0 and Stephansdom at z = -1 and z = -2
+                if (x === 0 && (z === 0 || z === -1 || z === -2)) continue;
 
                 const posX = x * spacing;
                 const posZ = z * spacing;
@@ -198,9 +199,9 @@ export const CityEnvironment: React.FC = () => {
     return (
         <group name="CityEnvironment_V7_0">
             <StephansplatzGround />
-            {/* <LandmarkVienna landmarkId="stephansdom" position={[0, 0, -80]} /> */}
-            
             {/* REFINE CITY SQUARE (AAA) */}
+            <LandmarkVienna landmarkId="stephansdom" position={[0, 0, -80]} />
+            
             <Fountain position={[0, 0, 0]} />
             
             <group name="Square_Decoration">
@@ -260,13 +261,13 @@ export const CityEnvironment: React.FC = () => {
             
             {/* Removed Stage and Barriers as requested */}
             <MissionTrigger 
-                position={[0, 0, -80]} 
-                radius={5} 
+                position={[30, 0, 15]} 
+                radius={8} 
                 missionIndex={0} 
                 label="BEOBACHTUNGSPPOSTEN NORD" 
             />
             
-            <ConcertStage position={[0, 0, -50]} rotation={[0, 0, 0]} />
+            <ConcertStage position={[0, 0, -25]} rotation={[0, 0, 0]} />
 
             {/* <Barriers position={[-10, 0.6, -35]} type="police" rotation={[0, Math.PI/4, 0]} />
             <Barriers position={[10, 0.6, -35]} type="police" rotation={[0, -Math.PI/4, 0]} />

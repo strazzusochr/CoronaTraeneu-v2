@@ -1,29 +1,49 @@
-import { SelectorNode, SequenceNode, Blackboard, BTStatus } from './BehaviorTree';
-import { IsPlayerNearbyCondition, MoveToTargetAction, WaitAction } from './Nodes';
+import { SelectorNode, SequenceNode, Blackboard } from './BehaviorTree';
+import { 
+    IsPlayerNearbyCondition, 
+    MoveToTargetAction, 
+    WaitAction,
+    SelectWanderTargetAction,
+    SelectFleeTargetAction,
+    SelectPatrolTargetAction
+} from './Nodes';
 import type { NPCData } from '@/types/npc';
 
 export const BTPresets = {
-    createGuardTree: () => {
-        const root = new SelectorNode('GuardRoot');
-        const watchPlayer = new SequenceNode('WatchPlayer');
-        watchPlayer.addChild(new IsPlayerNearbyCondition(8));
-        watchPlayer.addChild(new WaitAction(1));
+    createPoliceTree: () => {
+        const root = new SelectorNode('PoliceRoot');
+        // Zukünftig: PursueRioter, aktuell nur Patrouille
         const patrol = new SequenceNode('Patrol');
+        patrol.addChild(new SelectPatrolTargetAction());
         patrol.addChild(new MoveToTargetAction(2.0));
-        patrol.addChild(new WaitAction(3));
-        root.addChild(watchPlayer);
+        patrol.addChild(new WaitAction(2));
         root.addChild(patrol);
         return root;
     },
     createCivilianTree: () => {
         const root = new SelectorNode('CivilianRoot');
         const flee = new SequenceNode('Flee');
-        flee.addChild(new IsPlayerNearbyCondition(5));
-        flee.addChild(new MoveToTargetAction(5.0));
+        flee.addChild(new IsPlayerNearbyCondition(6)); // Flucht, wenn Spieler zu nah
+        flee.addChild(new SelectFleeTargetAction(20));
+        flee.addChild(new MoveToTargetAction(4.5)); // Schnelles Laufen
+        
         const wander = new SequenceNode('Wander');
-        wander.addChild(new MoveToTargetAction(1.5));
-        wander.addChild(new WaitAction(5));
+        wander.addChild(new SelectWanderTargetAction(15));
+        wander.addChild(new MoveToTargetAction(1.2)); // Normales Gehen
+        wander.addChild(new WaitAction(4));
+        
         root.addChild(flee);
+        root.addChild(wander);
+        return root;
+    },
+    createRioterTree: () => {
+        const root = new SelectorNode('RioterRoot');
+        // Zukünftig: Aggressives Verhalten (Attack), Flucht vor Polizei
+        const wander = new SequenceNode('WanderMob');
+        wander.addChild(new SelectWanderTargetAction(25));
+        wander.addChild(new MoveToTargetAction(2.5)); // Schnelleres Gehen
+        wander.addChild(new WaitAction(1));
+        
         root.addChild(wander);
         return root;
     }
@@ -37,8 +57,11 @@ export class BTManager {
         const bb = new Blackboard();
         bb.set('self', npc);
         this.blackboards.set(npc.id, bb);
+        
         if (npc.type === 'POLICE') {
-            this.trees.set(npc.id, BTPresets.createGuardTree());
+            this.trees.set(npc.id, BTPresets.createPoliceTree());
+        } else if (npc.type === 'RIOTER') {
+            this.trees.set(npc.id, BTPresets.createRioterTree());
         } else {
             this.trees.set(npc.id, BTPresets.createCivilianTree());
         }
@@ -56,74 +79,38 @@ export class BTManager {
 
             bb.set('playerPos', playerPos);
 
-            if (!bb.get('targetPos')) {
-                const gridX = Math.round(npc.position[0] / 50) * 50;
-                const gridZ = Math.round(npc.position[2] / 50) * 50;
-                const off = Math.random() > 0.3 ? 6 : 0;
-                const useNS = Math.random() > 0.5;
-                let tx: number;
-                let tz: number;
-                if (useNS) {
-                    tx = gridX + (Math.random() > 0.5 ? off : -off);
-                    tz = npc.position[2] + (Math.random() - 0.5) * 80;
-                } else {
-                    tx = npc.position[0] + (Math.random() - 0.5) * 80;
-                    tz = gridZ + (Math.random() > 0.5 ? off : -off);
-                }
-                const dx = tx - 0;
-                const dz = tz - (-50);
-                if (Math.sqrt(dx * dx + dz * dz) < 25) {
-                    tx += 30;
-                    tz += 30;
-                }
-
-                if (npc.type === 'POLICE') {
-                    let patrolPoints = bb.get<[number, number, number][]>('patrolPoints');
-                    let patrolIndex = bb.get<number>('patrolIndex') ?? 0;
-                    if (!patrolPoints) {
-                        const pOff = 6;
-                        const bX = Math.round(npc.position[0] / 50) * 50;
-                        const bZ = Math.round(npc.position[2] / 50) * 50;
-                        patrolPoints = [
-                            [bX - pOff, 0, bZ - 20],
-                            [bX - pOff, 0, bZ + 20],
-                            [bX + pOff, 0, bZ + 20],
-                            [bX + pOff, 0, bZ - 20]
-                        ];
-                        bb.set('patrolPoints', patrolPoints);
-                        bb.set('patrolIndex', 0);
-                        patrolIndex = 0;
-                    }
-                    const next = patrolPoints[patrolIndex % patrolPoints.length];
-                    bb.set('targetPos', next);
-                } else {
-                    bb.set('targetPos', [tx, 0, tz]);
-                }
-            }
-
-            if (npc.type === 'RIOTER' && Math.random() > 0.95) {
-                bb.set('targetPos', [
-                    (Math.random() - 0.5) * 10,
-                    0,
-                    -50 + (Math.random() - 0.5) * 10
-                ]);
-            }
-
+            // Behavior Tree ticken
             tree.tick(bb, dt);
 
-            const lastStatus = tree.status;
-            if (lastStatus === BTStatus.SUCCESS) {
-                if (npc.type === 'POLICE') {
-                    const patrolPoints = bb.get<[number, number, number][]>('patrolPoints');
-                    if (patrolPoints && patrolPoints.length > 0) {
-                        const idx = (bb.get<number>('patrolIndex') ?? 0) + 1;
-                        bb.set('patrolIndex', idx % patrolPoints.length);
-                        bb.set('targetPos', patrolPoints[idx % patrolPoints.length]);
-                    } else {
-                        bb.set('targetPos', null);
-                    }
-                } else {
+            // Nach Abschluss eines Ziels (SUCCESS), setze Ziel zurück,
+            // Nach Abschluss eines Ziels (SUCCESS), setze Ziel zurück,
+            // (der root node gibt nur den return wert zurück),
+            // müssen wir die Laufzeitlogik anpassen.
+            // Die Action-Nodes setzen selbst BTStatus.SUCCESS wenn angekommen.
+            // Der Tree fängt immer oben an bei jedem Tick.
+            // Wir prüfen, ob unser Wander/Patrol Ziel erreicht ist in MoveToTargetAction
+            // Dort kehrt es SUCCESS zurück. Wenn der SequenceNode durchläuft, wird 
+            // alles returned. Wir löschen das TargetPos hier nur, wenn der Tree GANZ durch ist.
+            // ABER: In diesem Simple-BT-Design ist es besser, wenn die Nodes das TargetPos 
+            // droppen oder MoveToTarget es löscht, wenn angekommen.
+            // Warten wir den Tick ab. Wenn ein Ziel erreicht wurde (Abstand < threshold),
+            // MoveToTarget behält sein targetPos bis wir ankommen.
+            
+            // Fix für Target-Reset:
+            if (bb.get('targetPos')) {
+                const target = bb.get<[number, number, number]>('targetPos')!;
+                const dx = target[0] - npc.position[0];
+                const dz = target[2] - npc.position[2];
+                if (Math.sqrt(dx * dx + dz * dz) < 1.0) {
                     bb.set('targetPos', null);
+                    
+                    if (npc.type === 'POLICE') {
+                        const patrolPoints = bb.get<[number, number, number][]>('patrolPoints');
+                        if (patrolPoints) {
+                            const idx = (bb.get<number>('patrolIndex') ?? 0) + 1;
+                            bb.set('patrolIndex', idx % patrolPoints.length);
+                        }
+                    }
                 }
             }
         }

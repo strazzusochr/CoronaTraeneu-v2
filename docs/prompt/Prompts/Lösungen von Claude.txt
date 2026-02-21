@@ -1,0 +1,374 @@
+🔍 BLACK SCREEN DEBUG-PROTOKOLL
+SYSTEMATISCHE FEHLERSUCHE FÜR HUGGINGFACE DEPLOYMENT
+
+
+AKTUELLER STATUS:
+
+✅ Canvas läuft (DebugCube sichtbar)
+✅ EngineLoop aktiv (Heartbeats 0.2Hz)
+✅ WebGL2 verfügbar
+❌ Hauptgeometrie UNSICHTBAR (12 Polygone statt 500.000+)
+❌ StephansplatzWorld nicht gerendert
+❌ NPCs nicht sichtbar (501 sollten existieren)
+
+
+
+1️⃣ SOFORT-DIAGNOSE (5 MINUTEN)
+Check 1: Kamera-Position verifizieren
+Anweisung:
+Öffne Browser DevTools auf HuggingFace Space. In Console tippe:
+window.__three_camera.position
+window.__three_camera.rotation
+Erwartung:
+
+Position sollte etwa X zwanzig Y zwanzig Z zwanzig sein
+Rotation sollte Richtung Zentrum (0, 0, 0) zeigen
+
+Problem-Indikator:
+Wenn Kamera Position X null Y null Z null oder sehr weit weg (über 1000) → Kamera fehlpositioniert
+Fix-Hinweis:
+GameCanvas punkt tsx Zeile mit camera equals Objekt prüfen. OrbitControls target prüfen.
+
+Check 2: Scene-Traversierung
+Anweisung:
+In Console tippe:
+let count = 0;
+window.__three_scene.traverse(obj => {
+  if (obj.type === 'Mesh') {
+    console.log(obj.name, obj.position, obj.visible);
+    count++;
+  }
+});
+console.log('Total Meshes:', count);
+Erwartung:
+
+Mindestens zwanzig Meshes (Boden, Gebäude, NPCs)
+Alle visible equals true
+Positionen im Bereich minus fünfhundert bis plus fünfhundert
+
+Problem-Indikator:
+
+Wenn count kleiner fünf → Komponenten werden NICHT instanziiert
+Wenn visible equals false für viele → Visibility-Problem
+Wenn Positionen alle null null null → Transform-Problem
+
+
+Check 3: Material-Validierung
+Anweisung:
+In Console tippe:
+window.__three_scene.traverse(obj => {
+  if (obj.material) {
+    console.log(obj.name, {
+      type: obj.material.type,
+      opacity: obj.material.opacity,
+      transparent: obj.material.transparent,
+      depthWrite: obj.material.depthWrite
+    });
+  }
+});
+Problem-Indikator:
+
+Wenn opacity null oder undefined → Material-Initialisierungs-Fehler
+Wenn depthWrite false bei opakem Material → Rendering-Reihenfolge kaputt
+Wenn type undefined → Material nicht korrekt erstellt
+
+
+2️⃣ KOMPONENTEN-ISOLATION (10 MINUTEN)
+Test A: StephansplatzWorld isoliert testen
+Datei: deploy_hf/src/components/game/GameCanvas.tsx
+Änderung Wort-für-Wort:
+Finde die Zeile mit SceneContent Komponente.
+Innerhalb der Physics-Komponente kommentiere ALLES aus AUSSER:
+
+DebugCube
+StephansplatzWorld
+
+Beispiel-Struktur nach Änderung:
+Physics timeStep vary
+  DebugCube (bleibt)
+  Suspense fallback null
+    StephansplatzWorld (bleibt)
+    // CityEnvironment (auskommentieren)
+    // InstancedCrowd (auskommentieren)
+    // WorldStreamingRenderer (auskommentieren)
+    // PlayerCharacter (auskommentieren)
+  Ende Suspense
+Ende Physics
+Rebuild:
+cd corona-control-ultimate/deploy_hf
+npm run build
+HuggingFace:
+Git commit push. Warte auf Rebuild (circa fünf Minuten).
+Erwartung:
+Wenn StephansplatzWorld jetzt sichtbar (grauer Boden, Box-Gebäude) → Problem liegt in ANDEREN Komponenten (CityEnvironment/Streaming blockiert).
+Wenn IMMER NOCH nur DebugCube → Problem IN StephansplatzWorld selbst.
+
+Test B: Einfachste Geometrie direkt in GameCanvas
+Datei: deploy_hf/src/components/game/GameCanvas.tsx
+Vor DebugCube einfügen:
+Erstelle neue Komponente SimpleGround.
+Komponente rendert:
+- mesh bei Position null null null
+- planeGeometry args hundert hundert
+- Rotation X minus neunzig Grad (horizontal)
+- meshStandardMaterial color grün
+- receiveShadow true
+Code-Struktur in Worten:
+
+Funktions-Komponente SimpleGround ohne Props
+Return mesh Element
+Position Array null null null
+Rotation Array null minus Math punkt PI durch zwei null
+planeGeometry mit args Array hundert hundert
+meshStandardMaterial mit color Hex null null F F null null
+receiveShadow Attribut auf true
+
+Einbindung:
+Direkt über DebugCube in SceneContent einfügen.
+Rebuild & Deploy.
+Erwartung:
+Wenn grüne Plane SICHTBAR → Basis-Rendering funktioniert, Problem in komplexen Komponenten.
+Wenn NICHT sichtbar → Fundamentales Rendering-Setup-Problem (Lights? Fog? Camera-Clipping?).
+
+3️⃣ PHYSICS-ISOLATION (5 MINUTEN)
+Test C: Ohne Rapier-Physics
+Hypothese: Physics-Wrapper blockiert Rendering.
+Änderung:
+Datei: deploy_hf/src/components/game/GameCanvas.tsx
+Entferne Physics-Wrapper komplett.
+Struktur VOR Änderung:
+Physics timeStep vary
+  (alle Komponenten)
+Ende Physics
+Struktur NACH Änderung:
+React Fragment
+  (alle Komponenten gleich)
+Ende Fragment
+Das bedeutet:
+
+Lösche öffnende Physics-Zeile
+Lösche schließende Physics-Zeile
+Alles dazwischen bleibt IDENTISCH
+
+Rebuild & Deploy.
+Erwartung:
+Wenn Geometrie JETZT erscheint → Rapier-Physics-Wrapper ist Ursache. Entweder timeStep-Parameter oder Rapier-Init fehlgeschlagen.
+
+4️⃣ LICHT-VALIDIERUNG (3 MINUTEN)
+Check 4: Licht-Intensitäten prüfen
+Problem: Szene komplett schwarz weil keine Lichter oder Intensität null.
+Anweisung Console:
+window.__three_scene.traverse(obj => {
+  if (obj.isLight) {
+    console.log({
+      type: obj.type,
+      intensity: obj.intensity,
+      color: obj.color,
+      position: obj.position
+    });
+  }
+});
+Erwartung:
+
+Mindestens ZWEI Lichter (DirectionalLight + HemisphereLight/AmbientLight)
+DirectionalLight Intensität mindestens eins Komma fünf
+AmbientLight Intensität mindestens null Komma drei
+
+Problem-Indikator:
+Wenn KEINE Lichter gefunden → DayNightCycleSystem/DynamicLighting lädt nicht.
+Notfall-Fix:
+Füge in GameCanvas direkt vor DebugCube ein:
+Erstelle ambientLight Element mit intensity zwei.
+Erstelle directionalLight Element:
+- position Array fünfzig hundert fünfzig
+- intensity zwei
+- castShadow true
+
+5️⃣ PROZEDURAL-TEXTUR-TEST (5 MINUTEN)
+Check 5: Canvas-basierte Texturen
+Hypothese: ProceduralTextures Canvas-API schlägt auf HuggingFace fehl (SSR-Umgebung).
+Datei: world/WienScene.tsx oder utils/ProceduralTextures.ts
+Anweisung:
+Suche Funktion die Canvas erstellt (z.B. createAsphaltTexture).
+Temporäre Änderung:
+Ersetze komplette Canvas-Logik durch einfache Farbe.
+Statt:
+const canvas = document.createElement('canvas');
+const ctx = canvas.getContext('2d');
+// ... komplexe Pixel-Manipulation
+const texture = new CanvasTexture(canvas);
+Nutze:
+Erstelle neue Color aus Three.
+Setze Color auf Hex vier vier vier vier vier vier (dunkelgrau).
+Return die Color direkt statt Texture.
+Oder bei Material:
+Statt map gleich texture
+Nutze color gleich neue Color Hex acht acht acht acht acht acht
+Rebuild & Deploy.
+Erwartung:
+Wenn Geometrie mit einfarbigem Material ERSCHEINT → Canvas-API ist das Problem auf HuggingFace.
+Langfristige Lösung dann:
+Canvas-Texturen pre-rendern als PNG und via public Ordner laden.
+
+6️⃣ FEATURE-FLAG-PRÜFUNG (2 MINUTEN)
+Check 6: Phase 14 tatsächlich aktiv?
+Datei: stores/slices/gameSlice.ts
+Anweisung Console auf HuggingFace:
+window.__gameStore?.getState().gameState.currentPhase
+window.__gameStore?.getState().featureFlags
+Wenn window doppelunterstrich gameStore nicht existiert:
+
+Gehe zu App.tsx
+Suche wo useGameStore definiert ist
+Füge hinzu: window doppelunterstrich gameStore gleich useGameStore nach Store-Erstellung
+
+Problem-Indikator:
+Wenn currentPhase NICHT vierzehn → Phase nicht aktiviert.
+Schnelltest:
+In startGame Funktion nach enablePhase Aufruf füge Log hinzu:
+console punkt log 'Phase enabled:', useFeatureFlags punkt getState Klammer auf Klammer zu punkt features);
+
+7️⃣ SUSPENSE-FALLBACK-TEST (5 MINUTEN)
+Test D: Ohne Suspense
+Hypothese: Suspense hält Komponenten permanent im fallback-Zustand.
+Datei: GameCanvas.tsx
+Änderung:
+Entferne Suspense-Wrapper komplett.
+VORHER:
+Suspense fallback null
+  StephansplatzWorld
+  CityEnvironment
+  ...
+Ende Suspense
+NACHHER:
+StephansplatzWorld
+CityEnvironment
+...
+Rebuild & Deploy.
+Erwartung:
+Wenn Komponenten jetzt laden → Suspense-Boundary ist Problem (z.B. dynamische Imports schlagen fehl).
+
+8️⃣ INSTANCE-RENDERING-CHECK (3 MINUTEN)
+Check 7: InstancedCrowd tatsächlich aktiv?
+Anweisung Console:
+window.__three_scene.traverse(obj => {
+  if (obj.isInstancedMesh) {
+    console.log({
+      name: obj.name,
+      count: obj.count,
+      instanceMatrix: obj.instanceMatrix
+    });
+  }
+});
+Erwartung:
+
+count sollte fünfhundert oder mehr sein
+instanceMatrix sollte existieren (nicht null)
+
+Problem-Indikator:
+Wenn count null oder undefined → InstancedMesh wird nicht korrekt erstellt.
+Datei: components/characters/InstancedCrowd.tsx
+Quick-Fix-Test:
+Kommentiere InstancedMesh aus. Ersetze temporär durch EINEN einfachen NPC:
+Erstelle mesh bei Position zehn null zehn
+cylinderGeometry args null Komma drei null Komma drei eins Komma acht sechzehn
+meshStandardMaterial color rot
+Wenn dieser EINE NPC sichtbar → Instancing-Logik ist Problem.
+
+9️⃣ VIEWPORT/CLIPPING-PROBLEM (2 MINUTEN)
+Check 8: Camera Near/Far Planes
+Anweisung Console:
+console.log({
+  near: window.__three_camera.near,
+  far: window.__three_camera.far,
+  fov: window.__three_camera.fov
+});
+Problem-Indikator:
+
+near größer eins → Nahe Objekte werden geclipt
+far kleiner fünfzig → Ferne Objekte unsichtbar
+fov außerhalb zehn bis neunzig → Verzerrung/Clipping
+
+Fix-Anweisung:
+Datei: GameCanvas.tsx
+Bei Canvas camera-Prop:
+camera Objekt
+  position Array zwanzig zwanzig zwanzig
+  fov fünfundvierzig
+  near null Komma eins
+  far zweitausend
+Ende Objekt
+
+🔟 FINALE DEBUGGING-STRATEGIE
+Wenn ALLE Tests fehlschlagen:
+Schritt 1: Minimalstes funktionierendes Beispiel
+Erstelle neue Datei: deploy_hf/src/components/test/MinimalScene.tsx
+Inhalt in Worten:
+Funktions-Komponente MinimalScene.
+Return:
+
+mesh Position null zwei null
+boxGeometry args fünf fünf fünf
+meshStandardMaterial color gelb
+
+In GameCanvas ersetze ALLES in SceneContent durch:
+MinimalScene
+ambientLight intensity eins
+directionalLight position fünfzig hundert fünfzig intensity eins
+Wenn gelbe Box SICHTBAR:
+→ Problem in komplexen Komponenten, nicht im Setup.
+Baue schrittweise auf:
+
+Füge Boden hinzu
+Füge Licht-System hinzu
+Füge StephansplatzWorld hinzu
+Füge NPCs hinzu
+
+Bei jedem Schritt: Rebuild, Deploy, Test.
+
+Schritt 2: HuggingFace-spezifische Probleme
+CSP-Header überprüfen:
+Die Errors zu cdn.jsdelivr.net sind NICHT kritisch (Font-Resolver), ABER:
+Falls HuggingFace Content-Security-Policy WebGL blockiert:
+Test: Öffne Space in privatem/Incognito-Fenster.
+Fix: Füge in index.html Meta-Tag hinzu:
+meta http-equiv Content-Security-Policy content default-src selbst unsafe-inline unsafe-eval data colon blob colon
+
+Schritt 3: V6 vs V7 Wechsel
+Aktuell läuft: V6-App aus deploy_hf Ordner.
+Test: Nutze V7-App aus Hauptordner.
+Änderung in Dockerfile/README:
+Statt:
+WORKDIR /app/deploy_hf
+Nutze:
+WORKDIR /app
+Rebuild Space komplett.
+Erwartung:
+V7 hat mehr Fixes (Loading-Overlay, Feature-Flags). Könnte funktionieren wo V6 scheitert.
+
+✅ ERFOLGS-CHECKLISTE
+Test als ERFOLGREICH wenn:
+
+ Polygon-Count über tausend (nicht zwölf)
+ Triangles über null Komma fünf K
+ Geometries über zehn
+ Visuell: Boden sichtbar
+ Visuell: Mindestens ein Gebäude
+ Visuell: Mindestens ein NPC (rot/grün/gelb)
+
+
+🎯 WAHRSCHEINLICHSTE URSACHEN (PRIORISIERT)
+
+Kamera außerhalb Szene (50% Wahrscheinlichkeit)
+→ Check 1 zuerst durchführen
+Licht-System fehlt (30% Wahrscheinlichkeit)
+→ Check 4 direkt nach Check 1
+Physics-Wrapper blockiert (10% Wahrscheinlichkeit)
+→ Test C wenn Check 1+4 OK
+ProceduralTextures fehlgeschlagen (5% Wahrscheinlichkeit)
+→ Check 5 wenn Geometrie da aber schwarz
+Suspense hält Komponenten zurück (5% Wahrscheinlichkeit)
+→ Test D als letzter Resort
+
+
+DIESER LEITFADEN IST SEQUENZIELL. ARBEITE VON OBEN NACH UNTEN. STOPPE BEI ERSTEM ERFOLG.
