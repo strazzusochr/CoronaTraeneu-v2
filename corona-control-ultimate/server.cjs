@@ -76,8 +76,14 @@ const server = http.createServer((req, res) => {
     if (!err && stat.isFile()) {
       serveFile(exactPath, res);
     } else {
-      // SPA fallback to index.html
-      serveFile(path.join(STATIC_DIR, 'index.html'), res);
+      // SPA fallback only for routes (paths without extension)
+      const hasExtension = path.extname(urlPath).length > 0;
+      if (hasExtension) {
+          res.writeHead(404, { 'Content-Type': 'text/plain' });
+          res.end('404 Not Found');
+      } else {
+          serveFile(path.join(STATIC_DIR, 'index.html'), res);
+      }
     }
   });
 });
