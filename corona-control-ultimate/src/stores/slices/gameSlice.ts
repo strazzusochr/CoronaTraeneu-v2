@@ -50,12 +50,21 @@ export const createGameSlice: StateCreator<GameStore, [], [], Pick<GameStore,
     player: {
         id: 'player_01',
         position: [30, 1, 30],
-        rotation: 0,
+        rotation: [0, 0, 0],
         health: GAME_BALANCE.player.maxHealth,
+        maxHealth: GAME_BALANCE.player.maxHealth,
         stamina: GAME_BALANCE.player.maxStamina,
+        maxStamina: GAME_BALANCE.player.maxStamina,
         armor: GAME_BALANCE.player.baseArmor,
+        maxArmor: GAME_BALANCE.player.baseArmor,
         karma: 0,
-        inventory: []
+        inventory: [],
+        isGrounded: true,
+        isSprinting: false,
+        isJumping: false,
+        isDead: false,
+        currentEquipmentSlot: 1,
+        isUsingBinoculars: false
     },
     tensionLevel: GAME_BALANCE.crowd.initialTension,
     moralLevel: GAME_BALANCE.crowd.initialMoral,
@@ -459,7 +468,7 @@ export const createGameSlice: StateCreator<GameStore, [], [], Pick<GameStore,
         player: { ...state.player, health: hp }
     })),
 
-    setTension: (tension) => set({ tensionLevel: tension }),
+    setTension: (tension) => set({ tensionLevel: Math.max(0, Math.min(100, tension)) }),
 
     toggleBinoculars: () => {
         console.log("Toggle Fernglas");

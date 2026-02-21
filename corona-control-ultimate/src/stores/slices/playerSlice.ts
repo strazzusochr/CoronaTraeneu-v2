@@ -2,7 +2,7 @@ import type { StateCreator } from 'zustand';
 import type { GameStore } from '../types';
 import { GAME_BALANCE } from '@/constants/GameBalance';
 
-export const createPlayerSlice: StateCreator<GameStore, [], [], Pick<GameStore, 'player' | 'setPlayerPosition' | 'setPlayerHealth' | 'tensionLevel' | 'setTension' | 'toggleBinoculars'>> = (set) => ({
+export const createPlayerSlice: StateCreator<GameStore, [], [], Pick<GameStore, 'player' | 'setPlayerPosition' | 'setPlayerHealth' | 'tensionLevel' | 'toggleBinoculars'>> = (set) => ({
   player: {
     health: GAME_BALANCE.player.maxHealth,
     maxHealth: GAME_BALANCE.player.maxHealth,
@@ -29,7 +29,7 @@ export const createPlayerSlice: StateCreator<GameStore, [], [], Pick<GameStore, 
   setPlayerHealth: (hp) =>
     set((state) => ({ player: { ...state.player, health: hp } })),
     
-  setTension: (t) => set({ tensionLevel: t }),
+
   
   toggleBinoculars: () => set((state) => ({
       player: { ...state.player, isUsingBinoculars: !state.player.isUsingBinoculars }

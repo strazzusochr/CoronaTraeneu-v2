@@ -49,14 +49,23 @@ export interface NPCData {
 }
 
 export interface PlayerState {
-    id: string;
+    id?: string;
     position: [number, number, number];
-    rotation: number;
+    rotation: [number, number, number];
     health: number;
+    maxHealth: number;
     stamina: number;
+    maxStamina: number;
     armor: number; // 0-100
-    karma: number; // -100 to 100
+    maxArmor: number;
+    karma?: number; // -100 to 100
     inventory: string[];
+    isGrounded: boolean;
+    isSprinting: boolean;
+    isJumping: boolean;
+    isDead: boolean;
+    currentEquipmentSlot: number;
+    isUsingBinoculars: boolean;
 }
 
 export interface WorldObject {
