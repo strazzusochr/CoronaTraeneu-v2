@@ -140,7 +140,7 @@ export const createGameSlice: StateCreator<GameStore, [], [], Pick<GameStore,
                 id: `npc_${npc.id}`,
                 type: 'PERSON',
                 position: npc.position as [number, number, number],
-                interactionRadius: 2,
+                interactionRadius: 4, // Erhöht auf 4m
                 label: isKrause ? "Mit Krause sprechen" : "Bürger verhaften",
                 action: () => {
                     if (isKrause) {
@@ -354,7 +354,7 @@ export const createGameSlice: StateCreator<GameStore, [], [], Pick<GameStore,
                 id: `npc_${id}`,
                 type: 'PERSON',
                 position: pos,
-                interactionRadius: 2,
+                interactionRadius: 4, // Erhöht auf 4m
                 label: type === NPCType.POLICE ? "Polizei" : "Bürger",
                 action: () => arrestSystem.startArrest(id)
             });

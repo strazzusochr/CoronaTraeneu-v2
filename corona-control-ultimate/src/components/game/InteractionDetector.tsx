@@ -13,8 +13,8 @@ export const InteractionDetector: React.FC = () => {
     const [activeInteraction, setActiveInteraction] = useState<string | null>(null);
 
     useFrame(() => {
-        // Suche nach POIs im Umkreis von 3 Metern um den Spieler
-        const nearby = poiSystem.getNearbyPOIs(playerPos, 3);
+        // Suche nach POIs im Umkreis von 4 Metern um den Spieler
+        const nearby = poiSystem.getNearbyPOIs(playerPos, 4);
 
         if (nearby.length > 0) {
             const closest = nearby[0];
@@ -31,8 +31,13 @@ export const InteractionDetector: React.FC = () => {
     // Tastatur-Abfrage für Interaktion (E-Taste)
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key.toLowerCase() === 'e' && activeInteraction) {
-                poiSystem.executeInteraction(activeInteraction);
+            if (e.key.toLowerCase() === 'e') {
+                if (activeInteraction) {
+                    poiSystem.executeInteraction(activeInteraction);
+                } else {
+                    // Optional fallback click handling if someone presses E far away from POI
+                    console.log('Pressed E but no active POI nearby.');
+                }
             }
         };
 
