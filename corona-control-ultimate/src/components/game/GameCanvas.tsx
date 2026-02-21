@@ -16,6 +16,7 @@ import { PostProcessing } from '@/components/Effects/PostProcessing';
 import { Physics } from '@react-three/rapier';
 
 import { LoadingOverlay } from '@/components/ui/LoadingOverlay';
+import { useDialogStore } from '@/managers/DialogManager';
 
 /**
  * V7.0 HYPER AAA MASTER GAME CANVAS
@@ -25,6 +26,7 @@ const CameraController = () => {
     const controlsRef = useRef<any>(null);
     const playerPos = useGameStore(state => state.player.position);
     const isPlaying = useGameStore(state => state.gameState.isPlaying);
+    const isDialogOpen = useDialogStore(state => state.isOpen);
     const shiftDown = React.useRef(false);
 
     useFrame(() => {
@@ -32,6 +34,9 @@ const CameraController = () => {
             const target = new THREE.Vector3(...playerPos);
             controlsRef.current.target.lerp(target, 0.1);
             controlsRef.current.update();
+            
+            // Disable camera input when dialog is open so mouse is free
+            controlsRef.current.enabled = !isDialogOpen;
         }
     });
 

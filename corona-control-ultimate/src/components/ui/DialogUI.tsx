@@ -1,10 +1,9 @@
 
 import React, { useEffect } from 'react';
 import { useDialogStore } from '@/managers/DialogManager';
-import type { DialogNode, DialogChoice } from '@/types/DialogTypes';
 
 const DialogUI: React.FC = () => {
-    const { isOpen, currentNode, advance, closeDialog } = useDialogStore();
+    const { isOpen, currentNode, advance } = useDialogStore();
 
     useEffect(() => {
         if (isOpen) {
@@ -59,7 +58,8 @@ const DialogUI: React.FC = () => {
             color: 'white',
             fontFamily: 'Arial, sans-serif',
             zIndex: 1000,
-            boxShadow: `0 0 20px ${borderColor}80`
+            boxShadow: `0 0 20px ${borderColor}80`,
+            pointerEvents: 'auto' // Erlaubt das Klicken der Optionen
         }}>
             {/* Header: Speaker & Emotion */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
