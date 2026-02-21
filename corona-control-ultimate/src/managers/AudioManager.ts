@@ -10,7 +10,7 @@
 
 import { EngineLoop } from '@/core/EngineLoopManager';
 import type { SfxId, VoiceLineId } from '@/types/enums';
-import { AUDIO_LAYERS, AUDIO_LAYER_TO_BUS } from '@/constants/GameBalance';
+import { AUDIO_LAYERS, AUDIO_LAYER_TO_BUS, VOICE_SUBTITLES } from '@/constants/GameBalance';
 import { useGameStore } from '@/stores/gameStore';
 
 export enum AudioLayer {
@@ -89,7 +89,7 @@ export class AudioManager {
 
     public playVoice(id: VoiceLineId, options: Partial<{ pos: [number, number, number], loop: boolean, volume: number }> = {}) {
         const audio = this.playSound(id, AudioLayer.EVENT, options);
-        const sub = (require('@/constants/GameBalance') as any).VOICE_SUBTITLES?.[id];
+        const sub = VOICE_SUBTITLES?.[id];
         if (sub) {
             const text = sub.speaker ? `${sub.speaker}: ${sub.text}` : sub.text;
             useGameStore.getState().setPrompt(text);
@@ -103,7 +103,7 @@ export class AudioManager {
         return audio;
     }
 
-    public update(delta: number) {
+    public update() {
         // V7.0 Spatial Audio Simulation
         const playerPos = [0, 0, 0]; // TODO: Player-Position aus Store holen
 
