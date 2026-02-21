@@ -1,5 +1,5 @@
 import React from 'react';
-import { EffectComposer, Bloom, Vignette, Noise, Scanline } from '@react-three/postprocessing';
+import { EffectComposer, Bloom, Vignette, SMAA, BrightnessContrast, HueSaturation } from '@react-three/postprocessing';
 import { POST_PROCESSING_PRESETS } from '@/rendering/RenderPipeline';
 import { getGameTime } from '@/core/TimeEngine';
 
@@ -22,15 +22,16 @@ export const PostProcessing: React.FC = () => {
 
     return (
         <EffectComposer multisampling={4}>
+            <SMAA />
             <Bloom
                 intensity={preset.bloomIntensity}
                 luminanceThreshold={preset.bloomThreshold}
                 luminanceSmoothing={0.025}
                 mipmapBlur
             />
-            <Noise opacity={0.05} />
-            <Vignette eskil={false} offset={0.1} darkness={0.7} />
-            <Scanline density={1.5} opacity={0.05} />
+            <BrightnessContrast brightness={0} contrast={0.08} />
+            <HueSaturation saturation={0.15} hue={0} />
+            <Vignette eskil={false} offset={0.1} darkness={0.65} />
         </EffectComposer>
     );
 };

@@ -22,7 +22,7 @@ const CrowdRenderer: React.FC = () => {
                 const db = Math.pow(b.position[0] - playerPos[0], 2) + Math.pow(b.position[2] - playerPos[2], 2);
                 return da - db;
             })
-            .slice(0, 35); // Erhöht auf 35 High-Res Modelle in der Nähe
+            .slice(0, 15); // Reduziert von 35 auf 15 für viel bessere Performance (Schatten + Mesh)
     }, [npcs, playerPos, DISTANCE_THRESHOLD]);
 
     return (

@@ -12,7 +12,7 @@ import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Sky, Stars, Environment } from '@react-three/drei';
 import * as THREE from 'three';
-import TimeSystem from '@/core/TimeSystem';
+
 import { useTimeEngine } from '@/core/TimeEngine';
 
 
@@ -98,8 +98,8 @@ function calculateLightIntensity(gameMinutes: number): {
     }
 
     const res = {
-        directional: hour >= 6 && hour <= 18 ? 0.5 + Math.sin(((hour - 6) / 12) * Math.PI) * 1.5 : 0.15,
-        ambient: hour >= 6 && hour <= 18 ? 0.4 + Math.sin(((hour - 6) / 12) * Math.PI) * 0.4 : 0.2, // Higher minimum ambient
+        directional: hour >= 6 && hour <= 18 ? 0.7 + Math.sin(((hour - 6) / 12) * Math.PI) * 1.5 : 0.15,
+        ambient: hour >= 6 && hour <= 18 ? 0.3 + Math.sin(((hour - 6) / 12) * Math.PI) * 0.25 : 0.1,
         starsOpacity: hour >= 20 || hour < 5 ? 1 : 0,
         streetLights: hour >= 18 || hour < 6, // Turn on at 18:00
         flicker: false
@@ -115,6 +115,8 @@ function calculateSkyColors(gameMinutes: number): {
     turbidity: number;
     rayleigh: number;
     sunColor: THREE.Color;
+    fogColor: string;
+    envPreset: 'city' | 'night' | 'sunset' | 'dawn';
 } {
     if (gameMinutes >= 360 && gameMinutes <= 360.0833) {
         const t = (gameMinutes - 360) * 60;
@@ -128,7 +130,9 @@ function calculateSkyColors(gameMinutes: number): {
         return {
             turbidity: 20 * (fog / 0.008),
             rayleigh: 1.0 - (fog / 0.008) + 0.1,
-            sunColor: new THREE.Color(0xFFAA44).lerp(new THREE.Color(0xFFFFF0), t / 5)
+            sunColor: new THREE.Color(0xFFAA44).lerp(new THREE.Color(0xFFFFF0), t / 5),
+            fogColor: '#8a9aab',
+            envPreset: 'dawn'
         };
     }
 
@@ -141,11 +145,11 @@ function calculateSkyColors(gameMinutes: number): {
     else if (hour >= 12 && hour < 18) phase = 'MIDDAY';
     else if (hour >= 18 && hour < 22) phase = 'EVENING';
     switch (phase) {
-        case 'MORNING': return { turbidity: 6, rayleigh: 1.0, sunColor: new THREE.Color(0xFFAA44) };
-        case 'MIDDAY': return { turbidity: 8, rayleigh: 0.5, sunColor: new THREE.Color(0xFFFFF0) };
-        case 'EVENING': return { turbidity: 10, rayleigh: 2.0, sunColor: new THREE.Color(0xFF6633) };
+        case 'MORNING': return { turbidity: 6, rayleigh: 1.0, sunColor: new THREE.Color(0xFFAA44), fogColor: '#d4a373', envPreset: 'dawn' };
+        case 'MIDDAY': return { turbidity: 8, rayleigh: 0.5, sunColor: new THREE.Color(0xFFFFF0), fogColor: '#a8dadc', envPreset: 'city' };
+        case 'EVENING': return { turbidity: 10, rayleigh: 2.0, sunColor: new THREE.Color(0xFF6633), fogColor: '#e07a5f', envPreset: 'sunset' };
         case 'NIGHT':
-        default: return { turbidity: 20, rayleigh: 0.1, sunColor: new THREE.Color(0x4466AA) };
+        default: return { turbidity: 20, rayleigh: 0.1, sunColor: new THREE.Color(0x4466AA), fogColor: '#1a1f2b', envPreset: 'night' };
     }
 }
 
@@ -173,7 +177,7 @@ const DynamicLighting: React.FC<DynamicLightingProps> = ({ quality, castShadows 
 
     return (
         <group name="DynamicLighting_System">
-            <hemisphereLight args={[0xB4D4FF, 0x504030, intensity.ambient]} />
+            <hemisphereLight args={[0xB4D4FF, 0x504030, intensity.ambient * 0.75]} />
 
             <directionalLight
                 ref={directionalLightRef}
@@ -181,9 +185,16 @@ const DynamicLighting: React.FC<DynamicLightingProps> = ({ quality, castShadows 
                 intensity={intensity.directional}
                 castShadow={castShadows && quality === 'HIGH'}
                 shadow-mapSize={[1024, 1024]}
-            />
+                shadow-bias={-0.001}
+                shadow-normalBias={0.05}
+            >
+                <orthographicCamera attach="shadow-camera" args={[-40, 40, 40, -40, 1, 300]} />
+            </directionalLight>
 
-            <ambientLight intensity={intensity.ambient * 0.5} color={0xFFFFFF} />
+            <ambientLight intensity={intensity.ambient * 0.3} color={0xFFFFFF} />
+            
+            <Environment preset={skyColors.envPreset} environmentIntensity={0.4} />
+            <fogExp2 attach="fog" color={skyColors.fogColor} density={0.012} />
 
             <Sky 
                 distance={450000} 

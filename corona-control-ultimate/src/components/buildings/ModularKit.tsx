@@ -11,7 +11,7 @@ export const ModularKit = {
         const rusticaGeo = useMemo(() => new THREE.BoxGeometry(width, height, depth, 1, 1, 1), [width, height, depth]);
         return (
             <mesh geometry={rusticaGeo} castShadow receiveShadow>
-                <meshStandardMaterial color="#E3D9C6" roughness={0.8} />
+                <meshStandardMaterial color="#c0b9a8" roughness={0.85} metalness={0.1} envMapIntensity={1.2} />
             </mesh>
         );
     },
@@ -24,17 +24,17 @@ export const ModularKit = {
         return (
             <group position={position}>
                 {/* Frame */}
-                <mesh geometry={frameGeo} castShadow>
-                    <meshStandardMaterial color="#fff" />
+                <mesh geometry={frameGeo} castShadow receiveShadow>
+                    <meshStandardMaterial color="#e8e8e8" roughness={0.4} metalness={0.2} envMapIntensity={1.5} />
                 </mesh>
                 {/* Upper Tracery Arch */}
-                <mesh position={[0, 1.25, 0]} geometry={traceryGeo}>
-                    <meshStandardMaterial color="#ccc" />
+                <mesh position={[0, 1.25, 0]} geometry={traceryGeo} castShadow receiveShadow>
+                    <meshStandardMaterial color="#cbcbcb" roughness={0.5} metalness={0.1} envMapIntensity={1.2} />
                 </mesh>
                 {/* Glass */}
-                <mesh position={[0, 0, -0.05]}>
+                <mesh position={[0, 0, -0.05]} receiveShadow>
                     <planeGeometry args={[1.2, 2.2]} />
-                    <meshStandardMaterial color="#222" metalness={1} roughness={0.1} />
+                    <meshStandardMaterial color="#111" metalness={1.0} roughness={0.05} envMapIntensity={2.5} />
                 </mesh>
             </group>
         );
@@ -42,9 +42,9 @@ export const ModularKit = {
 
     // 3. Ornaments / Cartouches (3,000 Polygons)
     Ornament: ({ position = [0, 0, 0] as [number, number, number] }) => (
-        <mesh position={position} castShadow>
+        <mesh position={position} castShadow receiveShadow>
             <sphereGeometry args={[0.3, 32, 24]} />
-            <meshStandardMaterial color="#d4c8b0" />
+            <meshStandardMaterial color="#c2b6a2" roughness={0.7} metalness={0.2} envMapIntensity={1.0} />
         </mesh>
     )
 };
