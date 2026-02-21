@@ -1,5 +1,5 @@
 import React, { Suspense, useRef } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, Environment, Html } from '@react-three/drei';
 // import { WebGPURenderer } from 'three/webgpu';
 import { useEngineLoop } from '@/core/EngineLoopManager';
@@ -23,6 +23,7 @@ import { useDialogStore } from '@/managers/DialogManager';
  */
 
 const CameraController = () => {
+    const { camera } = useThree();
     const controlsRef = useRef<any>(null);
     const playerPos = useGameStore(state => state.player.position);
     const isPlaying = useGameStore(state => state.gameState.isPlaying);
@@ -32,9 +33,26 @@ const CameraController = () => {
     useFrame(() => {
         if (controlsRef.current && isPlaying) {
             const target = new THREE.Vector3(...playerPos);
-            controlsRef.current.target.lerp(target, 0.1);
-            controlsRef.current.update();
             
+            // 1. Target smooth interpolieren
+            controlsRef.current.target.lerp(target, 0.1);
+            
+            // 2. Kamera-Position nachführen basierend auf aktuellem spherical offset von OrbitControls
+            if (controlsRef.current.enabled !== false) {
+                 // OrbitControls berechnet intern die Kameraposition basierend auf dem target.
+                 // Wir müssen nur sicherstellen, dass das Target nachgezogen wird und Controls geupdated werden.
+                 controlsRef.current.update();
+                 
+                 // Berechne den Offset der Kamera zum alten Target und wende ihn auf das neue an
+                 const offset = camera.position.clone().sub(controlsRef.current.target);
+                 // Limitiere die Distanz (falls man herausgezoomt hat) oder erzwinge eine Basis-Distanz
+                 if (offset.length() > 30) offset.setLength(30);
+                 
+                 // Sanftes Nachziehen der Kamera-Position
+                 const idealCameraPos = target.clone().add(offset);
+                 camera.position.lerp(idealCameraPos, 0.1);
+            }
+
             // Disable camera input when dialog is open so mouse is free
             controlsRef.current.enabled = !isDialogOpen;
         }
@@ -76,7 +94,7 @@ const CameraController = () => {
             rotateSpeed={0.9}
             enableZoom={true}
             minDistance={5}
-            maxDistance={600}
+            maxDistance={30}
             zoomSpeed={1.1}
             enableDamping={true}
             dampingFactor={0.08}
