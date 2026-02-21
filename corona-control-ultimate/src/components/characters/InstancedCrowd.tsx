@@ -13,10 +13,9 @@ interface InstancedCrowdProps {
     distanceThreshold?: number;
 }
 
-export const InstancedCrowd: React.FC<InstancedCrowdProps> = ({ distanceThreshold = 15 }) => {
+export const InstancedCrowd: React.FC<InstancedCrowdProps> = () => {
     const meshRef = useRef<THREE.InstancedMesh>(null);
     const npcs = useGameStore(state => state.npcs);
-    const playerPos = useGameStore(state => state.player.position);
 
     const tempObject = useMemo(() => new THREE.Object3D(), []);
     const tempColor = useMemo(() => new THREE.Color(), []);
@@ -44,11 +43,16 @@ export const InstancedCrowd: React.FC<InstancedCrowdProps> = ({ distanceThreshol
         npcs.forEach((npc, i) => {
             if (i >= 500) return;
 
-            const dx = npc.position[0] - playerPos[0];
-            const dz = npc.position[2] - playerPos[2];
-            const distSq = dx * dx + dz * dz;
-
-            // Distance filtering: Only render if outside detailed range
+            // Sort-Logik wie in CrowdRenderer simulieren oder vereinfacht:
+            // Da CrowdRenderer genau die 10 NÄCHSTEN (bzw. die ersten 10 im Filter) rendert,
+            // ist es fehleranfällig, hier einen pauschalen distSq Check zu machen.
+            // Bessere Lösung: Rendere hier einfach ALLE instanced, und wer detailliert ist, 
+            // überlagert sich halt (Instanced Mesh ohne Shadow, stört kaum) ODER
+            // wir beheben das slice(0, 10) im CrowdRenderer und setzen es auf 30.
+            
+            // Um das direkte Verschwinden zu verhindern: Wir blenden HIER NICHT aus.
+            // (Kommentieren den early return aus)
+            /*
             if (distSq < distanceThreshold * distanceThreshold) {
                 tempObject.position.set(0, -100, 0);
                 tempObject.scale.set(0, 0, 0);
@@ -56,6 +60,7 @@ export const InstancedCrowd: React.FC<InstancedCrowdProps> = ({ distanceThreshol
                 meshRef.current!.setMatrixAt(i, tempObject.matrix);
                 return;
             }
+            */
 
             // 1. Position-Sync
             tempObject.position.set(npc.position[0], npc.position[1], npc.position[2]);

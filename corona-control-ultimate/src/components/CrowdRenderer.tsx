@@ -16,7 +16,13 @@ const CrowdRenderer: React.FC = () => {
                 const dz = playerPos[2] - npc.position[2];
                 return (dx * dx + dz * dz) <= DISTANCE_THRESHOLD * DISTANCE_THRESHOLD;
             })
-            .slice(0, 10);
+            // Sort by distance so we actually get the NEAREST ones
+            .sort((a, b) => {
+                const da = Math.pow(a.position[0] - playerPos[0], 2) + Math.pow(a.position[2] - playerPos[2], 2);
+                const db = Math.pow(b.position[0] - playerPos[0], 2) + Math.pow(b.position[2] - playerPos[2], 2);
+                return da - db;
+            })
+            .slice(0, 35); // Erhöht auf 35 High-Res Modelle in der Nähe
     }, [npcs, playerPos, DISTANCE_THRESHOLD]);
 
     return (
