@@ -14,11 +14,11 @@ interface BuildingProps {
 
 const windowGeo = new THREE.BoxGeometry(1.2, 1.8, 0.2);
 const glassMat = new THREE.MeshStandardMaterial({ 
-    color: '#88ccff', 
+    color: '#2e3b32', // Dunkles Grün/Grau für mediterrane Fensterläden
     transparent: true, 
-    opacity: 0.6, 
-    metalness: 0.9, 
-    roughness: 0.05 
+    opacity: 0.85, 
+    metalness: 0.3, 
+    roughness: 0.4 
 });
 
 export const Building: React.FC<BuildingProps> = ({ 
@@ -76,23 +76,30 @@ export const Building: React.FC<BuildingProps> = ({
             <RigidBody type="fixed" colliders={false}>
                 <mesh castShadow receiveShadow>
                     <boxGeometry args={[width, height, depth]} />
-                    <meshStandardMaterial color={color} roughness={0.6} metalness={0.1} />
+                    <meshStandardMaterial color={color} roughness={0.8} metalness={0.05} />
+                </mesh>
+                
+                {/* Rustika-Sockel (Erdgeschoss) */}
+                <mesh position={[0, -height / 2 + floorHeight / 2, 0]} castShadow receiveShadow>
+                    <boxGeometry args={[width + 0.2, floorHeight, depth + 0.2]} />
+                    <meshStandardMaterial color="#bba793" roughness={0.9} />
                 </mesh>
                 
                 <instancedMesh ref={meshRef} args={[windowGeo, glassMat, totalWindows]} />
 
                 {[...Array(numFloors)].map((_, i) => (
                     <group key={`ledge-${i}`} position={[0, (i * floorHeight + 0.1) - height/2, 0]}>
-                        <mesh>
-                            <boxGeometry args={[width + 0.4, 0.15, depth + 0.4]} />
-                            <meshStandardMaterial color="#2a2a2a" />
+                        <mesh castShadow receiveShadow>
+                            <boxGeometry args={[width + 0.6, 0.25, depth + 0.6]} />
+                            <meshStandardMaterial color="#c6b199" roughness={0.9} />
                         </mesh>
                     </group>
                 ))}
 
-                <mesh position={[0, height / 2 + 0.3, 0]}>
-                    <boxGeometry args={[width + 0.8, 0.6, depth + 0.8]} />
-                    <meshStandardMaterial color="#1a1a1a" />
+                {/* Dachgesims (Cornice) */}
+                <mesh position={[0, height / 2 + 0.4, 0]} castShadow receiveShadow>
+                    <boxGeometry args={[width + 1.2, 0.8, depth + 1.2]} />
+                    <meshStandardMaterial color="#a89278" roughness={0.9} />
                 </mesh>
 
                 <CuboidCollider args={[width / 2, height / 2, depth / 2]} />

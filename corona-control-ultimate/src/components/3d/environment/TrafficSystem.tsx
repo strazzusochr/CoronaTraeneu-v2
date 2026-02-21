@@ -1,22 +1,63 @@
 import React, { useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
 import { RigidBody, CuboidCollider } from '@react-three/rapier';
 
 /**
  * ENV-014: TrafficSystem
- * Basic traffic simulation placeholder.
+ * Basic traffic simulation placeholder on Rome Grid Coordinates.
  */
 export const TrafficSystem: React.FC = () => {
     const bodiesRef = useRef<any[]>([]);
+    
     const configs = useMemo(() => {
-        return Array.from({ length: 20 }, (_, i) => {
-            const laneX = (i % 2 === 0 ? 6 : -6);
-            const streetOffset = (Math.floor(i / 4) - 2) * 50;
-            const speed = 8 + (i % 3) * 4;
-            const z = -300 + i * 30;
-            return { x: laneX + streetOffset, y: 0.5, z, speed, color: ['#333', '#555', '#777', '#999', '#441111', '#114411'][i % 6] };
+        // Die validen, ununterbrochenen Straßenachsen im 48-Einheiten Rom-Raster (außerhalb des Parks)
+        const validVerticalStreets = [-116, 124]; // X-Koordinaten
+        const validHorizontalStreets = [-116, 124]; // Z-Koordinaten
+
+        const cars = [];
+        let idCount = 0;
+        
+        // Vertikale Straßen (Z ändert sich, X konstant)
+        validVerticalStreets.forEach((xPos) => {
+            for (let i = 0; i < 8; i++) {
+                const isForward = i % 2 === 0;
+                const laneX = isForward ? 2 : -2;
+                const speed = (isForward ? 1 : -1) * (10 + Math.random() * 5);
+                const startZ = -200 + i * 50;
+                cars.push({
+                    id: idCount++,
+                    type: 'vertical',
+                    x: xPos + laneX,
+                    y: 0.6,
+                    z: startZ,
+                    speed: speed,
+                    rotation: isForward ? 0 : Math.PI,
+                    color: ['#333', '#555', '#777', '#999', '#441111', '#114411'][idCount % 6]
+                });
+            }
         });
+
+        // Horizontale Straßen (X ändert sich, Z konstant)
+        validHorizontalStreets.forEach((zPos) => {
+            for (let i = 0; i < 8; i++) {
+                const isForward = i % 2 === 0;
+                const laneZ = isForward ? -2 : 2; // Rechtsverkehr auf der Z Achse
+                const speed = (isForward ? 1 : -1) * (10 + Math.random() * 5);
+                const startX = -200 + i * 50;
+                cars.push({
+                    id: idCount++,
+                    type: 'horizontal',
+                    x: startX,
+                    y: 0.6,
+                    z: zPos + laneZ,
+                    speed: speed,
+                    rotation: isForward ? -Math.PI / 2 : Math.PI / 2,
+                    color: ['#333', '#555', '#777', '#999', '#441111', '#114411'][idCount % 6]
+                });
+            }
+        });
+
+        return cars;
     }, []);
 
     useFrame((state, delta) => {
@@ -24,21 +65,21 @@ export const TrafficSystem: React.FC = () => {
             const cfg = configs[i];
             if (!rb || !cfg) return;
             const t = rb.translation();
-            let newZ = t.z + delta * cfg.speed;
+            
+            let newX = t.x;
+            let newZ = t.z;
 
-            const isNearCenter = Math.abs(cfg.x) < 15;
-            const isInStageZ = newZ > -80 && newZ < -20;
-            if (isNearCenter && isInStageZ) {
-                newZ = -20;
+            if (cfg.type === 'vertical') {
+                newZ += cfg.speed * delta;
+                if (newZ > 250) newZ = -250;
+                if (newZ < -250) newZ = 250;
+            } else {
+                newX += cfg.speed * delta;
+                if (newX > 250) newX = -250;
+                if (newX < -250) newX = 250;
             }
 
-            if (newZ > 300) {
-                newZ = -300;
-                const lane = Math.random() > 0.5 ? 6 : -6;
-                const streetOffset = (Math.floor(i / 4) - 2) * 50;
-                cfg.x = lane + streetOffset;
-            }
-            rb.setNextKinematicTranslation({ x: cfg.x, y: cfg.y, z: newZ });
+            rb.setNextKinematicTranslation({ x: newX, y: cfg.y, z: newZ });
         });
     });
 
@@ -53,22 +94,25 @@ export const TrafficSystem: React.FC = () => {
                     position={[cfg.x, cfg.y, cfg.z]}
                 >
                     <CuboidCollider args={[1, 0.6, 2.25]} />
-                    <mesh>
-                        <boxGeometry args={[2, 1.2, 4.5]} />
-                        <meshStandardMaterial 
-                            color={cfg.color}
-                            roughness={0.5}
-                            metalness={0.8}
-                        />
-                    </mesh>
-                    <mesh position={[0.7, 0.2, 2.3]}>
-                        <boxGeometry args={[0.4, 0.2, 0.1]} />
-                        <meshStandardMaterial color="#ffffaa" emissive="#ffffaa" emissiveIntensity={2} />
-                    </mesh>
-                    <mesh position={[-0.7, 0.2, 2.3]}>
-                        <boxGeometry args={[0.4, 0.2, 0.1]} />
-                        <meshStandardMaterial color="#ffffaa" emissive="#ffffaa" emissiveIntensity={2} />
-                    </mesh>
+                    <group rotation={[0, cfg.rotation, 0]}>
+                        <mesh>
+                            <boxGeometry args={[2, 1.2, 4.5]} />
+                            <meshStandardMaterial 
+                                color={cfg.color}
+                                roughness={0.5}
+                                metalness={0.8}
+                            />
+                        </mesh>
+                        {/* Scheinwerfer */}
+                        <mesh position={[0.7, 0.2, 2.3]}>
+                            <boxGeometry args={[0.4, 0.2, 0.1]} />
+                            <meshStandardMaterial color="#ffffaa" emissive="#ffffaa" emissiveIntensity={2} />
+                        </mesh>
+                        <mesh position={[-0.7, 0.2, 2.3]}>
+                            <boxGeometry args={[0.4, 0.2, 0.1]} />
+                            <meshStandardMaterial color="#ffffaa" emissive="#ffffaa" emissiveIntensity={2} />
+                        </mesh>
+                    </group>
                 </RigidBody>
             ))}
         </group>

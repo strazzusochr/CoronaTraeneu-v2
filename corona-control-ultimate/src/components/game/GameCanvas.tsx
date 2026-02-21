@@ -45,8 +45,8 @@ const CameraController = () => {
                  
                  // Berechne den Offset der Kamera zum alten Target und wende ihn auf das neue an
                  const offset = camera.position.clone().sub(controlsRef.current.target);
-                 // Limitiere die Distanz (falls man herausgezoomt hat) oder erzwinge eine Basis-Distanz
-                 if (offset.length() > 30) offset.setLength(30);
+                 // Limitiere die Distanz
+                 if (offset.length() > 500) offset.setLength(500);
                  
                  // Sanftes Nachziehen der Kamera-Position
                  const idealCameraPos = target.clone().add(offset);
@@ -94,12 +94,12 @@ const CameraController = () => {
             rotateSpeed={0.9}
             enableZoom={true}
             minDistance={5}
-            maxDistance={30}
+            maxDistance={500}
             zoomSpeed={1.1}
             enableDamping={true}
             dampingFactor={0.08}
-            minPolarAngle={0.01}
-            maxPolarAngle={Math.PI - 0.01}
+            minPolarAngle={0.2}
+            maxPolarAngle={Math.PI * 0.47}
             mouseButtons={{
                 LEFT: THREE.MOUSE.ROTATE,
                 MIDDLE: THREE.MOUSE.DOLLY,
@@ -207,7 +207,7 @@ export const GameCanvas = () => {
     return (
         <Canvas
             shadows
-            camera={{ position: [20, 20, 20], fov: 45 }}
+            camera={{ position: [0, 25, 40], fov: 55 }}
             style={{ background: '#050505' }}
             gl={{
                 powerPreference: 'high-performance',

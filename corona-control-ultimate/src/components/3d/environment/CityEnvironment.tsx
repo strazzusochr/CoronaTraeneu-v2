@@ -1,10 +1,9 @@
-import React, { Suspense, useMemo } from 'react';
+import React, { Suspense } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import { useGameStore } from '@/stores/gameStore';
-import { StephansplatzGround } from '@/world/WienScene';
+// Removed StephansplatzGround for Rome update
 import { Fountain } from './Fountain';
-// import Street from './Street';
 import Building from './Building';
 // import Sidewalk from './Sidewalk';
 import InstancedProps from './InstancedProps';
@@ -22,14 +21,10 @@ import { Ambulance } from '@/components/game/entities/Ambulance';
 import ParticleSystem from '@/components/Effects/ParticleSystem';
 import AudioManager, { AudioLayer } from '@/managers/AudioManager';
 import { ConcertStage } from './ConcertStage';
-import { LandmarkVienna } from './LandmarkVienna';
+// Removed LandmarkVienna for Rome update
+import { SwedishFire } from './SwedishFire';
+import { FlowerBed } from './FlowerBed';
 
-// Seeded random helper to keep render pure
-let citySeed = 42;
-const pureRandom = () => {
-    citySeed = (citySeed * 16807) % 2147483647;
-    return (citySeed - 1) / 2147483646;
-};
 
 type LevelVehicleType = 'POLICE_CAR' | 'WATER_CANNON' | 'AMBULANCE';
 
@@ -75,9 +70,10 @@ const LEVEL1_PROP_INSTANCES: Array<{ id: string; position: [number, number, numb
 ];
 
 const LEVEL1_VEGETATION: Array<{ id: string; position: [number, number, number]; type: 'tree' | 'bush' }> = [
-    ...[...Array(10)].map((_, i) => ({ id: `veg_tree_${i}`, position: [15, 0, -80 + i * 15] as [number, number, number], type: 'tree' as const })),
-    ...[...Array(10)].map((_, i) => ({ id: `veg_tree_2_${i}`, position: [-15, 0, -80 + i * 15] as [number, number, number], type: 'tree' as const })),
-    ...[...Array(5)].map((_, i) => ({ id: `veg_bush_${i}`, position: [5 + i, 0, 10] as [number, number, number], type: 'bush' as const }))
+    // Alleebäume entlang Via della Conciliazione (Nordseite)
+    ...[...Array(15)].map((_, i) => ({ id: `via_tree_north_${i}`, position: [80 + i * 15, 0, -18] as [number, number, number], type: 'tree' as const })),
+    // Alleebäume entlang Via della Conciliazione (Südseite)
+    ...[...Array(15)].map((_, i) => ({ id: `via_tree_south_${i}`, position: [80 + i * 15, 0, 18] as [number, number, number], type: 'tree' as const }))
 ];
 
 const LEVEL1_STREET_LIGHTS: Array<{ id: string; position: [number, number, number]; rotation?: [number, number, number] }> = [
@@ -98,6 +94,40 @@ const LEVEL1_DESTRUCTIBLES: Array<{ id: string; position: [number, number, numbe
 const LEVEL1_GROUND_DECALS: Array<{ id: string; position: [number, number, number]; type: 'graffiti' | 'crack' }> = [
     { id: 'decal_graffiti_center', position: [0, 0.03, 5], type: 'graffiti' as const },
     { id: 'decal_crack_south', position: [2, 0.03, -5], type: 'crack' as const }
+];
+
+// Generiere 20 statische Positionen für Schwedenfeuer im Park (X: -60..68, Z: -60..68)
+const PARK_FIRES: Array<{ id: string; position: [number, number, number] }> = (() => {
+    const fires = [];
+    const prng = { s: 99 };
+    const rand = () => { prng.s = (prng.s * 16807) % 2147483647; return (prng.s - 1) / 2147483646; };
+    for (let i = 0; i < 20; i++) {
+        let x = (rand() - 0.5) * 110; // -55 to 55
+        const z = (rand() - 0.5) * 110; // -55 to 55
+        // Halte die direkte Sichtachse in der Mitte (X: -10..10, Z: >0) etwas freier
+        if (Math.abs(x) < 15 && z > -10 && z < 60) {
+            x += (x > 0 ? 20 : -20);
+        }
+        fires.push({ id: `fire_${i}`, position: [x, 0.02, z] as [number, number, number] });
+    }
+    return fires;
+})();
+
+// ======================================================
+// ROM STADTRASTER — Konstanten
+// ======================================================
+const BLOCK_W = 40;   // Breite eines Häuserblocks
+const BLOCK_D = 40;   // Tiefe eines Häuserblocks
+const STREET_W = 8;   // Straßenbreite (enge Gassen)
+const CELL = BLOCK_W + STREET_W; // = 48 Einheiten pro Zelle
+const GRID = 9;       // 9x9 Raster = kompakte, dichte Stadt
+const HALF = Math.floor(GRID / 2); // 4
+const PIAZZA_R = 0;   // Nur 1 zentraler Block frei (48x48 Einheiten)
+
+// Römische Erdtöne für Palazzi
+const ROME_COLORS = [
+    '#d49a6a', '#e8cfa6', '#bba793', '#c6b199', '#e3d0b8',
+    '#d4a574', '#c9956b', '#ddc8a9', '#b89f83', '#cbb896'
 ];
 
 const MissionTrigger = ({ position, radius, missionIndex, label }: { position: [number, number, number], radius: number, missionIndex: number, label: string }) => {
@@ -154,41 +184,163 @@ export const CityEnvironment: React.FC = () => {
         };
     }, []);
 
-    const buildingGrid = React.useMemo(() => {
-        const buildings = [];
-        const blocks = 6; // Reduziert von 8 (äußere Reihen entfernt)
-        const spacing = 60;
+    // Straßen-Elemente: Raster + Diagonalen + S-Kurve
+    const streetElements = React.useMemo(() => {
+        const seedRand = (s: number) => { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; };
+        const streets: React.ReactElement[] = [];
+        const totalLen = GRID * CELL + STREET_W * 2;
 
-        for (let x = -blocks / 2; x < blocks / 2; x++) {
-            for (let z = -blocks / 2; z < blocks / 2; z++) {
-                // Clear the 2x2 center area for the square (radius 1 blocks = -1 to 1)
-                if (Math.abs(x) < 1 && Math.abs(z) < 1) continue;
-                
-                // Clear area for the ConcertStage at z = 0 and Stephansdom at z = -1 and z = -2
-                if (x === 0 && (z === 0 || z === -1 || z === -2)) continue;
-
-                const posX = x * spacing;
-                const posZ = z * spacing;
-
-                // Simple 2-building block for performance
-                buildings.push(
-                    <Building
-                        key={`b-${x}-${z}-1`}
-                        position={[posX - 10, 10, posZ - 10]}
-                        width={20}
-                        height={20}
-                        depth={20}
-                        color="#E3D9C6"
-                    />
+        // Horizontale Straßen (laufen entlang X, bei jeder Z-Block-Grenze)
+        for (let i = 0; i <= GRID; i++) {
+            const sz = -HALF * CELL - BLOCK_D / 2 + i * CELL;
+            const hOffset = (seedRand(i * 137 + 7) - 0.5) * 4;
+            
+            // Wenn Straße durch die vergrößerte Wiese verläuft (Z zwischen -70 und +75)
+            if (sz > -70 && sz < 75) {
+                // Cut the street to make room for the 136x136 park (X from -64 to +72)
+                const leftSideLen = (totalLen / 2) - 64; // Distance from left edge to park edge (-64)
+                streets.push(
+                    <mesh key={`sh_${i}_l`} rotation={[-Math.PI / 2, 0, seedRand(i * 53) * 0.03]} position={[hOffset - 64 - leftSideLen / 2, 0.02, sz]} receiveShadow>
+                        <planeGeometry args={[leftSideLen, STREET_W]} />
+                        <meshStandardMaterial color="#4a4a4a" roughness={0.85} />
+                    </mesh>
                 );
+                const rightSideLen = (totalLen / 2) - 72; // Distance from park edge (+72) to right edge
+                streets.push(
+                    <mesh key={`sh_${i}_r`} rotation={[-Math.PI / 2, 0, seedRand(i * 53) * 0.03]} position={[hOffset + 72 + rightSideLen / 2, 0.02, sz]} receiveShadow>
+                        <planeGeometry args={[rightSideLen, STREET_W]} />
+                        <meshStandardMaterial color="#4a4a4a" roughness={0.85} />
+                    </mesh>
+                );
+            } else {
+                streets.push(
+                    <mesh key={`sh_${i}`} rotation={[-Math.PI / 2, 0, seedRand(i * 53) * 0.03]} position={[hOffset, 0.02, sz]} receiveShadow>
+                        <planeGeometry args={[totalLen, STREET_W]} />
+                        <meshStandardMaterial color="#4a4a4a" roughness={0.85} />
+                    </mesh>
+                );
+            }
+        }
+        
+        // Vertikale Straßen (laufen entlang Z, bei jeder X-Block-Grenze)
+        for (let i = 0; i <= GRID; i++) {
+            const sx = -HALF * CELL - BLOCK_W / 2 + i * CELL;
+            const vOffset = (seedRand(i * 211 + 3) - 0.5) * 4;
+            
+            // Wenn Straße durch die vergrößerte Wiese verläuft (X zwischen -70 und +75)
+            if (sx > -70 && sx < 75) {
+                // Cut the street for the park (Z from -64 to +72)
+                const topSideLen = (totalLen / 2) - 64; // Negative Z part ending at -64
+                const bottomSideLen = (totalLen / 2) - 72; // Positive Z part starting at +72
+                streets.push(
+                    <mesh key={`sv_${i}_t`} rotation={[-Math.PI / 2, 0, seedRand(i * 79) * 0.03]} position={[sx, 0.02, vOffset - 64 - topSideLen / 2]} receiveShadow>
+                        <planeGeometry args={[STREET_W, topSideLen]} />
+                        <meshStandardMaterial color="#4a4a4a" roughness={0.85} />
+                    </mesh>
+                );
+                streets.push(
+                    <mesh key={`sv_${i}_b`} rotation={[-Math.PI / 2, 0, seedRand(i * 79) * 0.03]} position={[sx, 0.02, vOffset + 72 + bottomSideLen / 2]} receiveShadow>
+                        <planeGeometry args={[STREET_W, bottomSideLen]} />
+                        <meshStandardMaterial color="#4a4a4a" roughness={0.85} />
+                    </mesh>
+                );
+            } else {
+                streets.push(
+                    <mesh key={`sv_${i}`} rotation={[-Math.PI / 2, 0, seedRand(i * 79) * 0.03]} position={[sx, 0.02, vOffset]} receiveShadow>
+                        <planeGeometry args={[STREET_W, totalLen]} />
+                        <meshStandardMaterial color="#4a4a4a" roughness={0.85} />
+                    </mesh>
+                );
+            }
+        }
+
+        // DIAGONALSTRASSE 1: Von Südwest nach Nordost (45°) - AUßERHALB des Zentrums
+        const diagLen = totalLen * 0.5;
+        streets.push(
+            <mesh key="diag_45_a" rotation={[-Math.PI / 2, 0, Math.PI / 4]} position={[CELL * 2.5, 0.025, CELL * 2.5]} receiveShadow>
+                <planeGeometry args={[diagLen, STREET_W * 1.5]} />
+                <meshStandardMaterial color="#555555" roughness={0.8} />
+            </mesh>
+        );
+        streets.push(
+            <mesh key="diag_45_b" rotation={[-Math.PI / 2, 0, Math.PI / 4]} position={[-CELL * 2.5, 0.025, -CELL * 2.5]} receiveShadow>
+                <planeGeometry args={[diagLen, STREET_W * 1.5]} />
+                <meshStandardMaterial color="#555555" roughness={0.8} />
+            </mesh>
+        );
+
+        // DIAGONALSTRASSE 2: Schräg (-30°) - AUßERHALB des Zentrums
+        streets.push(
+            <mesh key="diag_m30" rotation={[-Math.PI / 2, 0, -Math.PI / 6]} position={[CELL * 2, 0.025, -CELL * 2]} receiveShadow>
+                <planeGeometry args={[diagLen * 0.8, STREET_W * 1.2]} />
+                <meshStandardMaterial color="#505050" roughness={0.8} />
+            </mesh>
+        );
+
+        // S-KURVE: Nur außerhalb des Parkbereichs (|x|>60)
+        const sCurveSegs = 16;
+        for (let s = 0; s < sCurveSegs; s++) {
+            const t = (s / sCurveSegs) * Math.PI * 2;
+            const sx = -CELL * 2.5 + (s / sCurveSegs) * CELL * 5;
+            const sz = Math.sin(t) * CELL * 1.2;
+            // Segmente im Parkbereich überspringen (Park is from X:-64 to +72, Z:-64 to +72)
+            if (sx > -65 && sx < 75 && sz > -65 && sz < 75) continue;
+            const angle = Math.atan2(
+                Math.sin((t + 0.3)) * CELL * 1.2 - sz,
+                (CELL * 5 / sCurveSegs)
+            );
+            streets.push(
+                <mesh key={`scurve_${s}`} rotation={[-Math.PI / 2, 0, -angle]} position={[sx, 0.025, sz]} receiveShadow>
+                    <planeGeometry args={[CELL * 5 / sCurveSegs + 4, STREET_W]} />
+                    <meshStandardMaterial color="#484848" roughness={0.85} />
+                </mesh>
+            );
+        }
+
+        return streets;
+    }, []);
+
+    // Häuserblöcke — ORGANISCH: Random Offset, Rotation, Größe
+    const buildingGrid = React.useMemo(() => {
+        const buildings: React.ReactElement[] = [];
+        const prng = { s: 42 };
+        const rand = () => { prng.s = (prng.s * 16807) % 2147483647; return (prng.s - 1) / 2147483646; };
+
+        for (let gx = -HALF; gx <= HALF; gx++) {
+            for (let gz = -HALF; gz <= HALF; gz++) {
+                // Piazza freihalten
+                if (Math.abs(gx) <= PIAZZA_R && Math.abs(gz) <= PIAZZA_R) continue;
+                // Via della Conciliazione
+                if (gz === 0 && gx > PIAZZA_R) continue;
+
+                const baseX = gx * CELL;
+                const baseZ = gz * CELL;
+
+                // Gebäude entfernen die exakt im großen Park-Areal (-64 bis +72) stehen
+                if (baseX >= -65 && baseX <= 75 && baseZ >= -65 && baseZ <= 75) continue;
+
+                // S-Kurve: Gebäude entfernen die auf der Kurve liegen
+                const sCurveZ = Math.sin((baseX / (CELL * 5) + 0.5) * Math.PI * 2) * CELL * 1.2;
+                if (Math.abs(baseZ - sCurveZ) < CELL * 0.35 && baseX > -CELL * 2.8 && baseX < CELL * 2.8) continue;
+
+                // ORGANISCHE PLATZIERUNG
+                const offX = (rand() - 0.5) * 12;  // ±6 Einheiten Versatz
+                const offZ = (rand() - 0.5) * 12;
+                const rotY = (rand() - 0.5) * 0.45; // ±~13° Rotation
+                const bW = 18 + rand() * 18;        // Breite 18-36
+                const bD = 22 + rand() * 16;        // Tiefe 22-38
+                const bH = 14 + rand() * 22;        // Höhe 14-36
+                const color = ROME_COLORS[Math.floor(rand() * ROME_COLORS.length)];
+
                 buildings.push(
                     <Building
-                        key={`b-${x}-${z}-2`}
-                        position={[posX + 10, 12, posZ + 10]}
-                        width={18}
-                        height={24}
-                        depth={18}
-                        color="#D4C5A9"
+                        key={`blk_${gx}_${gz}`}
+                        position={[baseX + offX, bH / 2, baseZ + offZ]}
+                        rotation={[0, rotY, 0]}
+                        width={bW}
+                        height={bH}
+                        depth={bD}
+                        color={color}
                     />
                 );
             }
@@ -198,11 +350,171 @@ export const CityEnvironment: React.FC = () => {
 
     return (
         <group name="CityEnvironment_V7_0">
-            <StephansplatzGround />
-            {/* REFINE CITY SQUARE (AAA) */}
-            <LandmarkVienna landmarkId="stephansdom" position={[0, 0, -80]} />
-            
-            <Fountain position={[0, 0, 0]} />
+            {/* BODEN: Dunkles Kopfsteinpflaster für die ganze Welt */}
+            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.01, 0]} receiveShadow>
+                <planeGeometry args={[1200, 1200]} />
+                <meshStandardMaterial color="#2d2b2a" roughness={1.0} />
+            </mesh>
+
+            {/* PIAZZA: Hellerer Platz im Zentrum */}
+            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.01, 0]} receiveShadow>
+                <planeGeometry args={[CELL, CELL]} />
+                <meshStandardMaterial color="#4a4643" roughness={0.85} />
+            </mesh>
+
+            {/* PARK & WIESE um die Bühne herum (136x136, zentriert bei X=4, Z=4) */}
+            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[4, 0.015, 4]} receiveShadow>
+                <planeGeometry args={[136, 136]} />
+                <meshStandardMaterial color="#3a6b2a" roughness={0.95} />
+            </mesh>
+            {/* Hellere Wiesen-Akzente im Park */}
+            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[-30, 0.016, -25]} receiveShadow>
+                <circleGeometry args={[28, 24]} />
+                <meshStandardMaterial color="#4a7d3a" roughness={0.9} />
+            </mesh>
+            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[35, 0.016, 30]} receiveShadow>
+                <circleGeometry args={[24, 20]} />
+                <meshStandardMaterial color="#4a7d3a" roughness={0.9} />
+            </mesh>
+            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.016, 45]} receiveShadow>
+                <circleGeometry args={[20, 20]} />
+                <meshStandardMaterial color="#4a7d3a" roughness={0.9} />
+            </mesh>
+
+            {/* Schlichte Park-Bäume */}
+            {[[-30, 0, -35], [-20, 0, -5], [25, 0, -30], [35, 0, 10], [-35, 0, 15],
+              [-10, 0, -40], [15, 0, -40], [40, 0, -20], [-40, 0, -15]].map((pos, i) => (
+                <group key={`park_tree_${i}`} position={pos as [number, number, number]}>
+                    {/* Stamm */}
+                    <mesh position={[0, 3, 0]} castShadow>
+                        <cylinderGeometry args={[0.3, 0.5, 6, 6]} />
+                        <meshStandardMaterial color="#5a3a1a" roughness={0.9} />
+                    </mesh>
+                    {/* Krone */}
+                    <mesh position={[0, 7, 0]} castShadow>
+                        <sphereGeometry args={[3, 8, 6]} />
+                        <meshStandardMaterial color="#2d5a1e" roughness={0.85} />
+                    </mesh>
+                </group>
+            ))}
+
+            {/* Schlichte Büsche */}
+            {[[-25, 0, -20], [30, 0, -15], [-15, 0, 10], [10, 0, -30], [40, 0, -5]].map((pos, i) => (
+                <mesh key={`park_bush_${i}`} position={[pos[0], 1, pos[2]]} castShadow>
+                    <sphereGeometry args={[1.5, 6, 5]} />
+                    <meshStandardMaterial color="#3a6b2e" roughness={0.9} />
+                </mesh>
+            ))}
+
+            {/* Weitere Sträucher (flacher, breiter) */}
+            {[[-50, 0, 40], [40, 0, 50], [-20, 0, -50], [60, 0, -20], [-55, 0, -30]].map((pos, i) => (
+                <mesh key={`shrub_${i}`} position={[pos[0], 0.8, pos[2]]} castShadow>
+                    <cylinderGeometry args={[2, 2.5, 1.5, 6]} />
+                    <meshStandardMaterial color="#2d5a1e" roughness={0.9} />
+                </mesh>
+            ))}
+
+            {/* Blumenbeete (5 prachtvolle AAA-Beete) */}
+            {[
+                { pos: [-40, 0.1, -10], rotZ: 0.2 }, 
+                { pos: [50, 0.1, 20], rotZ: -0.5 }, 
+                { pos: [-10, 0.1, 50], rotZ: 1.2 }, 
+                { pos: [20, 0.1, -40], rotZ: 0 }, 
+                { pos: [-30, 0.1, 30], rotZ: -1.0 }
+            ].map((bed, i) => (
+                <FlowerBed key={`flowerbed_${i}`} position={bed.pos as [number, number, number]} rotation={[0, bed.rotZ, 0]} />
+            ))}
+
+            {/* Schwedenfeuer (Tag/Nacht Logik ist intern) */}
+            {PARK_FIRES.map((fire) => (
+                <SwedishFire key={fire.id} position={fire.position} scale={1.2} />
+            ))}
+
+            {/* PARK MAUER (Höhe 2 Einheiten) */}
+            <group name="Park_Wall">
+                {/* Hinten (Z = -63.5), 3 Stücke à 40m, 2 Lücken à 8m */}
+                {[-44, 4, 52].map(x => (
+                    <mesh key={`wall_back_${x}`} position={[x, 1, -63.5]} castShadow receiveShadow>
+                        <boxGeometry args={[40, 2, 1]} />
+                        <meshStandardMaterial color="#88837a" roughness={0.95} />
+                    </mesh>
+                ))}
+                
+                {/* Links (X = -63.5) */}
+                {[-44, 4, 52].map(z => (
+                    <mesh key={`wall_left_${z}`} position={[-63.5, 1, z]} castShadow receiveShadow>
+                        <boxGeometry args={[1, 2, 40]} />
+                        <meshStandardMaterial color="#88837a" roughness={0.95} />
+                    </mesh>
+                ))}
+                
+                {/* Rechts (X = 71.5) */}
+                {[-44, 4, 52].map(z => (
+                    <mesh key={`wall_right_${z}`} position={[71.5, 1, z]} castShadow receiveShadow>
+                        <boxGeometry args={[1, 2, 40]} />
+                        <meshStandardMaterial color="#88837a" roughness={0.95} />
+                    </mesh>
+                ))}
+
+                {/* Vorne (Z = 71.5) - Mit großem Schlosstor in der Mitte (X=4) */}
+                <mesh position={[-36, 1, 71.5]} castShadow receiveShadow>
+                    <boxGeometry args={[56, 2, 1]} />
+                    <meshStandardMaterial color="#88837a" roughness={0.95} />
+                </mesh>
+                <mesh position={[44, 1, 71.5]} castShadow receiveShadow>
+                    <boxGeometry args={[56, 2, 1]} />
+                    <meshStandardMaterial color="#88837a" roughness={0.95} />
+                </mesh>
+
+                {/* SCHLOSSTOR (Zentrum X=4, Z=71.5) */}
+                <group position={[4, 0, 71.5]}>
+                    <mesh position={[-12, 3, 0]} castShadow>
+                        <cylinderGeometry args={[1.5, 1.5, 6, 16]} />
+                        <meshStandardMaterial color="#bba895" roughness={0.8} />
+                    </mesh>
+                    <mesh position={[12, 3, 0]} castShadow>
+                        <cylinderGeometry args={[1.5, 1.5, 6, 16]} />
+                        <meshStandardMaterial color="#bba895" roughness={0.8} />
+                    </mesh>
+                    <mesh position={[0, 6, 0]} castShadow>
+                        <torusGeometry args={[12, 1.5, 16, 32, Math.PI]} />
+                        <meshStandardMaterial color="#2d2d2d" roughness={0.6} />
+                    </mesh>
+                    
+                    {/* Halboffene Eisengitter-Flügel */}
+                    <group position={[-12, 0, 0]} rotation={[0, Math.PI / 4, 0]}>
+                        {[2, 4, 6, 8, 10].map(x => (
+                            <mesh key={`gate_l_${x}`} position={[x, 3, 0]} castShadow>
+                                <cylinderGeometry args={[0.15, 0.15, 5.5, 8]} />
+                                <meshStandardMaterial color="#111" metalness={0.8} roughness={0.2} />
+                            </mesh>
+                        ))}
+                        <mesh position={[6, 3, 0]} castShadow>
+                            <boxGeometry args={[11, 0.3, 0.3]} />
+                            <meshStandardMaterial color="#111" metalness={0.8} roughness={0.2} />
+                        </mesh>
+                    </group>
+                    <group position={[12, 0, 0]} rotation={[0, -Math.PI / 4, 0]}>
+                        {[-2, -4, -6, -8, -10].map(x => (
+                            <mesh key={`gate_r_${x}`} position={[x, 3, 0]} castShadow>
+                                <cylinderGeometry args={[0.15, 0.15, 5.5, 8]} />
+                                <meshStandardMaterial color="#111" metalness={0.8} roughness={0.2} />
+                            </mesh>
+                        ))}
+                        <mesh position={[-6, 3, 0]} castShadow>
+                            <boxGeometry args={[11, 0.3, 0.3]} />
+                            <meshStandardMaterial color="#111" metalness={0.8} roughness={0.2} />
+                        </mesh>
+                    </group>
+                </group>
+            </group>
+
+            {/* Sichtbare Straßen zwischen den Blöcken */}
+            {streetElements}
+
+            {/* Brunnen an historischen Positionen */}
+            <Fountain position={[-30, 0, 0]} />
+            <Fountain position={[30, 0, 0]} />
             
             <group name="Square_Decoration">
                 {/* Benches around the fountain */}
