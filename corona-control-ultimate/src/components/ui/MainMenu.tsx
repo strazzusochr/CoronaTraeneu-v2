@@ -23,7 +23,7 @@ export const MainMenu = ({ onStart }: { onStart: () => void }) => {
             <div className="menu-overlay"></div>
             <div className="menu-content" data-ui-asset={MENU_ASSETS.frame}>
                 <h1 className="menu-title">CORONA CONTROL <span className="title-alt">ULTIMATE</span></h1>
-                <p className="menu-subtitle">WIEN / STEPHANSPLATZ / 2022</p>
+                <p className="menu-subtitle">ROME / VATICAN CITY / 2026</p>
 
                 <div className="menu-actions">
                     <button className="menu-btn primary" data-ui-asset={MENU_ASSETS.btnStart} onClick={handleStart}>EINSATZ BEGINNEN</button>
