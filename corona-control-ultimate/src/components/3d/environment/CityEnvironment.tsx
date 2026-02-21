@@ -363,19 +363,7 @@ export const CityEnvironment: React.FC = () => {
             </mesh>
 
 {/* Entfernte Gras-Plane zur Performance-Optimierung */}
-            {/* Hellere Wiesen-Akzente im Park */}
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[-30, 0.016, -25]} receiveShadow>
-                <circleGeometry args={[28, 24]} />
-                <meshStandardMaterial color="#4a7d3a" roughness={0.9} />
-            </mesh>
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[35, 0.016, 30]} receiveShadow>
-                <circleGeometry args={[24, 20]} />
-                <meshStandardMaterial color="#4a7d3a" roughness={0.9} />
-            </mesh>
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.016, 45]} receiveShadow>
-                <circleGeometry args={[20, 20]} />
-                <meshStandardMaterial color="#4a7d3a" roughness={0.9} />
-            </mesh>
+            {/* Entfernte oversized Grünflächen für echtes Rome-Feeling */}
 
             {/* Schlichte Park-Bäume */}
             {[[-30, 0, -35], [-20, 0, -5], [25, 0, -30], [35, 0, 10], [-35, 0, 15],

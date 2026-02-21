@@ -132,7 +132,7 @@ const SceneContent = () => {
 
     return (
         <>
-            <DynamicLighting quality="MEDIUM" castShadows={false} />
+            <DynamicLighting quality="HIGH" castShadows={true} />
 
             <Physics timeStep="vary">
                 <CityEnvironment />
