@@ -70,7 +70,7 @@ export const SwedishFire: React.FC<SwedishFireProps> = ({ position, scale = 1 })
                         distance={15}
                         decay={2}
                         intensity={1.5}
-                        castShadow
+                        castShadow={false}
                     />
                     
                     {/* Flammen-Geometrie (simplifiziert) */}

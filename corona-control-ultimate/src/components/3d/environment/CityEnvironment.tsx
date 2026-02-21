@@ -362,11 +362,7 @@ export const CityEnvironment: React.FC = () => {
                 <meshStandardMaterial color="#4a4643" roughness={0.85} />
             </mesh>
 
-            {/* PARK & WIESE um die Bühne herum (136x136, zentriert bei X=4, Z=4) */}
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[4, 0.015, 4]} receiveShadow>
-                <planeGeometry args={[136, 136]} />
-                <meshStandardMaterial color="#3a6b2a" roughness={0.95} />
-            </mesh>
+{/* Entfernte Gras-Plane zur Performance-Optimierung */}
             {/* Hellere Wiesen-Akzente im Park */}
             <mesh rotation={[-Math.PI / 2, 0, 0]} position={[-30, 0.016, -25]} receiveShadow>
                 <circleGeometry args={[28, 24]} />

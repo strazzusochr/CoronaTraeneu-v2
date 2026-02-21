@@ -21,7 +21,7 @@ export const PostProcessing: React.FC = () => {
     const preset = resolvePresetForHour(hour);
 
     return (
-        <EffectComposer multisampling={4}>
+        <EffectComposer multisampling={0}>
             <SMAA />
             <Bloom
                 intensity={preset.bloomIntensity}

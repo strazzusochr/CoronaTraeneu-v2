@@ -130,9 +130,7 @@ export const HUD = () => {
                         {gameState.activePrompt}
                     </div>
                 )}
-                <div className="hud-time-display">
-                    EINSATZZEIT: <span style={{ color: timeColor, fontWeight: 700 }}>{timeString}</span> — WIEN INNERE STADT
-                </div>
+                    EINSATZZEIT: <span style={{ color: timeColor, fontWeight: 700 }}>{timeString}</span> — ROME / VATICAN CITY
             </div>
         </div>
     );
