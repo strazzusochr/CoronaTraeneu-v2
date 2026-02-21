@@ -38,25 +38,18 @@ interface LevelVehicleSpawn {
 
 const LEVEL1_VEHICLES: LevelVehicleSpawn[] = [
     {
-        id: 'veh_police_stephansplatz_front',
+        id: 'veh_police_conciliazione',
         type: 'POLICE_CAR',
-        position: [10, 0.6, 20],
-        rotation: [0, Math.PI, 0],
-        isSirenActive: true
-    },
-    {
-        id: 'veh_watercannon_stage_south',
-        type: 'WATER_CANNON',
-        position: [-10, 0.6, 30],
-        rotation: [0, 0, 0],
-        isSirenActive: false
-    },
-    {
-        id: 'veh_ambulance_north_exit',
-        type: 'AMBULANCE',
-        position: [0, 0.6, -20],
+        position: [120, 0.6, 20],
         rotation: [0, Math.PI / 2, 0],
         isSirenActive: true
+    },
+    {
+        id: 'veh_watercannon_conciliazione',
+        type: 'WATER_CANNON',
+        position: [100, 0.6, -20],
+        rotation: [0, -Math.PI / 2, 0],
+        isSirenActive: false
     }
 ];
 
@@ -362,7 +355,12 @@ export const CityEnvironment: React.FC = () => {
                 <meshStandardMaterial color="#4a4643" roughness={0.85} />
             </mesh>
 
-{/* Entfernte Gras-Plane zur Performance-Optimierung */}
+            {/* HAUPT-WIESE (Rechteck innerhalb der Mauern) */}
+            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[4, 0.015, 4]} receiveShadow>
+                <planeGeometry args={[135, 135]} />
+                <meshStandardMaterial color="#3a6b2a" roughness={0.95} />
+            </mesh>
+
             {/* Entfernte oversized Grünflächen für echtes Rome-Feeling */}
 
             {/* Schlichte Park-Bäume */}

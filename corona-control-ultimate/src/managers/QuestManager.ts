@@ -2,6 +2,8 @@ import { QuestState, QuestType, ObjectiveType } from '@/types/QuestData';
 import type { Quest } from '@/types/QuestData';
 import { useGameStore } from '@/stores/gameStore';
 import { EngineLoop } from '@/core/EngineLoopManager';
+import { MAIN_QUESTS_VATICAN } from '@/data/quests/MainQuestVatican';
+import { SIDE_QUESTS_VATICAN } from '@/data/quests/SideQuestsVatican';
 
 class AdvancedQuestManager {
     private static instance: AdvancedQuestManager;
@@ -9,7 +11,7 @@ class AdvancedQuestManager {
 
     private constructor() {
         this.initializeQuests();
-        EngineLoop.onAIUpdate(dt => this.update(dt));
+        EngineLoop.onAIUpdate(() => this.update());
     }
 
     public static getInstance(): AdvancedQuestManager {
@@ -20,39 +22,10 @@ class AdvancedQuestManager {
     }
 
     private initializeQuests() {
-        // Definiere Quests (Phase 11 Daten)
-
-        // Quest 1: Tutorial
-        this.addQuest({
-            id: 'Q_TUTORIAL_01',
-            name: 'Grundausbildung',
-            description: 'Melde dich beim Einsatzleiter und hole deine Ausrüstung.',
-            type: QuestType.TUTORIAL,
-            state: QuestState.AVAILABLE,
-            giverId: 'NPC_COMMANDER',
-            objectives: [
-                { id: 'obj_talk_commander', description: 'Sprich mit dem Einsatzleiter', type: ObjectiveType.TALK, targetId: 'NPC_COMMANDER', currentCount: 0, targetCount: 1, isCompleted: false },
-                { id: 'obj_equip_gear', description: 'Rüste den Schlagstock aus', type: ObjectiveType.COLLECT, targetId: 'ITEM_BATON', currentCount: 0, targetCount: 1, isCompleted: false }
-            ],
-            rewards: { xp: 100, reputation: 5 },
-            nextQuestId: 'Q_MAIN_01'
-        });
-
-        // Quest 2: Main 01
-        this.addQuest({
-            id: 'Q_MAIN_01',
-            name: 'Die erste Welle',
-            description: 'Sichere den Stephansplatz vor den ersten Randalierern.',
-            type: QuestType.MAIN,
-            state: QuestState.LOCKED,
-            prerequisites: ['Q_TUTORIAL_01'],
-            objectives: [
-                { id: 'obj_secure_area', description: 'Neutralisiere 5 Randalierer', type: ObjectiveType.KILL, currentCount: 0, targetCount: 5, isCompleted: false },
-                { id: 'obj_protect_civ', description: 'Beschütze die Zivilisten', type: ObjectiveType.PROTECT, currentCount: 0, targetCount: 1, isCompleted: false }
-            ],
-            rewards: { xp: 500, money: 100, reputation: 20 }
-        });
-
+        // Vatican Campaign (Phase 14+)
+        MAIN_QUESTS_VATICAN.forEach(q => this.addQuest(q));
+        SIDE_QUESTS_VATICAN.forEach(q => this.addQuest(q));
+        
         // Side Quest: Friedlicher Ansatz fortsetzen (durch Flag)
         this.addQuest({
             id: 'Q_SIDE_PEACE',
@@ -84,7 +57,7 @@ class AdvancedQuestManager {
         this.quests.set(quest.id, quest);
     }
 
-    public update(dt: number) {
+    public update() {
         // Prüfe Trigger & Timer
         this.quests.forEach(quest => {
             if (quest.state === QuestState.LOCKED) {
@@ -135,11 +108,22 @@ class AdvancedQuestManager {
     private checkQuestCompletion(quest: Quest) {
         const allRequiredComplete = quest.objectives.every(o => o.isCompleted || o.isOptional);
         if (allRequiredComplete) {
-            this.completeQuest(quest.id);
+            // Wenn es Branchen gibt, warten wir auf eine manuelle Auswahl oder einen Flag
+            if (quest.branches && quest.branches.length > 0) {
+                // Suche nach einer Branche, deren Flag gesetzt ist
+                const activeBranch = quest.branches.find(b => b.requirementFlag && useGameStore.getState().hasFlag(b.requirementFlag));
+                if (activeBranch) {
+                    this.completeQuest(quest.id, activeBranch.id);
+                } else {
+                    // Bleibt ACTIVE bis eine Branche gewählt wird (z.B. via Dialog)
+                }
+            } else {
+                this.completeQuest(quest.id);
+            }
         }
     }
 
-    private completeQuest(questId: string) {
+    public completeQuest(questId: string, branchId?: string) {
         const quest = this.quests.get(questId);
         if (!quest) return;
 
@@ -150,11 +134,23 @@ class AdvancedQuestManager {
             useGameStore.getState().unlockAchievement(quest.rewards.achievementId);
         }
 
-        useGameStore.getState().setPrompt(`QUEST ABGESCHLOSSEN: ${quest.name}`);
+        let nextId = quest.nextQuestId;
+        let outcomeMsg = '';
 
-        if (quest.nextQuestId) {
-            const nextQ = this.quests.get(quest.nextQuestId);
+        if (branchId && quest.branches) {
+            const branch = quest.branches.find(b => b.id === branchId);
+            if (branch) {
+                nextId = branch.nextQuestId;
+                outcomeMsg = branch.outcomeDescription ? ` - ${branch.outcomeDescription}` : '';
+            }
+        }
+
+        useGameStore.getState().setPrompt(`QUEST ABGESCHLOSSEN: ${quest.name}${outcomeMsg}`);
+
+        if (nextId) {
+            const nextQ = this.quests.get(nextId);
             if (nextQ && nextQ.state === QuestState.LOCKED) {
+                this.changeQuestState(nextId, QuestState.AVAILABLE);
             }
         }
     }

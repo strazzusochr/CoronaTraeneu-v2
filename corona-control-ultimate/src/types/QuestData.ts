@@ -44,6 +44,14 @@ export interface QuestReward {
     achievementId?: import('./enums').AchievementId;
 }
 
+export interface QuestBranch {
+    id: string;
+    text: string;
+    nextQuestId: string;
+    requirementFlag?: string;
+    outcomeDescription?: string;
+}
+
 export interface Quest {
     id: string;
     name: string;
@@ -56,5 +64,6 @@ export interface Quest {
     timeLimit?: number; // Seconds
     timerStart?: number; // Timestamp
     prerequisites?: string[]; // IDs of required quests
-    nextQuestId?: string; // Linear chain
+    nextQuestId?: string; // Linear chain (default)
+    branches?: QuestBranch[]; // Branching paths
 }

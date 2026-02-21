@@ -49,6 +49,7 @@
     "jsdom": "^27.4.0",
     "needle-cloud": "^1.6.8",
     "puppeteer": "^24.36.0",
+    "react-devtools": "^7.0.1",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.4",
     "vite": "^6.0.0",

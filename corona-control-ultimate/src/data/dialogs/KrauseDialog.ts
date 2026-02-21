@@ -95,6 +95,7 @@ export const KrauseDialog: DialogTree = {
                 arrestSystem.startArrest(9999);
                 useGameStore.getState().setTension(40);
                 useGameStore.getState().setFlag('krause_arrested', true);
+                useGameStore.getState().setFlag('krause_intimidated', true);
             },
             nextNodeId: undefined // End
         },
