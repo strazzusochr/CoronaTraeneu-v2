@@ -1,0 +1,9 @@
+node_modules
+dist
+.env
+.npm
+.git
+.github
+.gitignore
+deploy_hf
+logs
