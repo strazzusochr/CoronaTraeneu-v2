@@ -11,6 +11,7 @@ vi.mock('@/stores/gameStore', () => ({
     useGameStore: {
         getState: vi.fn(() => ({
             tensionLevel: 50,
+            moralLevel: 50,
             setTension: tensionSetter,
             spawnWave: waveSpawner,
             setPrompt: vi.fn(),
@@ -30,6 +31,7 @@ describe('TensionSystem', () => {
     it('should decay tension over time', () => {
         vi.mocked(useGameStore.getState).mockReturnValue({
             tensionLevel: 50,
+            moralLevel: 50,
             setTension: tensionSetter,
             spawnWave: waveSpawner,
             setPrompt: vi.fn(),
@@ -47,6 +49,7 @@ describe('TensionSystem', () => {
     it('should not decay below 0', () => {
         vi.mocked(useGameStore.getState).mockReturnValue({
             tensionLevel: 0.1,
+            moralLevel: 50,
             setTension: tensionSetter,
             spawnWave: waveSpawner,
             setPrompt: vi.fn(),
@@ -65,6 +68,7 @@ describe('TensionSystem', () => {
 
         vi.mocked(useGameStore.getState).mockReturnValue({
             tensionLevel: 50,
+            moralLevel: 50,
             setTension: tensionSetter,
             spawnWave: waveSpawner,
             setPrompt: vi.fn(),

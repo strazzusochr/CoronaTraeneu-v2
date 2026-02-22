@@ -1,0 +1,63 @@
+
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90mC:/Users/immer/Desktop/corona-control-project/corona-control-ultimate[39m
+
+[90mstdout[2m | src/tests/gameStore.test.ts
+[22m[39mPOI System initialized
+
+[90mstdout[2m | src/tests/gameStore.test.ts
+[22m[39mArrest System initialized
+
+[90mstdout[2m | src/tests/gameStore.test.ts
+[22m[39m­ƒöè AUDIO MANAGER INITIALIZED (Phase 13)
+
+ [31mÔØ»[39m src/tests/gameStore.test.ts [2m([22m[2m3 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[32m 9[2mms[22m[39m
+[31m     [31m├ù[31m initializes with correct default values[39m[32m 5[2mms[22m[39m
+     [32mÔ£ô[39m toggles inventory correctly[32m 0[2mms[22m[39m
+[31m     [31m├ù[31m adds item to inventory and increases quantity[39m[32m 2[2mms[22m[39m
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ» Failed Tests 2 ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»
+
+ FAIL  src/tests/gameStore.test.ts > GameStore State Management > initializes with correct default values
+AssertionError: expected undefined to be +0 // Object.is equality
+
+- Expected: 
+0
+
++ Received: 
+undefined
+
+ ÔØ» src/tests/gameStore.test.ts:15:49
+     13|         expect(state.gameState.phase).toBe(GamePhase.PREPARATION);
+     14|         expect(state.gameState.isPlaying).toBe(false);
+     15|         expect(state.gameState.escalationLevel).toBe(0);
+       |                                                 ^
+     16|         expect(state.player.health).toBe(100);
+     17|     });
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[1/2]ÔÄ»
+
+ FAIL  src/tests/gameStore.test.ts > GameStore State Management > adds item to inventory and increases quantity
+AssertionError: expected 1 to be 2 // Object.is equality
+
+- Expected
++ Received
+
+- 2
++ 1
+
+ ÔØ» src/tests/gameStore.test.ts:47:39
+     45|         const state2 = useGameStore.getState();
+     46|         const slot2 = state2.inventory.find(s => s.item?.id === 'ITEM_ÔÇª
+     47|         expect(slot2?.item?.quantity).toBe(2);
+       |                                       ^
+     48|     });
+     49| });
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[2/2]ÔÄ»
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m1 passed[39m[22m[90m (3)[39m
+[2m   Start at [22m 19:34:40
+[2m   Duration [22m 1.32s[2m (transform 241ms, setup 111ms, import 360ms, tests 9ms, environment 611ms)[22m
+

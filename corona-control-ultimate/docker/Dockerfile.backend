@@ -1,0 +1,16 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+# The backend simulation running standalone
+COPY package.json package-lock.json* ./
+RUN npm install --production
+
+# If there is a compiled server.cjs or dist folder, we copy it
+COPY server.cjs ./
+COPY src/simulation ./src/simulation
+
+# Adjust exposed port based on your environment
+EXPOSE 3001
+
+CMD ["node", "server.cjs"]

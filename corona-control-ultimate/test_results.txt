@@ -1,0 +1,596 @@
+
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90mC:/Users/immer/Desktop/corona-control-project/corona-control-ultimate[39m
+
+[90mstdout[2m | src/components/ui/__tests__/HUD.timecolor.test.ts
+[22m[39mPOI System initialized
+
+[90mstdout[2m | src/stores/__tests__/gameBalance.test.ts
+[22m[39mPOI System initialized
+
+[90mstdout[2m | deploy_hf/src/tests/MassValidation.test.ts
+[22m[39mPOI System initialized
+
+[90mstdout[2m | deploy_hf/src/tests/MassValidation.test.ts
+[22m[39mArrest System initialized
+
+[90mstdout[2m | src/stores/__tests__/gameBalance.test.ts
+[22m[39mArrest System initialized
+
+[90mstdout[2m | src/components/ui/__tests__/HUD.timecolor.test.ts
+[22m[39mArrest System initialized
+
+ [31mÔØ»[39m src/managers/__tests__/QuestManager.test.ts [2m([22m[2m4 tests[22m[2m | [22m[31m3 failed[39m[2m)[22m[32m 15[2mms[22m[39m
+[31m     [31m├ù[31m should have default quests initialized[39m[32m 7[2mms[22m[39m
+[31m     [31m├ù[31m should start a quest[39m[32m 1[2mms[22m[39m
+[31m     [31m├ù[31m should update objectives upon action[39m[32m 4[2mms[22m[39m
+     [32mÔ£ô[39m should complete quest when all objectives are met[32m 1[2mms[22m[39m
+[90mstdout[2m | src/systems/__tests__/TensionSystem.test.ts
+[22m[39m­ƒöè AUDIO MANAGER INITIALIZED (Phase 13)
+
+[90mstdout[2m | src/systems/__tests__/TensionSystem.test.ts
+[22m[39m­ƒöÑ FIRE SYSTEM INITIALIZED (V6.0)
+
+ [31mÔØ»[39m src/components/Effects/__tests__/PostProcessing.logic.test.ts [2m([22m[2m4 tests[22m[2m | [22m[31m4 failed[39m[2m)[22m[32m 11[2mms[22m[39m
+[31m     [31m├ù[31m selects MORNING between 06 and 11[39m[32m 6[2mms[22m[39m
+[31m     [31m├ù[31m selects MIDDAY between 12 and 17[39m[32m 1[2mms[22m[39m
+[31m     [31m├ù[31m selects EVENING between 18 and 21[39m[32m 1[2mms[22m[39m
+[31m     [31m├ù[31m selects NIGHT otherwise[39m[32m 1[2mms[22m[39m
+ [31mÔØ»[39m src/systems/__tests__/TensionSystem.test.ts [2m([22m[2m3 tests[22m[2m | [22m[31m3 failed[39m[2m)[22m[32m 14[2mms[22m[39m
+[31m     [31m├ù[31m should decay tension over time[39m[32m 9[2mms[22m[39m
+[31m     [31m├ù[31m should not decay below 0[39m[32m 1[2mms[22m[39m
+[31m     [31m├ù[31m should increase tension when many events occur[39m[32m 2[2mms[22m[39m
+[90mstdout[2m | src/stores/__tests__/gameBalance.test.ts
+[22m[39m­ƒöè AUDIO MANAGER INITIALIZED (Phase 13)
+
+[90mstdout[2m | deploy_hf/src/tests/MassValidation.test.ts
+[22m[39m­ƒöè AUDIO MANAGER INITIALIZED (Phase 13)
+
+[90mstdout[2m | src/components/ui/__tests__/HUD.timecolor.test.ts
+[22m[39m­ƒöè AUDIO MANAGER INITIALIZED (Phase 13)
+
+stderr | src/stores/__tests__/gameBalance.test.ts > Game Balance Constants Integration > anti-cheat clamps health above max
+[­ƒøí´©Å Anti-Cheat] Violation #1: Health Value Anomaly: 150
+
+ [32mÔ£ô[39m src/stores/__tests__/gameBalance.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 176[2mms[22m[39m
+ [32mÔ£ô[39m deploy_hf/src/tests/MassValidation.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 193[2mms[22m[39m
+ [31mÔØ»[39m src/components/ui/__tests__/HUD.timecolor.test.ts [2m([22m[2m4 tests[22m[2m | [22m[31m4 failed[39m[2m)[22m[32m 11[2mms[22m[39m
+[31m     [31m├ù[31m maps MORNING for 06ÔÇô11h[39m[32m 6[2mms[22m[39m
+[31m     [31m├ù[31m maps MIDDAY for 12ÔÇô17h[39m[32m 1[2mms[22m[39m
+[31m     [31m├ù[31m maps EVENING for 18ÔÇô21h[39m[32m 1[2mms[22m[39m
+[31m     [31m├ù[31m maps NIGHT for other hours[39m[32m 1[2mms[22m[39m
+[90mstdout[2m | src/components/3d/environment/__tests__/CityEnvironmentLevel1Vehicles.test.tsx
+[22m[39mPOI System initialized
+
+[90mstdout[2m | src/components/3d/environment/__tests__/CityEnvironmentLevel1Vehicles.test.tsx
+[22m[39mArrest System initialized
+
+[90mstdout[2m | src/components/3d/environment/__tests__/CityEnvironmentLevel1Vehicles.test.tsx
+[22m[39m­ƒöè AUDIO MANAGER INITIALIZED (Phase 13)
+
+ [32mÔ£ô[39m src/components/3d/environment/__tests__/CityEnvironmentLevel1Vehicles.test.tsx [2m([22m[2m1 test[22m[2m)[22m[32m 287[2mms[22m[39m
+[90mstdout[2m | src/tests/MassValidation.test.ts
+[22m[39mPOI System initialized
+
+[90mstdout[2m | src/tests/MassValidation.test.ts
+[22m[39mArrest System initialized
+
+ [32mÔ£ô[39m src/__tests__/lod.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 34[2mms[22m[39m
+[90mstdout[2m | src/tests/MassValidation.test.ts
+[22m[39m­ƒöè AUDIO MANAGER INITIALIZED (Phase 13)
+
+ [32mÔ£ô[39m deploy_hf/src/__tests__/lod.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 35[2mms[22m[39m
+ [32mÔ£ô[39m src/tests/MassValidation.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 208[2mms[22m[39m
+[90mstdout[2m | deploy_hf/src/stores/__tests__/menuSlice.test.ts
+[22m[39mPOI System initialized
+
+[90mstdout[2m | deploy_hf/src/stores/__tests__/menuSlice.test.ts
+[22m[39mArrest System initialized
+
+[90mstdout[2m | src/systems/__tests__/FireSystem.test.ts
+[22m[39m­ƒöè AUDIO MANAGER INITIALIZED (Phase 13)
+
+[90mstdout[2m | src/systems/__tests__/FireSystem.test.ts
+[22m[39m­ƒöÑ FIRE SYSTEM INITIALIZED (V6.0)
+
+[90mstdout[2m | src/systems/__tests__/FireSystem.test.ts[2m > [22m[2mFireSystem[2m > [22m[2mapplies area damage to player within radius
+[22m[39m[FireSystem] Feuer ausgebrochen bei 0,0,0 (Radius: 2m)
+[AudioManager] Spiele Sound: fire_start auf Layer: ENVIRONMENTAL bei (0, 0)
+[FireSystem] Spieler verbrennt!
+
+[90mstdout[2m | src/systems/__tests__/FireSystem.test.ts[2m > [22m[2mFireSystem[2m > [22m[2msets nearby NPCs to FLEE
+[22m[39m[FireSystem] Feuer ausgebrochen bei 0,0,0 (Radius: 3m)
+[AudioManager] Spiele Sound: fire_start auf Layer: ENVIRONMENTAL bei (0, 0)
+
+[90mstdout[2m | src/systems/__tests__/FireSystem.test.ts[2m > [22m[2mFireSystem[2m > [22m[2mspawns fire particles at defined rate
+[22m[39m[FireSystem] Feuer ausgebrochen bei 0,0,0 (Radius: 3m)
+[AudioManager] Spiele Sound: fire_start auf Layer: ENVIRONMENTAL bei (0, 0)
+
+ [32mÔ£ô[39m src/systems/__tests__/FireSystem.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+[90mstdout[2m | deploy_hf/src/stores/__tests__/menuSlice.test.ts
+[22m[39m­ƒöè AUDIO MANAGER INITIALIZED (Phase 13)
+
+ [32mÔ£ô[39m deploy_hf/src/stores/__tests__/menuSlice.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [32mÔ£ô[39m src/ai/__tests__/BehaviorLogic.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 15[2mms[22m[39m
+ [32mÔ£ô[39m deploy_hf/src/ai/__tests__/BehaviorLogic.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+[90mstdout[2m | deploy_hf/src/stores/__tests__/settingsSlice.test.ts
+[22m[39mPOI System initialized
+
+[90mstdout[2m | deploy_hf/src/stores/__tests__/settingsSlice.test.ts
+[22m[39mArrest System initialized
+
+ [32mÔ£ô[39m src/constants/__tests__/VoiceSubtitles.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+[90mstdout[2m | deploy_hf/src/stores/__tests__/settingsSlice.test.ts
+[22m[39m­ƒöè AUDIO MANAGER INITIALIZED (Phase 13)
+
+ [32mÔ£ô[39m deploy_hf/src/stores/__tests__/settingsSlice.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+[90mstdout[2m | src/managers/__tests__/EventManagerScheduled.test.ts
+[22m[39mPOI System initialized
+
+[90mstdout[2m | src/managers/__tests__/EventManagerScheduled.test.ts
+[22m[39mArrest System initialized
+
+[90mstdout[2m | src/managers/__tests__/DialogManager.test.ts
+[22m[39mPOI System initialized
+
+[90mstdout[2m | src/managers/__tests__/DialogManager.test.ts
+[22m[39mArrest System initialized
+
+[90mstdout[2m | src/managers/__tests__/EventManagerScheduled.test.ts
+[22m[39m­ƒöè AUDIO MANAGER INITIALIZED (Phase 13)
+
+[90mstdout[2m | src/stores/__tests__/settingsSlice.test.ts
+[22m[39mPOI System initialized
+
+[90mstdout[2m | src/stores/__tests__/settingsSlice.test.ts
+[22m[39mArrest System initialized
+
+[90mstdout[2m | src/managers/__tests__/EventManagerScheduled.test.ts[2m > [22m[2mEventManager scheduled events[2m > [22m[2mtriggers speech_start at 14:10 with audio and notification
+[22m[39m[EVENT] Triggered: Krause trifft am Platz ein
+[EVENT] Triggered: Krause beginnt seine Rede
+
+ [32mÔ£ô[39m src/managers/__tests__/EventManagerScheduled.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 9[2mms[22m[39m
+[90mstdout[2m | src/managers/__tests__/DialogManager.test.ts
+[22m[39m­ƒöè AUDIO MANAGER INITIALIZED (Phase 13)
+
+[90mstdout[2m | deploy_hf/src/stores/__tests__/inventorySlice.test.ts[2m > [22m[2mInventorySlice[2m > [22m[2mshould equip an item
+[22m[39mEquipped Test Sword to mainHand
+
+[90mstdout[2m | deploy_hf/src/stores/__tests__/inventorySlice.test.ts[2m > [22m[2mInventorySlice[2m > [22m[2mshould unequip an item
+[22m[39mUnequipped Test Sword from mainHand
+
+[90mstdout[2m | src/managers/__tests__/DialogManager.test.ts[2m > [22m[2mDialogManager[2m > [22m[2mshould start a dialog correctly
+[22m[39mStarting Dialog: test_dialog
+
+[90mstdout[2m | src/managers/__tests__/DialogManager.test.ts[2m > [22m[2mDialogManager[2m > [22m[2mshould advance linear NPC nodes
+[22m[39mStarting Dialog: test_dialog
+
+ [32mÔ£ô[39m deploy_hf/src/stores/__tests__/inventorySlice.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+[90mstdout[2m | src/managers/__tests__/DialogManager.test.ts[2m > [22m[2mDialogManager[2m > [22m[2mshould handle player choices
+[22m[39mStarting Dialog: test_dialog
+
+[90mstdout[2m | src/managers/__tests__/DialogManager.test.ts[2m > [22m[2mDialogManager[2m > [22m[2mshould handle skill checks (success)
+[22m[39mStarting Dialog: test_dialog
+Skill Check: TEST_SKILL (Diff: 0) -> Rolled: 8.4 -> SUCCESS
+
+ [32mÔ£ô[39m src/managers/__tests__/DialogManager.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+[90mstdout[2m | src/stores/__tests__/settingsSlice.test.ts
+[22m[39m­ƒöè AUDIO MANAGER INITIALIZED (Phase 13)
+
+ [32mÔ£ô[39m src/stores/__tests__/settingsSlice.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32mÔ£ô[39m deploy_hf/src/managers/__tests__/QuestManager.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+[90mstdout[2m | src/systems/__tests__/CombatSystem.test.ts
+[22m[39m­ƒöè AUDIO MANAGER INITIALIZED (Phase 13)
+
+[90mstdout[2m | src/systems/__tests__/CombatSystem.test.ts
+[22m[39m­ƒöÑ FIRE SYSTEM INITIALIZED (V6.0)
+
+[90mstdout[2m | src/systems/__tests__/CombatSystem.test.ts[2m > [22m[2mCombatSystem[2m > [22m[2mshould spawn a projectile and notify listeners
+[22m[39m[CombatSystem] Projektil gespawnt: STONE bei 0,0,0
+
+[90mstdout[2m | src/systems/__tests__/CombatSystem.test.ts[2m > [22m[2mCombatSystem[2m > [22m[2mshould handle impact and remove projectile
+[22m[39m[CombatSystem] Projektil gespawnt: MOLOTOV bei 0,10,0
+[CombatSystem] BUMM! Molotow-Einschlag bei 0,0,0
+[FireSystem] Feuer ausgebrochen bei 0,0.5,0 (Radius: 4m)
+[AudioManager] Spiele Sound: fire_start auf Layer: ENVIRONMENTAL bei (0, 0)
+[AudioManager] Spiele Sound: molotov_explode auf Layer: EVENT bei (0, 0)
+
+ [32mÔ£ô[39m src/systems/__tests__/CombatSystem.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+[90mstdout[2m | src/managers/__tests__/MusicManager.test.ts
+[22m[39mPOI System initialized
+
+[90mstdout[2m | src/managers/__tests__/MusicManager.test.ts
+[22m[39mArrest System initialized
+
+[90mstdout[2m | src/managers/__tests__/MusicManager.test.ts
+[22m[39m­ƒöè AUDIO MANAGER INITIALIZED (Phase 13)
+
+[90mstdout[2m | src/managers/__tests__/MusicManager.test.ts[2m > [22m[2mMusicManager[2m > [22m[2mshould start in AMBIENT state
+[22m[39m­ƒÄÁ MUSIC MANAGER INITIALIZED (Phase 13)
+
+[90mstdout[2m | src/managers/__tests__/MusicManager.test.ts[2m > [22m[2mMusicManager[2m > [22m[2mshould switch to TENSION when tension > 40
+[22m[39m[MusicManager] Transitioning from AMBIENT to TENSION
+[AudioManager] Spiele Sound: MUS_LEVEL_TENSION_HIGH auf Layer: MUSIC 
+
+[90mstdout[2m | src/managers/__tests__/MusicManager.test.ts[2m > [22m[2mMusicManager[2m > [22m[2mshould switch to COMBAT when tension > 80
+[22m[39m[MusicManager] Transitioning from TENSION to COMBAT
+[AudioManager] Spiele Sound: MUS_LEVEL_COMBAT auf Layer: MUSIC 
+
+ [32mÔ£ô[39m src/managers/__tests__/MusicManager.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+[90mstdout[2m | deploy_hf/src/managers/__tests__/DialogManager.test.ts[2m > [22m[2mDialogManager[2m > [22m[2mshould start a dialog correctly
+[22m[39mStarting Dialog: test_dialog
+
+[90mstdout[2m | deploy_hf/src/managers/__tests__/DialogManager.test.ts[2m > [22m[2mDialogManager[2m > [22m[2mshould advance linear NPC nodes
+[22m[39mStarting Dialog: test_dialog
+
+[90mstdout[2m | deploy_hf/src/managers/__tests__/DialogManager.test.ts[2m > [22m[2mDialogManager[2m > [22m[2mshould handle player choices
+[22m[39mStarting Dialog: test_dialog
+
+[90mstdout[2m | deploy_hf/src/managers/__tests__/DialogManager.test.ts[2m > [22m[2mDialogManager[2m > [22m[2mshould handle skill checks (success)
+[22m[39mStarting Dialog: test_dialog
+Skill Check: TEST_SKILL (Diff: 0) -> Rolled: 2.7 -> SUCCESS
+
+ [32mÔ£ô[39m deploy_hf/src/managers/__tests__/DialogManager.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+[90mstdout[2m | src/stores/__tests__/menuSlice.test.ts
+[22m[39mPOI System initialized
+
+[90mstdout[2m | src/stores/__tests__/menuSlice.test.ts
+[22m[39mArrest System initialized
+
+ [32mÔ£ô[39m src/systems/__tests__/VehiclePhysics.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+[90mstdout[2m | src/managers/__tests__/EventManager.test.ts[2m > [22m[2mEventManager[2m > [22m[2mtriggers scheduled event at 14:00
+[22m[39m[EVENT] Triggered: Krause trifft am Platz ein
+
+[90mstdout[2m | src/managers/__tests__/EventManager.test.ts[2m > [22m[2mEventManager[2m > [22m[2mtriggers speech event at 14:10
+[22m[39m[EVENT] Triggered: Krause beginnt seine Rede
+
+ [32mÔ£ô[39m src/managers/__tests__/EventManager.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+[90mstdout[2m | src/stores/__tests__/menuSlice.test.ts
+[22m[39m­ƒöè AUDIO MANAGER INITIALIZED (Phase 13)
+
+ [32mÔ£ô[39m src/stores/__tests__/menuSlice.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+[90mstdout[2m | src/hyper_test_simulation.test.ts
+[22m[39mPOI System initialized
+
+[90mstdout[2m | src/hyper_test_simulation.test.ts
+[22m[39mArrest System initialized
+
+[90mstdout[2m | src/hyper_test_simulation.test.ts
+[22m[39m­ƒöè AUDIO MANAGER INITIALIZED (Phase 13)
+
+ [32mÔ£ô[39m src/hyper_test_simulation.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+[90mstdout[2m | src/stores/__tests__/inventorySlice.test.ts
+[22m[39mPOI System initialized
+
+[90mstdout[2m | src/stores/__tests__/inventorySlice.test.ts
+[22m[39mArrest System initialized
+
+[90mstdout[2m | src/stores/__tests__/inventorySlice.test.ts
+[22m[39m­ƒöè AUDIO MANAGER INITIALIZED (Phase 13)
+
+[90mstdout[2m | src/stores/__tests__/inventorySlice.test.ts[2m > [22m[2mInventorySlice[2m > [22m[2mshould equip an item
+[22m[39mEquipped Test Sword to mainHand
+
+[90mstdout[2m | src/stores/__tests__/inventorySlice.test.ts[2m > [22m[2mInventorySlice[2m > [22m[2mshould unequip an item
+[22m[39mUnequipped Test Sword from mainHand
+
+ [32mÔ£ô[39m src/stores/__tests__/inventorySlice.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32mÔ£ô[39m deploy_hf/src/systems/__tests__/TensionSystem.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32mÔ£ô[39m src/systems/__tests__/CrowdSystem.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+[90mstdout[2m | src/systems/__tests__/DayNightCycleSystem.test.ts[2m > [22m[2mDayNightCycleSystem[2m > [22m[2mtriggers sunrise prompt at 06:00
+[22m[39m­ƒîà TIMELINE EVENT: Phase 1 - Morgen beginnt
+
+[90mstdout[2m | src/systems/__tests__/DayNightCycleSystem.test.ts[2m > [22m[2mDayNightCycleSystem[2m > [22m[2mtriggers noon escalation at 12:00
+[22m[39mÔÜá´©Å TIMELINE EVENT: Phase 2 - Mittag (Eskalation)
+
+ [32mÔ£ô[39m src/systems/__tests__/DayNightCycleSystem.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [32mÔ£ô[39m src/constants/__tests__/DynamicEvents.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+[90mstdout[2m | deploy_hf/src/systems/__tests__/CombatSystem.test.ts
+[22m[39m­ƒöè AUDIO MANAGER INITIALIZED (Phase 13)
+
+[90mstdout[2m | deploy_hf/src/systems/__tests__/CombatSystem.test.ts
+[22m[39m­ƒöÑ FIRE SYSTEM INITIALIZED (V6.0)
+
+[90mstdout[2m | deploy_hf/src/systems/__tests__/CombatSystem.test.ts[2m > [22m[2mCombatSystem[2m > [22m[2mshould spawn a projectile and notify listeners
+[22m[39m[CombatSystem] Projektil gespawnt: STONE bei 0,0,0
+
+[90mstdout[2m | deploy_hf/src/systems/__tests__/CombatSystem.test.ts[2m > [22m[2mCombatSystem[2m > [22m[2mshould handle impact and remove projectile
+[22m[39m[CombatSystem] Projektil gespawnt: MOLOTOV bei 0,10,0
+[CombatSystem] BUMM! Molotow-Einschlag bei 0,0,0
+[FireSystem] Feuer ausgebrochen bei 0,0.5,0 (Radius: 4m)
+[AudioManager] Spiele Sound: fire_start auf Layer: ENVIRONMENTAL bei (0, 0)
+
+ [32mÔ£ô[39m deploy_hf/src/systems/__tests__/CombatSystem.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32mÔ£ô[39m src/systems/ai/__tests__/NPCBehavior.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 6[2mms[22m[39m
+[90mstdout[2m | deploy_hf/src/managers/__tests__/MusicManager.test.ts
+[22m[39mPOI System initialized
+
+[90mstdout[2m | deploy_hf/src/managers/__tests__/MusicManager.test.ts
+[22m[39mArrest System initialized
+
+ [32mÔ£ô[39m src/world/__tests__/WienGenerator.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32mÔ£ô[39m src/constants/__tests__/AudioLayers.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+[90mstdout[2m | src/components/ui/__tests__/HUD.test.ts
+[22m[39mPOI System initialized
+
+[90mstdout[2m | src/components/ui/__tests__/HUD.test.ts
+[22m[39mArrest System initialized
+
+[90mstdout[2m | deploy_hf/src/managers/__tests__/MusicManager.test.ts
+[22m[39m­ƒöè AUDIO MANAGER INITIALIZED (Phase 13)
+
+[90mstdout[2m | deploy_hf/src/managers/__tests__/MusicManager.test.ts[2m > [22m[2mMusicManager[2m > [22m[2mshould switch to TENSION when tension > 40
+[22m[39m[MusicManager] Transitioning from AMBIENT to TENSION
+
+[90mstdout[2m | deploy_hf/src/managers/__tests__/MusicManager.test.ts[2m > [22m[2mMusicManager[2m > [22m[2mshould switch to COMBAT when tension > 80
+[22m[39m[MusicManager] Transitioning from TENSION to COMBAT
+
+ [32mÔ£ô[39m deploy_hf/src/managers/__tests__/MusicManager.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32mÔ£ô[39m src/stores/__tests__/levelDefinitions.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+[90mstdout[2m | src/components/ui/__tests__/HUD.test.ts
+[22m[39m­ƒöè AUDIO MANAGER INITIALIZED (Phase 13)
+
+ [32mÔ£ô[39m src/components/ui/__tests__/HUD.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32mÔ£ô[39m src/constants/__tests__/MissionTemplates.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+[90mstdout[2m | src/tests/gameStore.test.ts
+[22m[39mPOI System initialized
+
+[90mstdout[2m | src/tests/gameStore.test.ts
+[22m[39mArrest System initialized
+
+[90mstdout[2m | src/tests/gameStore.test.ts
+[22m[39m­ƒöè AUDIO MANAGER INITIALIZED (Phase 13)
+
+ [32mÔ£ô[39m src/tests/gameStore.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32mÔ£ô[39m src/constants/__tests__/ObjectiveTemplates.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32mÔ£ô[39m src/systems/ai/bt/__tests__/BT.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+[90mstdout[2m | deploy_hf/src/hyper_test_simulation.test.ts
+[22m[39mPOI System initialized
+
+[90mstdout[2m | deploy_hf/src/hyper_test_simulation.test.ts
+[22m[39mArrest System initialized
+
+ [32mÔ£ô[39m src/__tests__/instancing.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 7[2mms[22m[39m
+[90mstdout[2m | src/stores/__tests__/achievements.test.ts
+[22m[39mPOI System initialized
+
+[90mstdout[2m | src/stores/__tests__/achievements.test.ts
+[22m[39mArrest System initialized
+
+[90mstdout[2m | deploy_hf/src/hyper_test_simulation.test.ts
+[22m[39m­ƒöè AUDIO MANAGER INITIALIZED (Phase 13)
+
+ [32mÔ£ô[39m deploy_hf/src/hyper_test_simulation.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 9[2mms[22m[39m
+ [32mÔ£ô[39m deploy_hf/src/__tests__/instancing.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 8[2mms[22m[39m
+[90mstdout[2m | src/stores/__tests__/achievements.test.ts
+[22m[39m­ƒöè AUDIO MANAGER INITIALIZED (Phase 13)
+
+ [32mÔ£ô[39m src/stores/__tests__/achievements.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32mÔ£ô[39m src/constants/__tests__/VoiceLines.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32mÔ£ô[39m src/constants/__tests__/Achievements.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32mÔ£ô[39m src/tests/simulation.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32mÔ£ô[39m src/managers/__tests__/VehicleManager.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32mÔ£ô[39m src/constants/__tests__/SfxCategories.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+[90mstdout[2m | src/managers/__tests__/ScoreLogic.test.ts
+[22m[39mPOI System initialized
+
+[90mstdout[2m | src/managers/__tests__/ScoreLogic.test.ts
+[22m[39mArrest System initialized
+
+ [32mÔ£ô[39m src/constants/__tests__/GameBalanceWeapons.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+[90mstdout[2m | src/managers/__tests__/ScoreLogic.test.ts
+[22m[39m­ƒöè AUDIO MANAGER INITIALIZED (Phase 13)
+
+ [32mÔ£ô[39m src/managers/__tests__/ScoreLogic.test.ts [2m([22m[2m3 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32mÔ£ô[39m src/constants/__tests__/Cutscenes.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32mÔ£ô[39m src/constants/__tests__/Dialogs.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32mÔ£ô[39m src/components/3d/entities/__tests__/Siren.logic.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32mÔ£ô[39m src/constants/__tests__/PlayerAnimations.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+[90mstdout[2m | deploy_hf/src/components/ui/__tests__/HUD.test.ts
+[22m[39mPOI System initialized
+
+[90mstdout[2m | deploy_hf/src/components/ui/__tests__/HUD.test.ts
+[22m[39mArrest System initialized
+
+ [32mÔ£ô[39m src/constants/__tests__/MusicTracks.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32mÔ£ô[39m src/constants/__tests__/UiAssets.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+[90mstdout[2m | deploy_hf/src/components/ui/__tests__/HUD.test.ts
+[22m[39m­ƒöè AUDIO MANAGER INITIALIZED (Phase 13)
+
+ [32mÔ£ô[39m deploy_hf/src/components/ui/__tests__/HUD.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32mÔ£ô[39m src/managers/__tests__/TensionManager.test.ts [2m([22m[2m2 tests[22m[2m | [22m[33m1 skipped[39m[2m)[22m[32m 4[2mms[22m[39m
+[90mstdout[2m | deploy_hf/src/managers/__tests__/ScoreLogic.test.ts
+[22m[39mPOI System initialized
+
+[90mstdout[2m | deploy_hf/src/managers/__tests__/ScoreLogic.test.ts
+[22m[39mArrest System initialized
+
+ [32mÔ£ô[39m deploy_hf/src/managers/__tests__/TensionManager.test.ts [2m([22m[2m2 tests[22m[2m | [22m[33m1 skipped[39m[2m)[22m[32m 3[2mms[22m[39m
+ [32mÔ£ô[39m src/utils/__tests__/NPCFactory.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 3[2mms[22m[39m
+[90mstdout[2m | deploy_hf/src/managers/__tests__/ScoreLogic.test.ts
+[22m[39m­ƒöè AUDIO MANAGER INITIALIZED (Phase 13)
+
+ [32mÔ£ô[39m deploy_hf/src/managers/__tests__/ScoreLogic.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 3[2mms[22m[39m
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ» Failed Tests 14 ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»
+
+ FAIL  src/managers/__tests__/QuestManager.test.ts > AdvancedQuestManager > should have default quests initialized
+AssertionError: expected undefined to be defined
+ ÔØ» src/managers/__tests__/QuestManager.test.ts:40:26
+     38|         const available = questManager.getAvailableQuests();
+     39|         const tutorial = available.find(q => q.id === 'Q_TUTORIAL_01');
+     40|         expect(tutorial).toBeDefined();
+       |                          ^
+     41|         expect(tutorial?.state).toBe(QuestState.AVAILABLE);
+     42|     });
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[1/14]ÔÄ»
+
+ FAIL  src/managers/__tests__/QuestManager.test.ts > AdvancedQuestManager > should start a quest
+AssertionError: expected undefined to be defined
+ ÔØ» src/managers/__tests__/QuestManager.test.ts:55:26
+     53|         const active = questManager.getActiveQuests();
+     54|         const tutorial = active.find(q => q.id === qId);
+     55|         expect(tutorial).toBeDefined();
+       |                          ^
+     56|         expect(tutorial?.state).toBe(QuestState.ACTIVE);
+     57|     });
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[2/14]ÔÄ»
+
+ FAIL  src/managers/__tests__/QuestManager.test.ts > AdvancedQuestManager > should update objectives upon action
+AssertionError: expected undefined to be 1 // Object.is equality
+
+- Expected: 
+1
+
++ Received: 
+undefined
+
+ ÔØ» src/managers/__tests__/QuestManager.test.ts:73:35
+     71|         const obj = quest?.objectives.find(o => o.id === objId);
+     72| 
+     73|         expect(obj?.currentCount).toBe(1);
+       |                                   ^
+     74|         expect(obj?.isCompleted).toBe(true);
+     75|     });
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[3/14]ÔÄ»
+
+ FAIL  src/systems/__tests__/TensionSystem.test.ts > TensionSystem > should decay tension over time
+AssertionError: expected "vi.fn()" to be called at least once
+ ÔØ» src/systems/__tests__/TensionSystem.test.ts:41:31
+     39|         TensionSystem.update(1.0);
+     40| 
+     41|         expect(tensionSetter).toHaveBeenCalled();
+       |                               ^
+     42|         const callArg = tensionSetter.mock.calls[0][0];
+     43|         expect(callArg).toBeLessThan(50);
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[4/14]ÔÄ»
+
+ FAIL  src/systems/__tests__/TensionSystem.test.ts > TensionSystem > should not decay below 0
+AssertionError: expected "vi.fn()" to be called at least once
+ ÔØ» src/systems/__tests__/TensionSystem.test.ts:58:31
+     56|         TensionSystem.update(1.0);
+     57| 
+     58|         expect(tensionSetter).toHaveBeenCalled();
+       |                               ^
+     59|         expect(tensionSetter.mock.calls[0][0]).toBeGreaterThanOrEqual(ÔÇª
+     60|     });
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[5/14]ÔÄ»
+
+ FAIL  src/systems/__tests__/TensionSystem.test.ts > TensionSystem > should increase tension when many events occur
+AssertionError: expected "vi.fn()" to be called at least once
+ ÔØ» src/systems/__tests__/TensionSystem.test.ts:90:31
+     88|         TensionSystem.update(1.0);
+     89| 
+     90|         expect(tensionSetter).toHaveBeenCalled();
+       |                               ^
+     91|         const value = tensionSetter.mock.calls[0][0];
+     92|         expect(value).toBeGreaterThan(50);
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[6/14]ÔÄ»
+
+ FAIL  src/components/Effects/__tests__/PostProcessing.logic.test.ts > PostProcessing preset selection > selects MORNING between 06 and 11
+TypeError: (0 , __vite_ssr_import_1__.resolvePresetForHour) is not a function
+ ÔØ» src/components/Effects/__tests__/PostProcessing.logic.test.ts:7:20
+      5| describe('PostProcessing preset selection', () => {
+      6|     it('selects MORNING between 06 and 11', () => {
+      7|         const p6 = resolvePresetForHour(6);
+       |                    ^
+      8|         const p9 = resolvePresetForHour(9);
+      9|         const p11 = resolvePresetForHour(11);
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[7/14]ÔÄ»
+
+ FAIL  src/components/Effects/__tests__/PostProcessing.logic.test.ts > PostProcessing preset selection > selects MIDDAY between 12 and 17
+TypeError: (0 , __vite_ssr_import_1__.resolvePresetForHour) is not a function
+ ÔØ» src/components/Effects/__tests__/PostProcessing.logic.test.ts:16:21
+     14| 
+     15|     it('selects MIDDAY between 12 and 17', () => {
+     16|         const p12 = resolvePresetForHour(12);
+       |                     ^
+     17|         const p15 = resolvePresetForHour(15);
+     18|         const p17 = resolvePresetForHour(17);
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[8/14]ÔÄ»
+
+ FAIL  src/components/Effects/__tests__/PostProcessing.logic.test.ts > PostProcessing preset selection > selects EVENING between 18 and 21
+TypeError: (0 , __vite_ssr_import_1__.resolvePresetForHour) is not a function
+ ÔØ» src/components/Effects/__tests__/PostProcessing.logic.test.ts:25:21
+     23| 
+     24|     it('selects EVENING between 18 and 21', () => {
+     25|         const p18 = resolvePresetForHour(18);
+       |                     ^
+     26|         const p19 = resolvePresetForHour(19);
+     27|         const p21 = resolvePresetForHour(21);
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[9/14]ÔÄ»
+
+ FAIL  src/components/Effects/__tests__/PostProcessing.logic.test.ts > PostProcessing preset selection > selects NIGHT otherwise
+TypeError: (0 , __vite_ssr_import_1__.resolvePresetForHour) is not a function
+ ÔØ» src/components/Effects/__tests__/PostProcessing.logic.test.ts:34:20
+     32| 
+     33|     it('selects NIGHT otherwise', () => {
+     34|         const p0 = resolvePresetForHour(0);
+       |                    ^
+     35|         const p23 = resolvePresetForHour(23);
+     36|         const p3 = resolvePresetForHour(3);
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[10/14]ÔÄ»
+
+ FAIL  src/components/ui/__tests__/HUD.timecolor.test.ts > HUD time color mapping > maps MORNING for 06ÔÇô11h
+TypeError: (0 , __vite_ssr_import_1__.resolveTimeColor) is not a function
+ ÔØ» src/components/ui/__tests__/HUD.timecolor.test.ts:7:16
+      5| describe('HUD time color mapping', () => {
+      6|     it('maps MORNING for 06ÔÇô11h', () => {
+      7|         expect(resolveTimeColor(6)).toBe(UI_TIME_COLORS.MORNING);
+       |                ^
+      8|         expect(resolveTimeColor(9)).toBe(UI_TIME_COLORS.MORNING);
+      9|         expect(resolveTimeColor(11)).toBe(UI_TIME_COLORS.MORNING);
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[11/14]ÔÄ»
+
+ FAIL  src/components/ui/__tests__/HUD.timecolor.test.ts > HUD time color mapping > maps MIDDAY for 12ÔÇô17h
+TypeError: (0 , __vite_ssr_import_1__.resolveTimeColor) is not a function
+ ÔØ» src/components/ui/__tests__/HUD.timecolor.test.ts:13:16
+     11| 
+     12|     it('maps MIDDAY for 12ÔÇô17h', () => {
+     13|         expect(resolveTimeColor(12)).toBe(UI_TIME_COLORS.MIDDAY);
+       |                ^
+     14|         expect(resolveTimeColor(15)).toBe(UI_TIME_COLORS.MIDDAY);
+     15|         expect(resolveTimeColor(17)).toBe(UI_TIME_COLORS.MIDDAY);
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[12/14]ÔÄ»
+
+ FAIL  src/components/ui/__tests__/HUD.timecolor.test.ts > HUD time color mapping > maps EVENING for 18ÔÇô21h
+TypeError: (0 , __vite_ssr_import_1__.resolveTimeColor) is not a function
+ ÔØ» src/components/ui/__tests__/HUD.timecolor.test.ts:19:16
+     17| 
+     18|     it('maps EVENING for 18ÔÇô21h', () => {
+     19|         expect(resolveTimeColor(18)).toBe(UI_TIME_COLORS.EVENING);
+       |                ^
+     20|         expect(resolveTimeColor(19)).toBe(UI_TIME_COLORS.EVENING);
+     21|         expect(resolveTimeColor(21)).toBe(UI_TIME_COLORS.EVENING);
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[13/14]ÔÄ»
+
+ FAIL  src/components/ui/__tests__/HUD.timecolor.test.ts > HUD time color mapping > maps NIGHT for other hours
+TypeError: (0 , __vite_ssr_import_1__.resolveTimeColor) is not a function
+ ÔØ» src/components/ui/__tests__/HUD.timecolor.test.ts:25:16
+     23| 
+     24|     it('maps NIGHT for other hours', () => {
+     25|         expect(resolveTimeColor(0)).toBe(UI_TIME_COLORS.NIGHT);
+       |                ^
+     26|         expect(resolveTimeColor(3)).toBe(UI_TIME_COLORS.NIGHT);
+     27|         expect(resolveTimeColor(23)).toBe(UI_TIME_COLORS.NIGHT);
+
+ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»ÔÄ»[14/14]ÔÄ»
+
+
+[2m Test Files [22m [1m[31m4 failed[39m[22m[2m | [22m[1m[32m62 passed[39m[22m[90m (66)[39m
+[2m      Tests [22m [1m[31m14 failed[39m[22m[2m | [22m[1m[32m158 passed[39m[22m[2m | [22m[33m2 skipped[39m[90m (174)[39m
+[2m   Start at [22m 20:00:36
+[2m   Duration [22m 22.95s[2m (transform 4.48s, setup 11.52s, import 16.89s, tests 1.42s, environment 95.12s)[22m
+

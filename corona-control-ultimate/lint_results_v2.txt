@@ -1,0 +1,888 @@
+
+> corona-control-ultimate@0.0.0 lint
+> eslint .
+
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\ai\Actions.ts
+  70:40  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\ai\BehaviorTree.ts
+    9:31  error  Unexpected any. Specify a different type           @typescript-eslint/no-explicit-any
+   11:29  error  Unexpected any. Specify a different type           @typescript-eslint/no-explicit-any
+   15:23  error  Unexpected any. Specify a different type           @typescript-eslint/no-explicit-any
+  123:53  error  'runningCount' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\ai\MemorySystem.ts
+  15:41  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\ai\PerceptionSystem.ts
+   9:16  error  Unexpected any. Specify a different type                                         @typescript-eslint/no-explicit-any
+  23:19  error  'delta' is defined but never used. Allowed unused args must match /^_/u          @typescript-eslint/no-unused-vars
+  23:34  error  'ownerPosition' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+  23:64  error  'ownerForward' is defined but never used. Allowed unused args must match /^_/u   @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\ai\TacticsManager.ts
+  117:45  error  'controller' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+  117:57  error  'id' is defined but never used. Allowed unused args must match /^_/u          @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\ai\TreeFactory.ts
+  2:50  error  'ConditionalNode' is defined but never used  @typescript-eslint/no-unused-vars
+  2:67  error  'InverterNode' is defined but never used     @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\ai\__tests__\BehaviorLogic.test.ts
+  2:22  error  'NodeStatus' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\ai\actions\AttackTargetAction.ts
+  18:57  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\ai\actions\FleeAction.ts
+  29:37  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\ai\conditions\IsThreatNearCondition.ts
+   5:40  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  22:56  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\ai\trees\CivilianBehaviorTree.ts
+  8:10  error  'WaitAction' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\ai\trees\PoliceBehaviorTree.ts
+   8:10  error  'MoveToTargetAction' is defined but never used         @typescript-eslint/no-unused-vars
+  29:15  error  'holdLineSequence' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\ai\trees\RioterBehaviorTree.ts
+  14:13  error  'THREE' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\3d\entities\Siren.tsx
+  11:14  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\3d\environment\Barriers.tsx
+  2:13  error  'THREE' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\3d\environment\Destructibles.tsx
+  2:13  error  'THREE' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\3d\environment\Fountain.tsx
+  2:13  error  'THREE' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\3d\environment\GlobalWindowInstancer.tsx
+   1:25  error  'useMemo' is defined but never used             @typescript-eslint/no-unused-vars
+   2:10  error  'useFrame' is defined but never used            @typescript-eslint/no-unused-vars
+  11:11  error  'meshRef' is assigned a value but never used    @typescript-eslint/no-unused-vars
+  12:11  error  'buildings' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\3d\environment\GroundDecals.tsx
+  2:13  error  'THREE' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\3d\environment\Interactables.tsx
+  2:13  error  'THREE' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\3d\environment\Props.tsx
+  2:13  error  'THREE' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\3d\environment\Sidewalk.tsx
+  2:13  error  'THREE' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\3d\environment\Street.tsx
+  2:13  error  'THREE' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\3d\environment\TrafficSystem.tsx
+  10:30  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\3d\environment\Vegetation.tsx
+  2:13  error  'THREE' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\3d\environment\__tests__\CityEnvironmentLevel1Vehicles.test.tsx
+  11:17  error  'children' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+  16:19  error  A `require()` style import is forbidden                                     @typescript-eslint/no-require-imports
+  33:34  error  Unexpected any. Specify a different type                                    @typescript-eslint/no-explicit-any
+  53:84  error  Unexpected any. Specify a different type                                    @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\Effects\ParticleSystem.tsx
+  11:13  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+  45:14  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\NPCV2.tsx
+  36:20  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\NPCV2.tsx:36:20
+  34 |     if (!aiState.current) {
+  35 |         aiState.current = {
+> 36 |             timer: Math.random() * 5,
+     |                    ^^^^^^^^^^^^^ Cannot call impure function
+  37 |             changeInterval: 2 + Math.random() * 3,
+  38 |             direction: new THREE.Vector3(Math.random() - 0.5, 0, Math.random() - 0.5).normalize(),
+  39 |             speed: 5.0         react-hooks/purity
+  37:33  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\NPCV2.tsx:37:33
+  35 |         aiState.current = {
+  36 |             timer: Math.random() * 5,
+> 37 |             changeInterval: 2 + Math.random() * 3,
+     |                                 ^^^^^^^^^^^^^ Cannot call impure function
+  38 |             direction: new THREE.Vector3(Math.random() - 0.5, 0, Math.random() - 0.5).normalize(),
+  39 |             speed: 5.0
+  40 |         };             react-hooks/purity
+  38:42  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\NPCV2.tsx:38:42
+  36 |             timer: Math.random() * 5,
+  37 |             changeInterval: 2 + Math.random() * 3,
+> 38 |             direction: new THREE.Vector3(Math.random() - 0.5, 0, Math.random() - 0.5).normalize(),
+     |                                          ^^^^^^^^^^^^^ Cannot call impure function
+  39 |             speed: 5.0
+  40 |         };
+  41 |     }                          react-hooks/purity
+  38:66  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\NPCV2.tsx:38:66
+  36 |             timer: Math.random() * 5,
+  37 |             changeInterval: 2 + Math.random() * 3,
+> 38 |             direction: new THREE.Vector3(Math.random() - 0.5, 0, Math.random() - 0.5).normalize(),
+     |                                                                  ^^^^^^^^^^^^^ Cannot call impure function
+  39 |             speed: 5.0
+  40 |         };
+  41 |     }  react-hooks/purity
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\Player.tsx
+   11:13  error  'camera' is assigned a value but never used  @typescript-eslint/no-unused-vars
+   81:24  error  Unexpected any. Specify a different type     @typescript-eslint/no-explicit-any
+  144:63  error  Unexpected any. Specify a different type     @typescript-eslint/no-explicit-any
+  300:24  error  Unexpected any. Specify a different type     @typescript-eslint/no-explicit-any
+  323:24  error  Unexpected any. Specify a different type     @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\SceneV2.tsx
+   6:8   error  'FallbackScene' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       @typescript-eslint/no-unused-vars
+  25:16  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @typescript-eslint/no-explicit-any
+  29:7   error  Error: This value cannot be modified
+
+Modifying a value returned from a hook is not allowed. Consider moving the modification into the hook where the value is constructed.
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\SceneV2.tsx:29:7
+  27 |     // Fallback environment logic
+  28 |     if (!assetsReady.env || !p.enablePMREM) {
+> 29 |       scene.environment = null;
+     |       ^^^^^ `scene` cannot be modified
+  30 |       // We rely on lights added in JSX below
+  31 |     }
+  32 |   }, [gl, scene, assetsReady]);  react-hooks/immutability
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\StephansplatzGeometry.tsx
+   2:13  error    'THREE' is defined but never used                                                                                               @typescript-eslint/no-unused-vars
+   6:14  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+  13:20  error    Unexpected any. Specify a different type                                                                                        @typescript-eslint/no-explicit-any
+  16:24  error    Unexpected any. Specify a different type                                                                                        @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\WorldItem.tsx
+  94:38  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\audio\SpatialAudioSource.tsx
+  19:5   error  'autoplay' is assigned a value but never used. Allowed unused args must match /^_/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       @typescript-eslint/no-unused-vars
+  23:13  error  'camera' is assigned a value but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               @typescript-eslint/no-unused-vars
+  69:14  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\audio\SpatialAudioSource.tsx:69:14
+  67 |                 <meshBasicMaterial color="yellow" wireframe />
+  68 |             </mesh> */}
+> 69 |             {sound.current && <primitive object={sound.current} />}
+     |              ^^^^^^^^^^^^^ Cannot access ref value during render
+  70 |         </group>
+  71 |     );
+  72 | };                                      react-hooks/refs
+  69:14  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\audio\SpatialAudioSource.tsx:69:14
+  67 |                 <meshBasicMaterial color="yellow" wireframe />
+  68 |             </mesh> */}
+> 69 |             {sound.current && <primitive object={sound.current} />}
+     |              ^^^^^^^^^^^^^ Cannot access ref value during render
+  70 |         </group>
+  71 |     );
+  72 | };                                      react-hooks/refs
+  69:50  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\audio\SpatialAudioSource.tsx:69:50
+  67 |                 <meshBasicMaterial color="yellow" wireframe />
+  68 |             </mesh> */}
+> 69 |             {sound.current && <primitive object={sound.current} />}
+     |                                                  ^^^^^^^^^^^^^ Cannot access ref value during render
+  70 |         </group>
+  71 |     );
+  72 | };  react-hooks/refs
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\buildings\BuildingComponents.tsx
+  2:13  error  'THREE' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\buildings\VienneseBuilding.tsx
+    4:10  error  'RigidBody' is defined but never used       @typescript-eslint/no-unused-vars
+    4:21  error  'CuboidCollider' is defined but never used  @typescript-eslint/no-unused-vars
+  113:10  error  'CorniceModule' is defined but never used   @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\characters\HumanCharacterLOD2.tsx
+  6:79  error  'skinTone' is assigned a value but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\combat\CombatRenderer.tsx
+   2:21  error  'CapsuleCollider' is defined but never used                              @typescript-eslint/no-unused-vars
+  34:33  error  Unexpected any. Specify a different type                                 @typescript-eslint/no-explicit-any
+  38:30  error  'e' is defined but never used. Allowed unused args must match /^_/u      @typescript-eslint/no-unused-vars
+  38:33  error  Unexpected any. Specify a different type                                 @typescript-eslint/no-explicit-any
+  77:15  error  'state' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\combat\MeleeSystem.tsx
+   2:10   error  'useFrame' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     @typescript-eslint/no-unused-vars
+   5:13   error  'THREE' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @typescript-eslint/no-unused-vars
+  11:11   error  'sensorRef' is assigned a value but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           @typescript-eslint/no-unused-vars
+  17:115  error  Optional chain expressions can return undefined by design - using a non-null assertion is unsafe and wrong                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               @typescript-eslint/no-non-null-asserted-optional-chain
+  20:21   error  Error: Cannot access variable before it is declared
+
+`performAttack` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\combat\MeleeSystem.tsx:20:21
+  18 |
+  19 |                 if (isMelee) {
+> 20 |                     performAttack();
+     |                     ^^^^^^^^^^^^^ `performAttack` accessed before it is declared
+  21 |                 }
+  22 |             }
+  23 |         };
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\combat\MeleeSystem.tsx:29:5
+  27 |     }, [isAttacking, mainHandItem]);
+  28 |
+> 29 |     const performAttack = () => {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 30 |         setIsAttacking(true);
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 31 |         // Reset after short delay
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 32 |         setTimeout(() => setIsAttacking(false), 200); // 200ms attack window
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 33 |     };
+     | ^^^^^^^ `performAttack` is declared here
+  34 |
+  35 |     const handleIntersection = (e: any) => {
+  36 |         if (isAttacking && e.other.rigidBodyObject && e.other.rigidBodyObject.name === 'npc') {  react-hooks/immutability
+  35:36   error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\debug\DebugOverlay.tsx
+  13:35  error  Error: Cannot call impure function during render
+
+`performance.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\debug\DebugOverlay.tsx:13:35
+  11 |     const [fps, setFps] = React.useState(0);
+  12 |     const frameCount = React.useRef(0);
+> 13 |     const lastTime = React.useRef(performance.now());
+     |                                   ^^^^^^^^^^^^^^^^^ Cannot call impure function
+  14 |
+  15 |     const debugButtonStyle: React.CSSProperties = {
+  16 |         background: 'rgba(255, 255, 255, 0.05)',  react-hooks/purity
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\environment\Barricade.tsx
+   3:21  error  'CuboidCollider' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     @typescript-eslint/no-unused-vars
+  19:11  error  'seed' is assigned a value but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      @typescript-eslint/no-unused-vars
+  19:32  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\environment\Barricade.tsx:19:32
+  17 |
+  18 |     // Zuf├ñllige Variation f├╝r "Schrott-Look"
+> 19 |     const seed = useMemo(() => Math.random(), []);
+     |                                ^^^^^^^^^^^^^ Cannot call impure function
+  20 |
+  21 |     // Material
+  22 |     const woodMat = useMemo(() => new THREE.MeshStandardMaterial({ color: 0x8B4513, roughness: 0.9 }), []);  react-hooks/purity
+  23:11  error  'metalMat' is assigned a value but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\environment\EnvironmentObjects.tsx
+    8:49  error  'createAsphaltTexture' is defined but never used                                     @typescript-eslint/no-unused-vars
+    8:71  error  'createCobblestoneTexture' is defined but never used                                 @typescript-eslint/no-unused-vars
+   19:10  error  'useFrame' is defined but never used                                                 @typescript-eslint/no-unused-vars
+   20:8   error  'TimeSystem' is defined but never used                                               @typescript-eslint/no-unused-vars
+   52:5   error  'id' is defined but never used. Allowed unused args must match /^_/u                 @typescript-eslint/no-unused-vars
+  230:5   error  'position' is assigned a value but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+  231:5   error  'width' is assigned a value but never used. Allowed unused args must match /^_/u     @typescript-eslint/no-unused-vars
+  232:5   error  'length' is assigned a value but never used. Allowed unused args must match /^_/u    @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\game\GameCanvas.tsx
+   29:32  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  126:53  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  245:18  error  '_e' is defined but never used            @typescript-eslint/no-unused-vars
+  316:44  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  320:70  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\game\entities\BaseCharacter.tsx
+  43:5   error  'type' is defined but never used. Allowed unused args must match /^_/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  @typescript-eslint/no-unused-vars
+  45:5   error  'lodLevel' is assigned a value but never used. Allowed unused args must match /^_/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     @typescript-eslint/no-unused-vars
+  60:21  error  'dt' is defined but never used. Allowed unused args must match /^_/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    @typescript-eslint/no-unused-vars
+  79:17  error  Error: This value cannot be modified
+
+Modifying a value previously passed as an argument to a hook is not allowed. Consider moving the modification before calling the hook.
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\game\entities\BaseCharacter.tsx:79:17
+  77 |
+  78 |             if (isPlayer) {
+> 79 |                 animationState.currentAnimationId = getDefaultPlayerAnimationForState(state);
+     |                 ^^^^^^^^^^^^^^ `animationState` cannot be modified
+  80 |             }
+  81 |         }
+  82 |     });  react-hooks/immutability
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\game\entities\PlayerCharacter.tsx
+  18:28  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\game\entities\VehicleBase.tsx
+   27:5   error  'type' is defined but never used. Allowed unused args must match /^_/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         @typescript-eslint/no-unused-vars
+   28:5   error  'health' is assigned a value but never used. Allowed unused args must match /^_/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              @typescript-eslint/no-unused-vars
+   36:34  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       @typescript-eslint/no-explicit-any
+   80:13  error  Error: This value cannot be modified
+
+Modifying a value previously passed as an argument to a hook is not allowed. Consider moving the modification before calling the hook.
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\game\entities\VehicleBase.tsx:80:13
+  78 |                 dt
+  79 |             );
+> 80 |             vehicleState.speed = speed;
+     |             ^^^^^^^^^^^^ `vehicleState` cannot be modified
+  81 |             vehicleState.steering = steering;
+  82 |
+  83 |             // 2. Update transform  react-hooks/immutability
+  101:23  error  'delta' is defined but never used. Allowed unused args must match /^_/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\ui\Inventory.tsx
+   37:13  error  React Hook "useItem" is called in function "handleUse" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word "use"  react-hooks/rules-of-hooks
+  104:84  error  Unexpected any. Specify a different type                                                                                                                                                                                                        @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\ui\NotificationSystem.tsx
+  2:32  error  'Notification' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\ui\PerformanceMonitor.tsx
+   49:32  error    Error: Cannot call impure function during render
+
+`performance.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\ui\PerformanceMonitor.tsx:49:32
+  47 |
+  48 |     const frameCountRef = useRef(0);
+> 49 |     const lastTimeRef = useRef(performance.now());
+     |                                ^^^^^^^^^^^^^^^^^ Cannot call impure function
+  50 |     const frameTimesRef = useRef<number[]>([]);
+  51 |
+  52 |     useFrame(() => {                                                                                                                                                                                                                                                                                                                            react-hooks/purity
+  133:14  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   react-refresh/only-export-components
+  155:14  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   react-refresh/only-export-components
+  163:28  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         @typescript-eslint/no-explicit-any
+  164:40  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         @typescript-eslint/no-explicit-any
+  173:9   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\ui\PerformanceMonitor.tsx:173:9
+  171 |         });
+  172 |
+> 173 |         setTotalPolygons(Math.round(total));
+      |         ^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  174 |     }, [scene]);
+  175 |
+  176 |     return totalPolygons;  react-hooks/set-state-in-effect
+  183:14  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   react-refresh/only-export-components
+  190:24  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         @typescript-eslint/no-explicit-any
+  191:36  error    Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\ui\SaveLoadUI.tsx
+   7:10  error  'useGameStore' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       @typescript-eslint/no-unused-vars
+  29:9   error  Error: Cannot access variable before it is declared
+
+`refreshSlots` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\ui\SaveLoadUI.tsx:29:9
+  27 |
+  28 |     useEffect(() => {
+> 29 |         refreshSlots();
+     |         ^^^^^^^^^^^^ `refreshSlots` accessed before it is declared
+  30 |     }, []);
+  31 |
+  32 |     const refreshSlots = () => {
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\ui\SaveLoadUI.tsx:32:5
+  30 |     }, []);
+  31 |
+> 32 |     const refreshSlots = () => {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 33 |         setSlots(saveManager.getSaveSlots());
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 34 |     };
+     | ^^^^^^^ `refreshSlots` is declared here
+  35 |
+  36 |     const handleSave = (slotId: number) => {
+  37 |         const success = saveManager.saveToSlot(slotId);  react-hooks/immutability
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\ui\SettingsMenu.tsx
+   1:17  error  'useEffect' is defined but never used     @typescript-eslint/no-unused-vars
+  37:64  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\ui\WorldUI.tsx
+   1:17  error  'useRef' is defined but never used              @typescript-eslint/no-unused-vars
+   4:10  error  'useFrame' is defined but never used            @typescript-eslint/no-unused-vars
+   5:13  error  'THREE' is defined but never used               @typescript-eslint/no-unused-vars
+  12:11  error  'playerPos' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\ui\__tests__\HUD.test.ts
+  1:32  error  'vi' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\vehicles\WaterCannonVehicle.tsx
+   3:21  error  'CuboidCollider' is defined but never used        @typescript-eslint/no-unused-vars
+   5:10  error  'useGameStore' is defined but never used          @typescript-eslint/no-unused-vars
+  46:17  error  'activeCount' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\world\ChunkRenderer.tsx
+   7:13  error  'THREE' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     @typescript-eslint/no-unused-vars
+  12:15  error  'ParkBench' is assigned a value but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        @typescript-eslint/no-unused-vars
+  21:40  error  'i' is defined but never used. Allowed unused args must match /^_/u                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   @typescript-eslint/no-unused-vars
+  25:51  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\world\ChunkRenderer.tsx:25:51
+  23 |                 key={b.id}
+  24 |                 position={[
+> 25 |                     chunk.x * 50 + b.width / 2 + (Math.random() - 0.5) * 20, // Offset within chunk
+     |                                                   ^^^^^^^^^^^^^ Cannot call impure function
+  26 |                     0,
+  27 |                     chunk.z * 50 + b.depth / 2 + (Math.random() - 0.5) * 20
+  28 |                 ]}                                                                                    react-hooks/purity
+  27:51  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\world\ChunkRenderer.tsx:27:51
+  25 |                     chunk.x * 50 + b.width / 2 + (Math.random() - 0.5) * 20, // Offset within chunk
+  26 |                     0,
+> 27 |                     chunk.z * 50 + b.depth / 2 + (Math.random() - 0.5) * 20
+     |                                                   ^^^^^^^^^^^^^ Cannot call impure function
+  28 |                 ]}
+  29 |                 rotation={[0, (Math.floor(Math.random() * 4) * Math.PI / 2), 0]} // Snap to 90 degrees
+  30 |                 floors={b.floors}  react-hooks/purity
+  29:43  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\world\ChunkRenderer.tsx:29:43
+  27 |                     chunk.z * 50 + b.depth / 2 + (Math.random() - 0.5) * 20
+  28 |                 ]}
+> 29 |                 rotation={[0, (Math.floor(Math.random() * 4) * Math.PI / 2), 0]} // Snap to 90 degrees
+     |                                           ^^^^^^^^^^^^^ Cannot call impure function
+  30 |                 floors={b.floors}
+  31 |                 width={b.width}
+  32 |                 depth={b.depth}                                                                     react-hooks/purity
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\constants\__tests__\AudioLayers.test.ts
+  12:17  error  'k' is assigned a value but never used    @typescript-eslint/no-unused-vars
+  25:34  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\constants\__tests__\MissionTemplates.test.ts
+  12:41  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\constants\__tests__\ObjectiveTemplates.test.ts
+  12:43  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\constants\__tests__\VoiceSubtitles.test.ts
+  14:17  error  'key' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\core\EngineLoopManager.tsx
+   3:10  error    'getFeatureState' is defined but never used                                                                                     @typescript-eslint/no-unused-vars
+  53:14  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\hyper_test_simulation.test.ts
+   4:13  error  'THREE' is defined but never used               @typescript-eslint/no-unused-vars
+  10:22  error  Unexpected any. Specify a different type        @typescript-eslint/no-explicit-any
+  57:13  error  'pos' is never reassigned. Use 'const' instead  prefer-const
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\managers\ContextualHintsManager.ts
+  159:22  error  'e' is defined but never used             @typescript-eslint/no-unused-vars
+  198:12  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\managers\CutsceneController.tsx
+  30:20  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\managers\CutsceneManager.tsx
+  30:20  error  Unexpected any. Specify a different type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  @typescript-eslint/no-explicit-any
+  34:13  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\managers\CutsceneManager.tsx:34:13
+  32 |         if (activeCutscene) {
+  33 |             startTime.current = Date.now();
+> 34 |             setCurrentTime(0);
+     |             ^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  35 |         } else {
+  36 |             startTime.current = null;
+  37 |         }  react-hooks/set-state-in-effect
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\managers\DialogManager.ts
+    3:39  error  'DialogChoice' is defined but never used  @typescript-eslint/no-unused-vars
+   35:54  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   87:66  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  110:12  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\managers\MissionManager.tsx
+  19:45  error  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\managers\MissionManager.tsx:19:45
+  17 |     const setPlayerPosition = useGameStore(state => state.setPlayerPosition);
+  18 |     
+> 19 |     const missionStartTime = useRef<number>(Date.now());
+     |                                             ^^^^^^^^^^ Cannot call impure function
+  20 |     const eventQueue = useRef<MissionEvent[]>([]);
+  21 |     const lastCutscene = useRef<string | null>(null);
+  22 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         react-hooks/purity
+  26:13  error  Error: Cannot access variable before it is declared
+
+`setupMissionEvents` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\managers\MissionManager.tsx:26:13
+  24 |     useEffect(() => {
+  25 |         if (gameState.currentMissionIndex === 0 && gameState.isPlaying) {
+> 26 |             setupMissionEvents();
+     |             ^^^^^^^^^^^^^^^^^^ `setupMissionEvents` accessed before it is declared
+  27 |         }
+  28 |     }, [gameState.currentMissionIndex, gameState.isPlaying]);
+  29 |
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\managers\MissionManager.tsx:40:5
+   38 |     }, [activeCutscene, setPlayerPosition]);
+   39 |
+>  40 |     const setupMissionEvents = () => {
+      |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  41 |         eventQueue.current = [
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  42 |             {
+      ÔÇª
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 101 |         ];
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 102 |     };
+      | ^^^^^^^ `setupMissionEvents` is declared here
+  103 |
+  104 |     useFrame((_state, _delta) => {
+  105 |         if (!gameState.isPlaying || activeCutscene) return;  react-hooks/immutability
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\managers\MusicManager.ts
+  13:27  error  Unexpected any. Specify a different type                                 @typescript-eslint/no-explicit-any
+  29:19  error  'delta' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\managers\NPCAIManager.ts
+  90:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\managers\NetworkManager.ts
+   68:44  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   70:38  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   93:46  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  115:44  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  154:32  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  168:12  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\managers\ProjectileManager.tsx
+  62:71  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\managers\SaveManager.ts
+  233:103  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  243:73   error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  381:103  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  436:12   error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\managers\TacticsManager.ts
+   33:35  error  Unexpected any. Specify a different type                  @typescript-eslint/no-explicit-any
+   80:71  error  Unexpected any. Specify a different type                  @typescript-eslint/no-explicit-any
+  105:13  error  'desiredAnchor' is never reassigned. Use 'const' instead  prefer-const
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\managers\TensionManager.ts
+  2:8  error  'GameEventSystem' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\managers\TutorialManager.ts
+  190:12  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\managers\VehicleManager.ts
+  68:23  error  '_' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\managers\__tests__\DialogManager.test.ts
+  2:44  error  'vi' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\managers\__tests__\EventManager.test.ts
+  4:10  error  'useGameStore' is defined but never used          @typescript-eslint/no-unused-vars
+  5:10  error  'useNotificationStore' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\managers\__tests__\EventManagerScheduled.test.ts
+  18:30  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  18:75  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\managers\__tests__\QuestManager.test.ts
+  4:10  error  'useGameStore' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\managers\__tests__\ScoreLogic.test.ts
+   1:32  error  'vi' is defined but never used            @typescript-eslint/no-unused-vars
+   9:57  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  19:55  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\managers\__tests__\TensionManager.test.ts
+  3:10  error  'useGameStore' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\scene\lod\LODManager.tsx
+  17:14  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\stores\gameStore.ts
+  19:12  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  20:12  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\stores\types.ts
+  147:58  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  148:29  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  168:19  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  218:54  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\AISystem.ts
+  48:63  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  65:40  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  75:44  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  89:41  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\AudioSystem.ts
+  3:10  error  'useGameStore' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\CombatSystem.ts
+  35:92   error  'width' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+  35:107  error  'force' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+  55:55   error  'sys' is defined but never used. Allowed unused args must match /^_/u    @typescript-eslint/no-unused-vars
+  72:43   error  'sys' is defined but never used. Allowed unused args must match /^_/u    @typescript-eslint/no-unused-vars
+  91:19   error  'delta' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\CommanderSystem.ts
+   4:8   error  'AISystem' is defined but never used                                     @typescript-eslint/no-unused-vars
+   5:13  error  'THREE' is defined but never used                                        @typescript-eslint/no-unused-vars
+  28:19  error  'delta' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\EndingSystem.ts
+  13:15  error  'missionsCompleted' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  42:72  error  Unexpected any. Specify a different type                @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\FireSystem.ts
+  142:53  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  142:71  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\FlowFieldSystem.ts
+  1:13  error  'THREE' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\InteractionSystem.ts
+  132:5  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-unused-vars')
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\LODSystem.tsx
+  10:34  error  'useEffect' is defined but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 @typescript-eslint/no-unused-vars
+  80:26  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\LODSystem.tsx:80:26
+  78 |
+  79 |     // Render das aktuelle LOD
+> 80 |     const currentLevel = currentLODRef.current;
+     |                          ^^^^^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  81 |     const componentToRender = currentLevel === 0
+  82 |         ? children
+  83 |         : sortedLevels[currentLevel - 1]?.component || children;  react-hooks/refs
+  80:26  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\LODSystem.tsx:80:26
+  78 |
+  79 |     // Render das aktuelle LOD
+> 80 |     const currentLevel = currentLODRef.current;
+     |                          ^^^^^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  81 |     const componentToRender = currentLevel === 0
+  82 |         ? children
+  83 |         : sortedLevels[currentLevel - 1]?.component || children;  react-hooks/refs
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\NavMeshSystem.ts
+  43:15  error  'flowSystem' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  43:48  error  Unexpected any. Specify a different type         @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\NavMeshSystem.tsx
+   5:22  error  Unexpected any. Specify a different type                                 @typescript-eslint/no-explicit-any
+  18:19  error  'delta' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\VehicleAudio.ts
+  17:37  error  'vehicleId' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+  17:56  error  'speed' is defined but never used. Allowed unused args must match /^_/u      @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\WaterCannonSystem.tsx
+   1:34  error    'useState' is defined but never used                                                                                         @typescript-eslint/no-unused-vars
+   2:10  error    'useFrame' is defined but never used                                                                                         @typescript-eslint/no-unused-vars
+  33:11  error    'velocities' is assigned a value but never used                                                                              @typescript-eslint/no-unused-vars
+  42:8   warning  React Hook useMemo has missing dependencies: 'position' and 'positions'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\__tests__\CombatSystem.test.ts
+  3:10  error  'useGameStore' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\__tests__\CrowdSystem.test.ts
+   4:10  error  'FlowFieldSystem' is defined but never used  @typescript-eslint/no-unused-vars
+  26:39  error  Unexpected any. Specify a different type     @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\__tests__\DayNightCycleSystem.test.ts
+   3:10  error  'useGameStore' is defined but never used  @typescript-eslint/no-unused-vars
+  19:33  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\__tests__\FireSystem.test.ts
+   4:10  error  'useParticleStore' is defined but never used  @typescript-eslint/no-unused-vars
+  42:24  error  Unexpected any. Specify a different type      @typescript-eslint/no-explicit-any
+  49:14  error  Unexpected any. Specify a different type      @typescript-eslint/no-explicit-any
+  66:14  error  Unexpected any. Specify a different type      @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\__tests__\TensionSystem.test.ts
+  26:27  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  37:14  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  54:14  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  72:14  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  85:18  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\ai\NPCBehavior.ts
+  57:13  error  Expected an assignment or function call and instead saw an expression  @typescript-eslint/no-unused-expressions
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\ai\StateMachine.ts
+   3:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   4:24  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   5:22  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  10:25  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  12:29  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\ai\UtilitySystem.ts
+  59:17  error  'score' is never reassigned. Use 'const' instead  prefer-const
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\ai\__tests__\NPCBehavior.test.ts
+  28:20  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\ai\bt\BehaviorTree.ts
+  15:31  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  17:29  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\ai\bt\Nodes.ts
+   90:5  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-unused-vars')
+  142:5  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-unused-vars')
+  175:5  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-unused-vars')
+  207:5  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-unused-vars')
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\ai\bt\__tests__\BT.test.ts
+  17:67  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  18:67  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  25:67  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  26:67  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  33:67  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  34:67  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\ai\states\BasicStates.ts
+   12:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   17:24  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   27:70  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   49:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   56:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   68:24  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   78:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   98:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  102:24  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  104:66  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  169:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  177:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  186:24  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  203:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  214:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  217:24  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  221:66  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  230:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\ai\states\PoliceStates.ts
+  12:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  21:24  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  68:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  73:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  76:25  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  79:23  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\tests\MassValidation.test.ts
+  77:19  error  'dt' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\tests\gameStore.test.ts
+  3:10  error  'GamePhase' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\tests\setup.ts
+  14:26  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\utils\ProceduralTextures.ts
+  8:37  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\utils\VerificationSuite.ts
+  44:19  error  'cityEnvExists' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  66:12  error  Unexpected any. Specify a different type            @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\utils\quality.ts
+  14:15  error  'rendererStr' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\workers\simWorker.ts
+  5:17  error  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\workers\wasmWorker.ts
+  5:5  error  'mats' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\world\ChunkRenderer.tsx
+  45:21  error  'xOffset' is never reassigned. Use 'const' instead  prefer-const
+  46:21  error  'zOffset' is never reassigned. Use 'const' instead  prefer-const
+  66:41  error  Unexpected any. Specify a different type            @typescript-eslint/no-explicit-any
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\world\WienScene.tsx
+  4:10  error  'PostProcessingEffects' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\world\WorldStreamingRenderer.tsx
+  37:9  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\world\WorldStreamingRenderer.tsx:37:9
+  35 |     useEffect(() => {
+  36 |         const chunks = WienGenerator.updateStreamingPools(playerPos[0], playerPos[2]);
+> 37 |         setVisibleChunks(chunks.filter(c => c.x !== 0 || c.z !== 0));
+     |         ^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  38 |     }, []);
+  39 |
+  40 |     return (  react-hooks/set-state-in-effect
+  38:8  warning  React Hook useEffect has a missing dependency: 'playerPos'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 react-hooks/exhaustive-deps
+
+Ô£û 303 problems (287 errors, 16 warnings)
+  5 errors and 5 warnings potentially fixable with the `--fix` option.
+

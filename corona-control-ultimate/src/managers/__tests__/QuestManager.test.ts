@@ -10,8 +10,10 @@ vi.mock('@/stores/gameStore', () => ({
         getState: vi.fn(() => ({
             setPrompt: vi.fn(),
             addPoints: vi.fn(),
+            unlockAchievement: vi.fn(),
             setTension: vi.fn(),
-            tensionLevel: 50
+            tensionLevel: 50,
+            hasFlag: vi.fn().mockReturnValue(true)
         }))
     }
 }));
@@ -36,13 +38,13 @@ describe('AdvancedQuestManager', () => {
 
     it('should have default quests initialized', () => {
         const available = questManager.getAvailableQuests();
-        const tutorial = available.find(q => q.id === 'Q_TUTORIAL_01');
-        expect(tutorial).toBeDefined();
-        expect(tutorial?.state).toBe(QuestState.AVAILABLE);
+        const main_quest = available.find(q => q.id === 'MQ_01_ENCOUNTER');
+        expect(main_quest).toBeDefined();
+        expect(main_quest?.state).toBe(QuestState.AVAILABLE);
     });
 
     it('should start a quest', () => {
-        const qId = 'Q_TUTORIAL_01';
+        const qId = 'MQ_01_ENCOUNTER';
 
         // Ensure it is available (might be active from previous test if singleton persists?)
         // Vitest might reload modules if configured, but let's check.
@@ -51,18 +53,18 @@ describe('AdvancedQuestManager', () => {
         questManager.startQuest(qId);
 
         const active = questManager.getActiveQuests();
-        const tutorial = active.find(q => q.id === qId);
-        expect(tutorial).toBeDefined();
-        expect(tutorial?.state).toBe(QuestState.ACTIVE);
+        const main_quest = active.find(q => q.id === qId);
+        expect(main_quest).toBeDefined();
+        expect(main_quest?.state).toBe(QuestState.ACTIVE);
     });
 
     it('should update objectives upon action', () => {
-        const qId = 'Q_TUTORIAL_01';
+        const qId = 'MQ_01_ENCOUNTER';
         // Force start if not active
         questManager.startQuest(qId);
 
-        // Objective: obj_talk_commander
-        const objId = 'obj_talk_commander';
+        // Objective: obj_talk_krause
+        const objId = 'obj_talk_krause';
 
         questManager.updateObjective(qId, objId, 1);
 
@@ -76,14 +78,14 @@ describe('AdvancedQuestManager', () => {
 
     // Note: Full completion test requires completing ALL objectives.
     it('should complete quest when all objectives are met', () => {
-        const qId = 'Q_TUTORIAL_01';
+        const qId = 'MQ_01_ENCOUNTER';
         questManager.startQuest(qId);
 
         // Complete Obj 1
-        questManager.updateObjective(qId, 'obj_talk_commander', 1);
+        questManager.updateObjective(qId, 'obj_reach_obelisk', 1);
 
         // Complete Obj 2
-        questManager.updateObjective(qId, 'obj_equip_gear', 1);
+        questManager.updateObjective(qId, 'obj_talk_krause', 1);
 
         // Should be gone from active, and marked COMPLETED
         const active = questManager.getActiveQuests();

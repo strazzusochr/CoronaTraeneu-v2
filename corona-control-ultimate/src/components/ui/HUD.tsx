@@ -142,7 +142,7 @@ export const HUD = () => {
     );
 };
 
-function resolveTimeColor(hour: number) {
+export function resolveTimeColor(hour: number) {
     if (hour >= 6 && hour < 12) {
         return UI_TIME_COLORS.MORNING;
     } else if (hour >= 12 && hour < 18) {

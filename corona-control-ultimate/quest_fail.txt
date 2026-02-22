@@ -1,0 +1,15 @@
+
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90mC:/Users/immer/Desktop/corona-control-project/corona-control-ultimate[39m
+
+ [32mÔ£ô[39m deploy_hf/src/managers/__tests__/QuestManager.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [31mÔØ»[39m src/managers/__tests__/QuestManager.test.ts [2m([22m[2m4 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 8[2mms[22m[39m
+     [32mÔ£ô[39m should have default quests initialized[32m 2[2mms[22m[39m
+     [32mÔ£ô[39m should start a quest[32m 1[2mms[22m[39m
+     [32mÔ£ô[39m should update objectives upon action[32m 0[2mms[22m[39m
+[31m     [31m├ù[31m should complete quest when all objectives are met[39m[32m 4[2mms[22m[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m1 passed[39m[22m[90m (2)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m7 passed[39m[22m[90m (8)[39m
+[2m   Start at [22m 20:06:35
+[2m   Duration [22m 1.99s[2m (transform 200ms, setup 262ms, import 354ms, tests 16ms, environment 2.58s)[22m
+

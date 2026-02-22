@@ -1,0 +1,441 @@
+
+> corona-control-ultimate@0.0.0 lint
+> eslint .
+
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\3d\environment\__tests__\CityEnvironmentLevel1Vehicles.test.tsx
+  16:19  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\NPCV2.tsx
+  36:20  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\NPCV2.tsx:36:20
+  34 |     if (!aiState.current) {
+  35 |         aiState.current = {
+> 36 |             timer: Math.random() * 5,
+     |                    ^^^^^^^^^^^^^ Cannot call impure function
+  37 |             changeInterval: 2 + Math.random() * 3,
+  38 |             direction: new THREE.Vector3(Math.random() - 0.5, 0, Math.random() - 0.5).normalize(),
+  39 |             speed: 5.0         react-hooks/purity
+  37:33  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\NPCV2.tsx:37:33
+  35 |         aiState.current = {
+  36 |             timer: Math.random() * 5,
+> 37 |             changeInterval: 2 + Math.random() * 3,
+     |                                 ^^^^^^^^^^^^^ Cannot call impure function
+  38 |             direction: new THREE.Vector3(Math.random() - 0.5, 0, Math.random() - 0.5).normalize(),
+  39 |             speed: 5.0
+  40 |         };             react-hooks/purity
+  38:42  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\NPCV2.tsx:38:42
+  36 |             timer: Math.random() * 5,
+  37 |             changeInterval: 2 + Math.random() * 3,
+> 38 |             direction: new THREE.Vector3(Math.random() - 0.5, 0, Math.random() - 0.5).normalize(),
+     |                                          ^^^^^^^^^^^^^ Cannot call impure function
+  39 |             speed: 5.0
+  40 |         };
+  41 |     }                          react-hooks/purity
+  38:66  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\NPCV2.tsx:38:66
+  36 |             timer: Math.random() * 5,
+  37 |             changeInterval: 2 + Math.random() * 3,
+> 38 |             direction: new THREE.Vector3(Math.random() - 0.5, 0, Math.random() - 0.5).normalize(),
+     |                                                                  ^^^^^^^^^^^^^ Cannot call impure function
+  39 |             speed: 5.0
+  40 |         };
+  41 |     }  react-hooks/purity
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\SceneV2.tsx
+  29:7  error  Error: This value cannot be modified
+
+Modifying a value returned from a hook is not allowed. Consider moving the modification into the hook where the value is constructed.
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\SceneV2.tsx:29:7
+  27 |     // Fallback environment logic
+  28 |     if (!assetsReady.env || !p.enablePMREM) {
+> 29 |       scene.environment = null;
+     |       ^^^^^ `scene` cannot be modified
+  30 |       // We rely on lights added in JSX below
+  31 |     }
+  32 |   }, [gl, scene, assetsReady]);  react-hooks/immutability
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\audio\SpatialAudioSource.tsx
+  69:14  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\audio\SpatialAudioSource.tsx:69:14
+  67 |                 <meshBasicMaterial color="yellow" wireframe />
+  68 |             </mesh> */}
+> 69 |             {sound.current && <primitive object={sound.current} />}
+     |              ^^^^^^^^^^^^^ Cannot access ref value during render
+  70 |         </group>
+  71 |     );
+  72 | };                                      react-hooks/refs
+  69:14  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\audio\SpatialAudioSource.tsx:69:14
+  67 |                 <meshBasicMaterial color="yellow" wireframe />
+  68 |             </mesh> */}
+> 69 |             {sound.current && <primitive object={sound.current} />}
+     |              ^^^^^^^^^^^^^ Cannot access ref value during render
+  70 |         </group>
+  71 |     );
+  72 | };                                      react-hooks/refs
+  69:50  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\audio\SpatialAudioSource.tsx:69:50
+  67 |                 <meshBasicMaterial color="yellow" wireframe />
+  68 |             </mesh> */}
+> 69 |             {sound.current && <primitive object={sound.current} />}
+     |                                                  ^^^^^^^^^^^^^ Cannot access ref value during render
+  70 |         </group>
+  71 |     );
+  72 | };  react-hooks/refs
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\combat\MeleeSystem.tsx
+  17:115  error  Optional chain expressions can return undefined by design - using a non-null assertion is unsafe and wrong                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               @typescript-eslint/no-non-null-asserted-optional-chain
+  20:21   error  Error: Cannot access variable before it is declared
+
+`performAttack` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\combat\MeleeSystem.tsx:20:21
+  18 |
+  19 |                 if (isMelee) {
+> 20 |                     performAttack();
+     |                     ^^^^^^^^^^^^^ `performAttack` accessed before it is declared
+  21 |                 }
+  22 |             }
+  23 |         };
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\combat\MeleeSystem.tsx:29:5
+  27 |     }, [isAttacking, mainHandItem]);
+  28 |
+> 29 |     const performAttack = () => {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 30 |         setIsAttacking(true);
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 31 |         // Reset after short delay
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 32 |         setTimeout(() => setIsAttacking(false), 200); // 200ms attack window
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 33 |     };
+     | ^^^^^^^ `performAttack` is declared here
+  34 |
+  35 |     const handleIntersection = (e: any) => {
+  36 |         if (isAttacking && e.other.rigidBodyObject && e.other.rigidBodyObject.name === 'npc') {  react-hooks/immutability
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\debug\DebugOverlay.tsx
+  13:35  error  Error: Cannot call impure function during render
+
+`performance.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\debug\DebugOverlay.tsx:13:35
+  11 |     const [fps, setFps] = React.useState(0);
+  12 |     const frameCount = React.useRef(0);
+> 13 |     const lastTime = React.useRef(performance.now());
+     |                                   ^^^^^^^^^^^^^^^^^ Cannot call impure function
+  14 |
+  15 |     const debugButtonStyle: React.CSSProperties = {
+  16 |         background: 'rgba(255, 255, 255, 0.05)',  react-hooks/purity
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\environment\Barricade.tsx
+  19:32  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\environment\Barricade.tsx:19:32
+  17 |
+  18 |     // Zuf├ñllige Variation f├╝r "Schrott-Look"
+> 19 |     const seed = useMemo(() => Math.random(), []);
+     |                                ^^^^^^^^^^^^^ Cannot call impure function
+  20 |
+  21 |     // Material
+  22 |     const woodMat = useMemo(() => new THREE.MeshStandardMaterial({ color: 0x8B4513, roughness: 0.9 }), []);  react-hooks/purity
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\game\entities\BaseCharacter.tsx
+  79:17  error  Error: This value cannot be modified
+
+Modifying a value previously passed as an argument to a hook is not allowed. Consider moving the modification before calling the hook.
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\game\entities\BaseCharacter.tsx:79:17
+  77 |
+  78 |             if (isPlayer) {
+> 79 |                 animationState.currentAnimationId = getDefaultPlayerAnimationForState(state);
+     |                 ^^^^^^^^^^^^^^ `animationState` cannot be modified
+  80 |             }
+  81 |         }
+  82 |     });  react-hooks/immutability
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\game\entities\VehicleBase.tsx
+  80:13  error  Error: This value cannot be modified
+
+Modifying a value previously passed as an argument to a hook is not allowed. Consider moving the modification before calling the hook.
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\game\entities\VehicleBase.tsx:80:13
+  78 |                 dt
+  79 |             );
+> 80 |             vehicleState.speed = speed;
+     |             ^^^^^^^^^^^^ `vehicleState` cannot be modified
+  81 |             vehicleState.steering = steering;
+  82 |
+  83 |             // 2. Update transform  react-hooks/immutability
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\ui\Inventory.tsx
+  37:13  error  React Hook "useItem" is called in function "handleUse" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word "use"  react-hooks/rules-of-hooks
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\ui\PerformanceMonitor.tsx
+   49:32  error  Error: Cannot call impure function during render
+
+`performance.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\ui\PerformanceMonitor.tsx:49:32
+  47 |
+  48 |     const frameCountRef = useRef(0);
+> 49 |     const lastTimeRef = useRef(performance.now());
+     |                                ^^^^^^^^^^^^^^^^^ Cannot call impure function
+  50 |     const frameTimesRef = useRef<number[]>([]);
+  51 |
+  52 |     useFrame(() => {                                                                                                                                                                                                                                                                                                                            react-hooks/purity
+  173:9   error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\ui\PerformanceMonitor.tsx:173:9
+  171 |         });
+  172 |
+> 173 |         setTotalPolygons(Math.round(total));
+      |         ^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  174 |     }, [scene]);
+  175 |
+  176 |     return totalPolygons;  react-hooks/set-state-in-effect
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\ui\SaveLoadUI.tsx
+  29:9  error  Error: Cannot access variable before it is declared
+
+`refreshSlots` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\ui\SaveLoadUI.tsx:29:9
+  27 |
+  28 |     useEffect(() => {
+> 29 |         refreshSlots();
+     |         ^^^^^^^^^^^^ `refreshSlots` accessed before it is declared
+  30 |     }, []);
+  31 |
+  32 |     const refreshSlots = () => {
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\ui\SaveLoadUI.tsx:32:5
+  30 |     }, []);
+  31 |
+> 32 |     const refreshSlots = () => {
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 33 |         setSlots(saveManager.getSaveSlots());
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 34 |     };
+     | ^^^^^^^ `refreshSlots` is declared here
+  35 |
+  36 |     const handleSave = (slotId: number) => {
+  37 |         const success = saveManager.saveToSlot(slotId);  react-hooks/immutability
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\world\ChunkRenderer.tsx
+  25:51  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\world\ChunkRenderer.tsx:25:51
+  23 |                 key={b.id}
+  24 |                 position={[
+> 25 |                     chunk.x * 50 + b.width / 2 + (Math.random() - 0.5) * 20, // Offset within chunk
+     |                                                   ^^^^^^^^^^^^^ Cannot call impure function
+  26 |                     0,
+  27 |                     chunk.z * 50 + b.depth / 2 + (Math.random() - 0.5) * 20
+  28 |                 ]}                                                                                    react-hooks/purity
+  27:51  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\world\ChunkRenderer.tsx:27:51
+  25 |                     chunk.x * 50 + b.width / 2 + (Math.random() - 0.5) * 20, // Offset within chunk
+  26 |                     0,
+> 27 |                     chunk.z * 50 + b.depth / 2 + (Math.random() - 0.5) * 20
+     |                                                   ^^^^^^^^^^^^^ Cannot call impure function
+  28 |                 ]}
+  29 |                 rotation={[0, (Math.floor(Math.random() * 4) * Math.PI / 2), 0]} // Snap to 90 degrees
+  30 |                 floors={b.floors}  react-hooks/purity
+  29:43  error  Error: Cannot call impure function during render
+
+`Math.random` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\components\world\ChunkRenderer.tsx:29:43
+  27 |                     chunk.z * 50 + b.depth / 2 + (Math.random() - 0.5) * 20
+  28 |                 ]}
+> 29 |                 rotation={[0, (Math.floor(Math.random() * 4) * Math.PI / 2), 0]} // Snap to 90 degrees
+     |                                           ^^^^^^^^^^^^^ Cannot call impure function
+  30 |                 floors={b.floors}
+  31 |                 width={b.width}
+  32 |                 depth={b.depth}                                                                     react-hooks/purity
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\hyper_test_simulation.test.ts
+  57:13  error  'pos' is never reassigned. Use 'const' instead  prefer-const
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\managers\CutsceneManager.tsx
+  34:13  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\managers\CutsceneManager.tsx:34:13
+  32 |         if (activeCutscene) {
+  33 |             startTime.current = Date.now();
+> 34 |             setCurrentTime(0);
+     |             ^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  35 |         } else {
+  36 |             startTime.current = null;
+  37 |         }  react-hooks/set-state-in-effect
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\managers\MissionManager.tsx
+  19:45  error  Error: Cannot call impure function during render
+
+`Date.now` is an impure function. Calling an impure function can produce unstable results that update unpredictably when the component happens to re-render. (https://react.dev/reference/rules/components-and-hooks-must-be-pure#components-and-hooks-must-be-idempotent).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\managers\MissionManager.tsx:19:45
+  17 |     const setPlayerPosition = useGameStore(state => state.setPlayerPosition);
+  18 |     
+> 19 |     const missionStartTime = useRef<number>(Date.now());
+     |                                             ^^^^^^^^^^ Cannot call impure function
+  20 |     const eventQueue = useRef<MissionEvent[]>([]);
+  21 |     const lastCutscene = useRef<string | null>(null);
+  22 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         react-hooks/purity
+  26:13  error  Error: Cannot access variable before it is declared
+
+`setupMissionEvents` is accessed before it is declared, which prevents the earlier access from updating when this value changes over time.
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\managers\MissionManager.tsx:26:13
+  24 |     useEffect(() => {
+  25 |         if (gameState.currentMissionIndex === 0 && gameState.isPlaying) {
+> 26 |             setupMissionEvents();
+     |             ^^^^^^^^^^^^^^^^^^ `setupMissionEvents` accessed before it is declared
+  27 |         }
+  28 |     }, [gameState.currentMissionIndex, gameState.isPlaying]);
+  29 |
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\managers\MissionManager.tsx:40:5
+   38 |     }, [activeCutscene, setPlayerPosition]);
+   39 |
+>  40 |     const setupMissionEvents = () => {
+      |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  41 |         eventQueue.current = [
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  42 |             {
+      ÔÇª
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 101 |         ];
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 102 |     };
+      | ^^^^^^^ `setupMissionEvents` is declared here
+  103 |
+  104 |     useFrame((_state, _delta) => {
+  105 |         if (!gameState.isPlaying || activeCutscene) return;  react-hooks/immutability
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\managers\TacticsManager.ts
+  105:13  error  'desiredAnchor' is never reassigned. Use 'const' instead  prefer-const
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\memory\VectorStore.ts
+  13:5  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-explicit-any')
+  20:5  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-explicit-any')
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\stores\slices\gameSlice.ts
+  177:13  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-explicit-any')
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\InteractionSystem.ts
+  132:5  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-unused-vars')
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\LODSystem.tsx
+  80:26  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\LODSystem.tsx:80:26
+  78 |
+  79 |     // Render das aktuelle LOD
+> 80 |     const currentLevel = currentLODRef.current;
+     |                          ^^^^^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  81 |     const componentToRender = currentLevel === 0
+  82 |         ? children
+  83 |         : sortedLevels[currentLevel - 1]?.component || children;  react-hooks/refs
+  80:26  error  Error: Cannot access refs during render
+
+React refs are values that are not needed for rendering. Refs should only be accessed outside of render, such as in event handlers or effects. Accessing a ref value (the `current` property) during render can cause your component not to update as expected (https://react.dev/reference/react/useRef).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\LODSystem.tsx:80:26
+  78 |
+  79 |     // Render das aktuelle LOD
+> 80 |     const currentLevel = currentLODRef.current;
+     |                          ^^^^^^^^^^^^^^^^^^^^^ Cannot access ref value during render
+  81 |     const componentToRender = currentLevel === 0
+  82 |         ? children
+  83 |         : sortedLevels[currentLevel - 1]?.component || children;  react-hooks/refs
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\WaterCannonSystem.tsx
+  42:8  warning  React Hook useMemo has missing dependencies: 'position' and 'positions'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\ai\NPCBehavior.ts
+  57:13  error  Expected an assignment or function call and instead saw an expression  @typescript-eslint/no-unused-expressions
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\ai\UtilitySystem.ts
+  59:17  error  'score' is never reassigned. Use 'const' instead  prefer-const
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\systems\ai\bt\Nodes.ts
+   90:5  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-unused-vars')
+  142:5  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-unused-vars')
+  175:5  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-unused-vars')
+  207:5  warning  Unused eslint-disable directive (no problems were reported from '@typescript-eslint/no-unused-vars')
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\world\ChunkRenderer.tsx
+  45:21  error  'xOffset' is never reassigned. Use 'const' instead  prefer-const
+  46:21  error  'zOffset' is never reassigned. Use 'const' instead  prefer-const
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\world\WorldStreamingRenderer.tsx
+  37:9  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\immer\Desktop\corona-control-project\corona-control-ultimate\src\world\WorldStreamingRenderer.tsx:37:9
+  35 |     useEffect(() => {
+  36 |         const chunks = WienGenerator.updateStreamingPools(playerPos[0], playerPos[2]);
+> 37 |         setVisibleChunks(chunks.filter(c => c.x !== 0 || c.z !== 0));
+     |         ^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  38 |     }, []);
+  39 |
+  40 |     return (  react-hooks/set-state-in-effect
+  38:8  warning  React Hook useEffect has a missing dependency: 'playerPos'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 react-hooks/exhaustive-deps
+
+Ô£û 44 problems (34 errors, 10 warnings)
+  5 errors and 8 warnings potentially fixable with the `--fix` option.
+
