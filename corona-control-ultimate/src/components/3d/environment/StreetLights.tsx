@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useRef, useMemo } from 'react';
 import * as THREE from 'three';
+import { useFrame } from '@react-three/fiber';
+import { useTimeEngine } from '@/core/TimeEngine';
 
 interface StreetLightProps {
     position: [number, number, number];
@@ -9,15 +11,42 @@ interface StreetLightProps {
 }
 
 /**
- * ENV-013: StreetLights
- * Functional street lights with point lights.
+ * ENV-013: StreetLights (V7.0)
+ * Functional street lights with point lights, flicker and time-sync.
  */
 export const StreetLight: React.FC<StreetLightProps> = ({ 
     position, 
     rotation = [0, 0, 0],
-    intensity = 5,
+    intensity: baseIntensity = 5,
     color = "#fff5d7"
 }) => {
+    const lightRef = useRef<THREE.PointLight>(null);
+    const emissiveRef = useRef<THREE.MeshStandardMaterial>(null);
+    const gameTime = useTimeEngine(state => state.gameTimeSeconds);
+    
+    // Seed-based offset for staggered flicker (pure for the same position)
+    const flickerOffset = useMemo(() => (position[0] * 12.9898 + position[2] * 78.233) % 100, [position]);
+    
+    // Night logic: 18:00 (64800s) to 06:00 (21600s)
+    const isNight = gameTime > 64800 || gameTime < 21600;
+
+    useFrame((state) => {
+        if (!lightRef.current || !emissiveRef.current) return;
+        
+        if (!isNight) {
+            lightRef.current.intensity = 0;
+            emissiveRef.current.emissiveIntensity = 0;
+            return;
+        }
+
+        // Realistic staggered flicker (Phase 3.2 compliance)
+        const t = state.clock.elapsedTime + flickerOffset;
+        const flicker = 0.95 + Math.sin(t * 10) * 0.05 + Math.sin(t * 41) * 0.02;
+        
+        lightRef.current.intensity = baseIntensity * flicker;
+        emissiveRef.current.emissiveIntensity = 2 * flicker;
+    });
+
     return (
         <group position={position} rotation={rotation}>
             {/* Pole */}
@@ -40,8 +69,9 @@ export const StreetLight: React.FC<StreetLightProps> = ({
             
             {/* The actual light */}
             <pointLight 
+                ref={lightRef}
                 position={[1, 2.8, 0]} 
-                intensity={intensity} 
+                intensity={0} 
                 color={color} 
                 distance={15} 
                 decay={2}
@@ -51,7 +81,7 @@ export const StreetLight: React.FC<StreetLightProps> = ({
             {/* Emissive part of the lamp */}
             <mesh position={[1, 2.85, 0]}>
                 <planeGeometry args={[0.3, 0.2]} />
-                <meshStandardMaterial emissive={color} emissiveIntensity={2} />
+                <meshStandardMaterial ref={emissiveRef} emissive={color} emissiveIntensity={0} />
             </mesh>
         </group>
     );

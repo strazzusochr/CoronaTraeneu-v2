@@ -5,6 +5,8 @@ import { useTimeEngine, formatGameTime } from '@/core/TimeEngine';
 import { usePhaseAnchor } from '@/core/PhaseAnchor';
 import { UI_TIME_COLORS } from '@/shaders/ShaderConstants';
 import type { UiAssetId } from '@/types/enums';
+import { InventoryUI } from './InventoryUI';
+import { InteractionMenu } from './InteractionMenu';
 
 export const HUD = () => {
     const gameTimeSeconds = useTimeEngine(state => state.gameTimeSeconds);
@@ -132,11 +134,15 @@ export const HUD = () => {
                 )}
                     EINSATZZEIT: <span style={{ color: timeColor, fontWeight: 700 }}>{timeString}</span> — ROME / VATICAN CITY
             </div>
+
+            {/* Contextual UI Overlays (Phase 4) */}
+            <InventoryUI />
+            <InteractionMenu />
         </div>
     );
 };
 
-export function resolveTimeColor(hour: number) {
+function resolveTimeColor(hour: number) {
     if (hour >= 6 && hour < 12) {
         return UI_TIME_COLORS.MORNING;
     } else if (hour >= 12 && hour < 18) {

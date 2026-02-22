@@ -19,6 +19,8 @@ import { useTimeEngine } from '@/core/TimeEngine';
 interface DynamicLightingProps {
     quality: 'LOW' | 'MEDIUM' | 'HIGH';
     castShadows?: boolean;
+    intensity?: number;
+    fogDensity?: number;
 }
 
 /**
@@ -156,7 +158,12 @@ function calculateSkyColors(gameMinutes: number): {
 /**
  * Dynamisches Beleuchtungs-System Komponente
  */
-const DynamicLighting: React.FC<DynamicLightingProps> = ({ quality, castShadows = false }) => {
+const DynamicLighting: React.FC<DynamicLightingProps> = ({ 
+    quality, 
+    castShadows = false, 
+    intensity: ambientOverride = 1.0,
+    fogDensity = 0.012
+}) => {
     const directionalLightRef = useRef<THREE.DirectionalLight>(null);
 
     const gameTimeSeconds = useTimeEngine(state => state.gameTimeSeconds);
@@ -177,7 +184,7 @@ const DynamicLighting: React.FC<DynamicLightingProps> = ({ quality, castShadows 
 
     return (
         <group name="DynamicLighting_System">
-            <hemisphereLight args={[0xB4D4FF, 0x504030, intensity.ambient * 0.75]} />
+            <hemisphereLight args={[0xB4D4FF, 0x504030, intensity.ambient * 0.75 * ambientOverride]} />
 
             <directionalLight
                 ref={directionalLightRef}
@@ -191,10 +198,10 @@ const DynamicLighting: React.FC<DynamicLightingProps> = ({ quality, castShadows 
                 <orthographicCamera attach="shadow-camera" args={[-40, 40, 40, -40, 1, 300]} />
             </directionalLight>
 
-            <ambientLight intensity={intensity.ambient * 0.3} color={0xFFFFFF} />
+            <ambientLight intensity={intensity.ambient * 0.3 * ambientOverride} color={0xFFFFFF} />
             
             <Environment preset={skyColors.envPreset} environmentIntensity={0.4} />
-            <fogExp2 attach="fog" color={skyColors.fogColor} density={0.012} />
+            <fogExp2 attach="fog" color={skyColors.fogColor} density={fogDensity} />
 
             <Sky 
                 distance={450000} 

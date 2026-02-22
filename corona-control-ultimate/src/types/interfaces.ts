@@ -51,7 +51,7 @@ export interface NPCData {
 export interface PlayerState {
     id?: string;
     position: [number, number, number];
-    rotation: [number, number, number];
+    rotation: number;
     health: number;
     maxHealth: number;
     stamina: number;

@@ -7,7 +7,11 @@ import { getGameTime } from '@/core/TimeEngine';
  * EFF-014: PostProcessing
  * Final visual polish for the project.
  */
-export const PostProcessing: React.FC = () => {
+interface PostProcessingProps {
+    intensity?: number;
+}
+
+export const PostProcessing: React.FC<PostProcessingProps> = ({ intensity = 1.5 }) => {
     const minutes = getGameTime() / 60;
     const hour = Math.floor(minutes / 60) % 24;
 
@@ -24,7 +28,7 @@ export const PostProcessing: React.FC = () => {
         <EffectComposer multisampling={4}>
             <SMAA />
             <Bloom
-                intensity={preset.bloomIntensity}
+                intensity={preset.bloomIntensity * (intensity / 1.5)}
                 luminanceThreshold={preset.bloomThreshold}
                 luminanceSmoothing={0.025}
                 mipmapBlur

@@ -1,4 +1,5 @@
 import { useGameStore } from '@/stores/gameStore';
+import { NPCState } from '@/types/enums';
 
 export interface Item {
     id: string;
@@ -48,8 +49,61 @@ export class InventoryManager {
             maxStack: 5,
             description: 'Heilt 50 HP.',
             effect: () => {
-                useGameStore.getState().setHealth(100); // Full heal for simple logic
+                useGameStore.getState().setPlayerHealth(100);
                 console.log('Used Medkit');
+            }
+        });
+
+        this.registerItem({
+            id: 'ITEM_MASK',
+            name: 'FFP2-Maske',
+            type: 'CONSUMABLE',
+            maxStack: 10,
+            description: 'Reduziert das Infektionsrisiko für Bürger.',
+            effect: (targetId) => {
+                if (targetId) {
+                    useGameStore.getState().updateNpc(targetId, { state: NPCState.IDLE });
+                    useGameStore.getState().adjustKarma(2);
+                }
+            }
+        });
+
+        this.registerItem({
+            id: 'ITEM_SYRINGE',
+            name: 'Adrenalin-Spritze',
+            type: 'CONSUMABLE',
+            maxStack: 5,
+            description: 'Heilt verletzte Personen sofort.',
+            effect: (targetId) => {
+                if (targetId) {
+                    useGameStore.getState().updateNpc(targetId, { state: NPCState.IDLE });
+                    useGameStore.getState().adjustKarma(5);
+                }
+            }
+        });
+
+        this.registerItem({
+            id: 'ITEM_RADIO',
+            name: 'Funkgerät',
+            type: 'GEAR',
+            maxStack: 1,
+            description: 'Fordert taktische Unterstützung an.',
+            effect: () => {
+                // Taktische Unterstützung wird im InteractionSystem/TacticsManager gehandhabt
+            }
+        });
+
+        this.registerItem({
+            id: 'ITEM_PEPPER_SPRAY',
+            name: 'Pfefferspray',
+            type: 'WEAPON',
+            maxStack: 3,
+            description: 'Betäubt Randalierer kurzzeitig (nicht tödlich).',
+            effect: (targetId) => {
+                if (targetId) {
+                    useGameStore.getState().updateNpc(targetId, { state: NPCState.STUNNED });
+                    useGameStore.getState().adjustKarma(-1);
+                }
             }
         });
     }
@@ -77,5 +131,6 @@ export class InventoryManager {
 
     public useItem(index: number) {
         // Logic to use item at slot index
+        console.log(`Using item at index ${index}`);
     }
 }

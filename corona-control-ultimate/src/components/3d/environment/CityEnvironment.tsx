@@ -21,9 +21,10 @@ import { Ambulance } from '@/components/game/entities/Ambulance';
 import ParticleSystem from '@/components/Effects/ParticleSystem';
 import AudioManager, { AudioLayer } from '@/managers/AudioManager';
 import { ConcertStage } from './ConcertStage';
-// Removed LandmarkVienna for Rome update
 import { SwedishFire } from './SwedishFire';
 import { FlowerBed } from './FlowerBed';
+import { WorldItem } from '@/components/WorldItem';
+import { WeatherSystem } from '@/rendering/WeatherSystem';
 
 
 type LevelVehicleType = 'POLICE_CAR' | 'WATER_CANNON' | 'AMBULANCE';
@@ -176,6 +177,8 @@ export const CityEnvironment: React.FC = () => {
             if (concertMusic) concertMusic.pause();
         };
     }, []);
+
+    const worldItems = useGameStore(state => state.worldItems);
 
     // Straßen-Elemente: Raster + Diagonalen + S-Kurve
     const streetElements = React.useMemo(() => {
@@ -536,6 +539,7 @@ export const CityEnvironment: React.FC = () => {
                 {LEVEL1_GROUND_DECALS.map((decal) => (
                     <GroundDecals key={decal.id} position={decal.position} type={decal.type} />
                 ))}
+
             </Suspense>
 
             <RigidBody type="fixed" colliders={false} position={[0, -0.05, 0]}>
@@ -579,7 +583,18 @@ export const CityEnvironment: React.FC = () => {
                 return <Ambulance key={vehicle.id} position={vehicle.position} rotation={vehicle.rotation} isSirenActive={vehicle.isSirenActive} />;
             })}
 
+            {/* Welt-Items (Dynamisch aus dem Store) */}
+            {worldItems?.map((item: { id: string; itemId: string; position: [number, number, number] }) => (
+                <WorldItem 
+                    key={item.id} 
+                    id={item.id} 
+                    itemId={item.itemId} 
+                    position={item.position} 
+                />
+            ))}
+
             <ParticleSystem />
+            <WeatherSystem />
         </group>
     );
 };

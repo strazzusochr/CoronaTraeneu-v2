@@ -13,6 +13,7 @@ import DialogUI from '@/components/ui/DialogUI';
 import PauseMenu from '@/components/ui/PauseMenu';
 import SettingsMenu from '@/components/ui/SettingsMenu';
 import { useTimeEngine } from '@/core/TimeEngine';
+import '@/systems/MasterTimeline';
 
 /**
  * V6.0 MASTER APP

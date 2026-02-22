@@ -47,6 +47,20 @@ export class MoveToTargetAction extends ActionNode {
             return BTStatus.SUCCESS;
         }
 
+        // CHECK: Stop if player is very close (Interaction QoL)
+        const playerPos = blackboard.get<[number, number, number]>('playerPos');
+        if (playerPos) {
+            const pdx = playerPos[0] - npc.position[0];
+            const pdz = playerPos[2] - npc.position[2];
+            const distToPlayer = Math.sqrt(pdx * pdx + pdz * pdz);
+            
+            if (distToPlayer < 1.5) {
+                // Pause walking and look at the player
+                npc.rotation = Math.atan2(pdx, pdz);
+                return BTStatus.RUNNING;
+            }
+        }
+
         // Bewegung (vereinfacht, wird später durch NavMesh/Physik ersetzt)
         const dirX = dx / dist;
         const dirZ = dz / dist;

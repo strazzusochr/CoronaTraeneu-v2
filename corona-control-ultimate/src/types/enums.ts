@@ -23,6 +23,7 @@ export enum NPCState {
     WORKING = 'WORKING',
     DEESCALATING = 'DEESCALATING',
     INJURED = 'INJURED',
+    STUNNED = 'STUNNED',
     DEAD = 'DEAD'
 }
 

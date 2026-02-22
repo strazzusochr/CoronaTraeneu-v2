@@ -8,6 +8,7 @@ import { useDialogStore } from '@/managers/DialogManager';
 import { KrauseDialog } from '@/data/dialogs/KrauseDialog';
 import { EventManager } from '@/managers/EventManager';
 import QuestManager from '@/managers/QuestManager';
+import { interactionSystem } from '@/systems/InteractionSystem';
 
 import { useNotificationStore } from '../notificationStore';
 import { useFeatureFlags } from '@/core/FeatureFlags';
@@ -34,7 +35,8 @@ export const createGameSlice: StateCreator<GameStore, [], [], Pick<GameStore,
         activeCutscene: null,
         activePrompt: null,
         cutsceneTime: 0,
-        currentLevelId: 'LEVEL_1_STEPHANSPLATZ'
+        currentLevelId: 'LEVEL_1_STEPHANSPLATZ',
+        activeInteraction: null
     },
     npcs: [],
     markedNpcIds: [],
@@ -50,7 +52,7 @@ export const createGameSlice: StateCreator<GameStore, [], [], Pick<GameStore,
     player: {
         id: 'player_01',
         position: [30, 1, 30],
-        rotation: [0, 0, 0],
+        rotation: 0,
         health: GAME_BALANCE.player.maxHealth,
         maxHealth: GAME_BALANCE.player.maxHealth,
         stamina: GAME_BALANCE.player.maxStamina,
@@ -150,7 +152,7 @@ export const createGameSlice: StateCreator<GameStore, [], [], Pick<GameStore,
                 type: 'PERSON',
                 position: npc.position as [number, number, number],
                 interactionRadius: 4, // Erhöht auf 4m
-                label: isKrause ? "Mit Krause sprechen" : "Bürger verhaften",
+                label: isKrause ? "Mit Krause sprechen" : "Interagieren",
                 action: () => {
                     if (isKrause) {
                         if (get().gameState.currentMissionIndex === 1) {
@@ -159,7 +161,7 @@ export const createGameSlice: StateCreator<GameStore, [], [], Pick<GameStore,
                         }
                         useDialogStore.getState().startDialog(KrauseDialog);
                     } else {
-                        arrestSystem.startArrest(npc.id);
+                        interactionSystem.handleInteraction(npc.id);
                     }
                 }
             });
@@ -172,7 +174,8 @@ export const createGameSlice: StateCreator<GameStore, [], [], Pick<GameStore,
 
         const achievements = (state.achievements.includes('ACH_001')
             ? state.achievements
-            : [...state.achievements, 'ACH_001']) as any[]; // Temporary fix for type mismatch
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            : [...state.achievements, 'ACH_001']) as unknown as any[]; // Temporary fix for type mismatch
 
         return {
             gameState: {
@@ -191,8 +194,11 @@ export const createGameSlice: StateCreator<GameStore, [], [], Pick<GameStore,
             missions: state.missions.map(m => ({ ...m, currentAmount: 0 })),
             tensionLevel: GAME_BALANCE.crowd.initialTension,
             worldItems: [
-                { id: 'item1', itemId: 'medkit', position: [2, 0.5, 5] },
-                { id: 'item2', itemId: 'stone', position: [-2, 0.5, 5] },
+                { id: 'item1', itemId: 'ITEM_MEDKIT', position: [32, 0.5, 30] },
+                { id: 'item2', itemId: 'ITEM_SYRINGE', position: [30, 0.5, 32] },
+                { id: 'item3', itemId: 'ITEM_MASK', position: [28, 0.5, 30] },
+                { id: 'item4', itemId: 'ITEM_RADIO', position: [30, 0.5, 28] },
+                { id: 'item5', itemId: 'ITEM_PEPPER_SPRAY', position: [32, 0.5, 32] },
             ],
             projectiles: [],
             npcs: [krause, ...crowd],
@@ -265,6 +271,12 @@ export const createGameSlice: StateCreator<GameStore, [], [], Pick<GameStore,
 
     setPrompt: (text: string | null) => set((state) => ({
         gameState: { ...state.gameState, activePrompt: text }
+    })),
+    setInteractionMenu: (npcId, title, options) => set((state) => ({
+        gameState: { ...state.gameState, activeInteraction: { npcId, title, options } }
+    })),
+    closeInteractionMenu: () => set((state) => ({
+        gameState: { ...state.gameState, activeInteraction: null }
     })),
     startCutscene: (id) => set((state) => ({
         gameState: { ...state.gameState, activeCutscene: id, cutsceneTime: 0 }
@@ -453,7 +465,7 @@ export const createGameSlice: StateCreator<GameStore, [], [], Pick<GameStore,
                     achievements: data.achievements || []
                 }));
                 return true;
-            } catch (_) {
+            } catch {
                 return false;
             }
         }

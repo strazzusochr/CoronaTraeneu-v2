@@ -12,7 +12,7 @@ import { RigidBody, CapsuleCollider } from '@react-three/rapier';
  * Spezialisierte Komponente für den gesteuerten Charakter.
  * Nutzt den 120Hz Physik-Loop für präzises Movement.
  */
-export const PlayerCharacter: React.FC = () => {
+export const PlayerCharacter: React.FC<{ speedMultiplier?: number }> = ({ speedMultiplier = 1.0 }) => {
     const setPlayerPosition = useGameStore(state => state.setPlayerPosition);
     const { camera } = useThree();
     const bodyRef = useRef<any>(null);
@@ -39,13 +39,13 @@ export const PlayerCharacter: React.FC = () => {
     }, []);
 
     useEngineLoop({
-        onPhysics: (dt) => {
+        onPhysics: () => {
             const rb = bodyRef.current;
             if (!rb) return;
 
             let moveX = 0;
             let moveZ = 0;
-            const speed = 10.0;
+            const speed = 10.0 * speedMultiplier;
 
             if (keys.current['KeyW'] || keys.current['ArrowUp']) moveZ -= 1;
             if (keys.current['KeyS'] || keys.current['ArrowDown']) moveZ += 1;

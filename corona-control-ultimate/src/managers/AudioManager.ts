@@ -105,9 +105,15 @@ export class AudioManager {
 
     public update() {
         // V7.0 Spatial Audio Simulation
-        const playerPos = [0, 0, 0]; // TODO: Player-Position aus Store holen
+        const state = useGameStore.getState();
+        const playerPos = state.player.position;
+        const globalTension = state.tensionLevel || 0; // 0 to 100
 
-        const settings = useGameStore.getState().settings ?? {
+        // Dynamic Crowd Layering (Phase 3.3)
+        // Base crowd volume scales with tension
+        const crowdMultiplier = Math.max(0.2, Math.min(1.0, globalTension / 50));
+
+        const settings = state.settings ?? {
             masterVolume: 1,
             musicVolume: 1,
             sfxVolume: 1,
@@ -115,7 +121,16 @@ export class AudioManager {
             ambientVolume: 1
         };
         const master = settings.masterVolume;
+        
         this.activeSounds.forEach(sound => {
+            let base = 0;
+            const bus = AUDIO_LAYER_TO_BUS[sound.layer];
+            const busVolume = bus === 'MUSIC' ? settings.musicVolume
+                              : bus === 'SFX' ? settings.sfxVolume
+                              : bus === 'VOICE' ? settings.voiceVolume
+                              : bus === 'AMBIENT' ? settings.masterVolume
+                              : settings.masterVolume;
+
             if (sound.pos) {
                 const dx = sound.pos[0] - playerPos[0];
                 const dz = sound.pos[2] - playerPos[2];
@@ -123,15 +138,17 @@ export class AudioManager {
                 
                 // Volume-Dämpfung (Inverse Square Law simplified)
                 const falloff = 1 / (1 + distance * 0.05);
-                const bus = AUDIO_LAYER_TO_BUS[sound.layer];
-                const busVolume = bus === 'MUSIC' ? settings.musicVolume
-                                  : bus === 'SFX' ? settings.sfxVolume
-                                  : bus === 'VOICE' ? settings.voiceVolume
-                                  : bus === 'AMBIENT' ? settings.masterVolume
-                                  : settings.masterVolume;
-                const base = this.volumes[sound.layer] * sound.baseVolume * busVolume * master * falloff;
-                sound.audio.volume = Math.min(AUDIO_LAYERS.caps[sound.layer], base);
+                base = this.volumes[sound.layer] * sound.baseVolume * busVolume * master * falloff;
+            } else {
+                base = this.volumes[sound.layer] * sound.baseVolume * busVolume * master;
             }
+
+            // Apply crowd multiplier if it's the crowd layer
+            if (sound.layer === AudioLayer.CROWD) {
+                base *= crowdMultiplier;
+            }
+
+            sound.audio.volume = Math.min(AUDIO_LAYERS.caps[sound.layer], base);
         });
     }
 

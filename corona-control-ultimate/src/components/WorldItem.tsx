@@ -1,129 +1,124 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { RigidBody } from '@react-three/rapier';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { useGameStore } from '@/stores/gameStore';
-import type { Item } from '@/stores/gameStore';
 
-// Simple Item Dictionary for now. In a real app, this should be in a data file.
-const ITEM_TEMPLATES: Record<string, Omit<Item, 'quantity'>> = {
-    'medkit': { id: 'medkit', name: 'Medkit', type: 'CONSUMABLE', description: 'Heilt 50 HP', maxStack: 5, effect: { type: 'HEAL', value: 50 } },
-    'stone': { id: 'stone', name: 'Stein', type: 'WEAPON', description: 'Wurfgeschoss', maxStack: 10 }
+const ITEM_TEMPLATES: Record<string, { name: string; color: string }> = {
+    'ITEM_MEDKIT': { name: 'Erste-Hilfe-Set', color: '#ff4444' },
+    'ITEM_SYRINGE': { name: 'Adrenalin-Spritze', color: '#44ff44' },
+    'ITEM_MASK': { name: 'FFP2-Maske', color: '#ffffff' },
+    'ITEM_RADIO': { name: 'Funkgerät', color: '#4444ff' },
+    'ITEM_PEPPER_SPRAY': { name: 'Pfefferspray', color: '#ffaa00' },
 };
 
 interface WorldItemProps {
-    id: string; // Instance ID
-    itemId: string; // Template ID
+    id: string;
+    itemId: string;
     position: [number, number, number];
 }
 
-const WorldItem: React.FC<WorldItemProps> = ({ id, itemId, position }) => {
-    // Special handling for Obstacles/Barricades (not in Inventory Templates)
-    const isBarricade = itemId === 'barricade';
-    
-    // Inventory Item Data
+export const WorldItem: React.FC<WorldItemProps> = ({ id, itemId, position }) => {
     const itemData = ITEM_TEMPLATES[itemId];
-    
     const playerPosition = useGameStore(state => state.player.position);
-    const addItem = useGameStore(state => state.addItem);
     const removeWorldItem = useGameStore(state => state.removeWorldItem);
+    const setPrompt = useGameStore(state => state.setPrompt);
 
     const [isHovered, setIsHovered] = useState(false);
     const itemRef = useRef<THREE.Group>(null);
+    const glowRef = useRef<THREE.Mesh>(null);
+    const lightRef = useRef<THREE.PointLight>(null);
 
-    useFrame(() => {
+    useFrame((state) => {
         if (!itemRef.current) return;
 
-        // No rotation for Barricades
-        if (!isBarricade) {
-            itemRef.current.rotation.y += 0.01;
+        // Sanfte Rotation
+        itemRef.current.rotation.y += 0.01;
+        itemRef.current.position.y = Math.sin(state.clock.elapsedTime * 2) * 0.1;
+
+        // 3-Sekunden Pulsieren (Blaues Leuchten)
+        if (glowRef.current) {
+            const pulse = (Math.sin(state.clock.elapsedTime * (Math.PI * 2 / 3)) + 1) / 2;
+            glowRef.current.scale.setScalar(1.2 + pulse * 1.5); // Größerer Puls
+            if (glowRef.current.material instanceof THREE.MeshBasicMaterial) {
+                glowRef.current.material.opacity = 0.2 + pulse * 0.6;
+            }
+            if (lightRef.current) {
+                lightRef.current.intensity = pulse * 15; // Starkes Aufleuchten
+            }
         }
 
-        // Distance Check for Interaction
-        if (!isBarricade) {
-             const dist = new THREE.Vector3(...position).distanceTo(new THREE.Vector3(...playerPosition));
-             const inRange = dist < 2.5;
-             if (inRange !== isHovered) setIsHovered(inRange);
-        }
+        // Distanz-Check
+        const dist = new THREE.Vector3(...position).distanceTo(new THREE.Vector3(...playerPosition));
+        const inRange = dist < 3;
+        if (inRange !== isHovered) setIsHovered(inRange);
     });
 
-    // Interaction Handler (Only for Items)
-    React.useEffect(() => {
-        if (isBarricade) return;
-        
+    // Pick-up handler
+    useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (isHovered && e.key.toLowerCase() === 'e') {
-                if (itemData) {
-                    const success = addItem({ ...itemData, quantity: 1 });
-                    if (success) {
-                        removeWorldItem(id);
-                    }
-                }
+                console.log(`Picking up ${itemId}`);
+                removeWorldItem(id);
+                setPrompt(`AUFGEHOBEN: ${itemData?.name || itemId}`);
             }
         };
 
-        if (isHovered) {
-            window.addEventListener('keydown', handleKeyDown);
-        }
-
+        if (isHovered) window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [isHovered, addItem, removeWorldItem, id, itemData, isBarricade]);
+    }, [isHovered, id, itemId, itemData, removeWorldItem, setPrompt]);
 
-    if (!itemData && !isBarricade) return null;
-
-    if (isBarricade) {
-         return (
-            <RigidBody position={position} colliders="cuboid" type="dynamic" mass={500} lockRotations>
-                <mesh castShadow receiveShadow>
-                    <boxGeometry args={[2, 1.2, 0.5]} />
-                     {/* Blue/White Police Barrier Style */}
-                    <meshStandardMaterial color="#003366" roughness={0.5} metalness={0.8} />
-                </mesh>
-                <mesh position={[0, 0.4, 0.26]} castShadow> 
-                    <planeGeometry args={[1.8, 0.2]} />
-                    <meshBasicMaterial color="white" />
-                </mesh> 
-                <mesh position={[0, 0.4, -0.26]} rotation={[0, Math.PI, 0]} castShadow> 
-                    <planeGeometry args={[1.8, 0.2]} />
-                    <meshBasicMaterial color="white" />
-                </mesh>
-            </RigidBody>
-         );
-    }
+    if (!itemData) return null;
 
     return (
-        <RigidBody position={position} colliders="cuboid" type="dynamic">
+        <group position={position}>
             <group ref={itemRef}>
-                {/* Visual Representation */}
-                <mesh castShadow receiveShadow>
-                    <boxGeometry args={[0.5, 0.5, 0.5]} />
+                {/* Das eigentliche Item */}
+                <mesh castShadow>
+                    <boxGeometry args={[0.4, 0.4, 0.4]} />
                     <meshStandardMaterial 
-                        color={itemData?.type === 'CONSUMABLE' ? 'red' : 'gray'} 
-                        emissive={isHovered ? 'white' : 'black'}
-                        emissiveIntensity={0.2}
+                        color={itemData.color} 
+                        emissive={itemData.color} 
+                        emissiveIntensity={0.5} 
                     />
                 </mesh>
 
-                {/* Interaction Prompt */}
-                {isHovered && itemData && (
-                    <Html position={[0, 1, 0]} center>
-                        <div style={{ 
-                            background: 'rgba(0,0,0,0.8)', 
-                            color: 'white', 
-                            padding: '5px 10px', 
-                            borderRadius: '4px',
-                            fontFamily: 'monospace',
-                            whiteSpace: 'nowrap',
-                            textAlign: 'center'
-                        }}>
-                            <div>{itemData.name}</div>
-                            <div style={{ fontSize: '0.8em', color: '#aaa' }}>[E] Aufheben</div>
-                        </div>
-                    </Html>
-                )}
+                {/* Blaues Pulsierendes Leuchten */}
+                <mesh ref={glowRef}>
+                    <sphereGeometry args={[0.8, 24, 24]} />
+                    <meshBasicMaterial color="#00ffff" transparent opacity={0.6} depthWrite={false} />
+                </mesh>
+                
+                {/* Dynamisches Aufleuchten in Echtzeit (3s Zyklus) */}
+                <pointLight 
+                    ref={lightRef as any}
+                    color="#00ffff" 
+                    intensity={2} 
+                    distance={15} 
+                    decay={2} 
+                />
             </group>
-        </RigidBody>
+
+            {/* Interaction Prompt */}
+            {isHovered && (
+                <Html position={[0, 1.2, 0]} center>
+                    <div style={{ 
+                        background: 'rgba(0,0,0,0.85)', 
+                        color: 'white', 
+                        padding: '6px 12px', 
+                        borderRadius: '4px',
+                        border: '1px solid #0088ff',
+                        fontFamily: 'Outfit, sans-serif',
+                        whiteSpace: 'nowrap',
+                        pointerEvents: 'none',
+                        boxShadow: '0 0 15px rgba(0,136,255,0.5)'
+                    }}>
+                        <div style={{ fontWeight: 'bold' }}>{itemData.name}</div>
+                        <div style={{ fontSize: '0.85em', opacity: 0.8 }}>[E] Aufheben</div>
+                    </div>
+                </Html>
+            )}
+        </group>
     );
 };
 

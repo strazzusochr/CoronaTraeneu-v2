@@ -1,15 +1,10 @@
 import {
   NPCData,
   PlayerState,
-  Quest,
-  AudioSettings,
-  WorldObject
+  AudioSettings
 } from '@/types/interfaces';
 import {
-  GamePhase,
-  NPCState,
   NPCType,
-  QuestStatus,
   RenderTier,
   AudioBus,
   CutsceneId,
@@ -120,6 +115,12 @@ export interface Mission {
   timeLimit?: number;
 }
 
+export interface InteractionOption {
+  label: string;
+  action: () => void;
+}
+
+
 export interface GameState {
   points: number;
   health: number;
@@ -134,6 +135,7 @@ export interface GameState {
   activePrompt: string | null;
   cutsceneTime: number;
   currentLevelId: LevelId;
+  activeInteraction: { npcId: number; title: string; options: InteractionOption[] } | null;
 }
 
 export interface GameStore {
@@ -142,6 +144,9 @@ export interface GameStore {
   npcs: NPCData[];
   markedNpcIds: number[];
   player: PlayerState;
+  inventory: Array<{ index: number; item: Record<string, any> | null }>;
+  equipment: Record<string, any>;
+  isInventoryOpen: boolean;
   tensionLevel: number;
   moralLevel: number;      // 0-100 (Stimmung der Masse)
   escalationLevel: number; // 0-100 (Eskalationsstufe)
@@ -160,6 +165,9 @@ export interface GameStore {
   setPlayerHealth: (hp: number) => void;
   setTension: (tension: number) => void;
   toggleBinoculars: () => void;
+  addItem: (item: any) => boolean;
+  removeItem: (slotIndex: number, amount: number) => void;
+  toggleInventory: () => void;
 
   // Mission Actions
   updateMissionProgress: (amount: number) => void;
@@ -199,6 +207,8 @@ export interface GameStore {
 
   // UI & Prompts
   setPrompt: (text: string | null) => void;
+  setInteractionMenu: (npcId: number, title: string, options: InteractionOption[]) => void;
+  closeInteractionMenu: () => void;
   setFlag: (key: string, enabled: boolean) => void;
   hasFlag: (key: string) => boolean;
   clearFlag: (key: string) => void;
