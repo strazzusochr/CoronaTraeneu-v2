@@ -251,3 +251,8 @@ _Zuletzt aktualisiert: 18.02.2026 (Phasen 21–47: NPC-Basis-Stats, WaWe-/Deeska
 
 - Prüfpunkte gesetzt, Maßnahmen definiert, keine Blocker gefunden.
 - Folgearbeiten erfolgen schrittweise; Änderungen werden direkt in den jeweiligen Dateien umgesetzt und hier referenziert.
+
+### ROLLBACK
+- **Datum:** 23.02.2026 20:21
+- **Ziel:** emergency-20260223_003100
+- **Pre-Rollback Branch:** pre-rollback-20260223_202222

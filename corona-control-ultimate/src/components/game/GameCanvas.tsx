@@ -231,20 +231,19 @@ export const GameCanvas = () => {
     const [error, setError] = React.useState<string | null>(null);
     const [webglSupported, setWebglSupported] = React.useState<boolean | null>(null);
 
-    // Initialer WebGL-Check
+    // Initialer WebGL-Check (aufgelockert für Cloud Gaming / Hyperbeam)
     React.useEffect(() => {
         try {
             const canvas = document.createElement('canvas');
             const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
             if (!gl) {
-                setWebglSupported(false);
-                setError("WebGL wird von deinem Browser oder deiner Hardware nicht unterstützt.");
-            } else {
-                setWebglSupported(true);
+                console.warn("[GameCanvas] Manueller WebGL-Check fehlgeschlagen, versuche trotzdem zu rendern...");
             }
-        } catch (_e) {
-            setWebglSupported(false);
-            setError("Fehler bei der WebGL-Initialisierung.");
+            // Wir setzen es immer auf true, um R3F den Versuch zu erlauben
+            setWebglSupported(true);
+        } catch (e) {
+            console.warn("[GameCanvas] Fehler beim WebGL-Check:", e);
+            setWebglSupported(true);
         }
     }, []);
 
