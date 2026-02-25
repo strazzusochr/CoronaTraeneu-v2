@@ -14,11 +14,34 @@ FROM ghcr.io/m1k1o/neko/google-chrome:latest
 # Switch to root to configure the environment
 USER root
 
-# Setup working directory (fixes /app nonexistent error)
+# Setup working directory
 WORKDIR /app
 
-# Install Python 3 for a lightweight absolute zero-dependency static file server
-RUN apt-get update && apt-get install -y python3 && rm -rf /var/lib/apt/lists/*
+# Install Python 3 (for our game HTTP server) and Nginx (for port multiplexing on HF)
+RUN apt-get update && apt-get install -y python3 nginx && rm -rf /var/lib/apt/lists/*
+
+# Nginx Configuration: Multiplex HF Port 7860 -> Neko UI (8080) & Neko WebRTC (TCP 8081)
+# Neko requires / api / etc. to go to 8080. We proxy everything to 8080 by default.
+RUN echo 'server {\n\
+    listen 7860;\n\
+    server_name _;\n\
+    \n\
+    # Proxy all normal web traffic (UI & API) to Neko on 8080\n\
+    location / {\n\
+    proxy_pass http://127.0.0.1:8080;\n\
+    proxy_http_version 1.1;\n\
+    proxy_set_header Upgrade $http_upgrade;\n\
+    proxy_set_header Connection "upgrade";\n\
+    proxy_set_header Host $host;\n\
+    }\n\
+    }' > /etc/nginx/sites-available/default
+
+# Add Nginx to supervisord so it starts automatically
+RUN echo '[program:nginx]\n\
+    command=/usr/sbin/nginx -g "daemon off;"\n\
+    autorestart=true\n\
+    user=root\n\
+    ' > /etc/neko/supervisord/nginx.conf
 
 # Copy the built game files from Stage 1
 COPY --from=build /app/corona-control-ultimate/dist /var/www/game
@@ -40,8 +63,8 @@ RUN echo "Configuring Chrome policies for auto-startup..." && \
     echo '{"RestoreOnStartup": 4, "RestoreOnStartupURLs": ["http://localhost:8000/"]}' > /etc/opt/chrome/policies/managed/startup.json
 
 # ---- Neko Environment Configuration ----
-# Bind the Neko web interface to 7860 (Hugging Face default)
-ENV NEKO_BIND=:7860
+# internally bind Neko UI to 8080 (Nginx will proxy 7860 to this)
+ENV NEKO_BIND=:8080
 
 # We disable authentication for instant seamless access
 ENV NEKO_PASSWORD=neko
@@ -52,8 +75,8 @@ ENV NEKO_SCREEN=1920x1080@60
 # Wir nutzen keinen NVENC mehr, da HF keine GPU-Hardware bezahlt ist (CPU Fallback)
 # ENV NEKO_HWENC=nvenc
 
-# Since Hugging Face only exposes 7860, we tell WebRTC to multiplex over TCP 7860
-ENV NEKO_TCPMUX=7860
+# We tell WebRTC (ICE) to use TCP multiplexing on internal port 8081
+ENV NEKO_TCPMUX=8081
 # Some environments require ICE muxing explicitly
 ENV NEKO_ICELITE=true
 
