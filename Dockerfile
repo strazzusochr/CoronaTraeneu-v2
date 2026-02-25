@@ -23,22 +23,21 @@ RUN apt-get update && apt-get install -y python3 && rm -rf /var/lib/apt/lists/*
 # Copy the built game files from Stage 1
 COPY --from=build /app/corona-control-ultimate/dist /var/www/game
 
-# Create an entrypoint startup script
-# This script will:
-# 1. Start the Python HTTP server to host the game on port 8000 internally.
-# 2. Configure Google Chrome to automatically open localhost:8000 on startup.
-# 3. Hand over control to Neko's standard supervisord.
-RUN echo '#!/bin/bash\n\
-    echo "Starting internal game server on port 8000..."\n\
-    cd /var/www/game && python3 -m http.server 8000 &\n\
-    \n\
-    echo "Configuring Chrome policies for auto-startup..."\n\
-    mkdir -p /etc/opt/chrome/policies/managed\n\
-    echo "{\"RestoreOnStartup\": 4, \"RestoreOnStartupURLs\": [\"http://localhost:8000/\"]}" > /etc/opt/chrome/policies/managed/startup.json\n\
-    \n\
-    echo "Starting Neko Cloud Gaming Environment..."\n\
-    exec /neko/supervisord\n\
-    ' > /app/start.sh && chmod +x /app/start.sh
+# Create a Supervisor configuration file for our Python static file server
+# We drop this into all typical supervisor config folders just to be absolutely safe
+RUN mkdir -p /etc/neko/supervisord /etc/supervisord.d /etc/supervisor/conf.d && \
+    echo '[program:game-server]\n\
+    command=python3 -m http.server 8000\n\
+    directory=/var/www/game\n\
+    autorestart=true\n\
+    user=root\n\
+    ' | tee /etc/neko/supervisord/game-server.conf \
+    /etc/supervisord.d/game-server.conf \
+    /etc/supervisor/conf.d/game-server.conf > /dev/null
+
+RUN echo "Configuring Chrome policies for auto-startup..." && \
+    mkdir -p /etc/opt/chrome/policies/managed && \
+    echo '{"RestoreOnStartup": 4, "RestoreOnStartupURLs": ["http://localhost:8000/"]}' > /etc/opt/chrome/policies/managed/startup.json
 
 # ---- Neko Environment Configuration ----
 # Bind the Neko web interface to 7860 (Hugging Face default)
@@ -60,5 +59,5 @@ ENV NEKO_ICELITE=true
 # Expose the single port HF allows
 EXPOSE 7860
 
-# Run our custom entrypoint
-CMD ["/app/start.sh"]
+# We do NOT override ENTRYPOINT or CMD. 
+# We let m1k1o/neko supervisor start normally and pick up our game-server.conf !
