@@ -7,9 +7,9 @@ RUN npm ci
 COPY corona-control-ultimate ./
 RUN npm run build
 
-# Stage 2: Neko Cloud Browser with NVIDIA GPU support
+# Stage 2: Neko Cloud Browser (CPU-Only / Free Tier)
 # Documentation: https://m1k1o.net/neko/
-FROM ghcr.io/m1k1o/neko/nvidia-google-chrome:latest
+FROM ghcr.io/m1k1o/neko/google-chrome:latest
 
 # Switch to root to configure the environment
 USER root
@@ -49,7 +49,8 @@ ENV NEKO_PASSWORD_ADMIN=admin
 
 # High Quality Streaming Settings
 ENV NEKO_SCREEN=1920x1080@60
-ENV NEKO_HWENC=nvenc
+# Wir nutzen keinen NVENC mehr, da HF keine GPU-Hardware bezahlt ist (CPU Fallback)
+# ENV NEKO_HWENC=nvenc
 
 # Since Hugging Face only exposes 7860, we tell WebRTC to multiplex over TCP 7860
 ENV NEKO_TCPMUX=7860
