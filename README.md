@@ -4,7 +4,7 @@ emoji: 👮
 colorFrom: blue
 colorTo: red
 sdk: docker
-app_port: 7860
+app_port: 8080
 startup_duration_timeout: 1h
 pinned: false
 ---

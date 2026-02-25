@@ -17,31 +17,8 @@ USER root
 # Setup working directory
 WORKDIR /app
 
-# Install Python 3 (for our game HTTP server) and Nginx (for port multiplexing on HF)
-RUN apt-get update && apt-get install -y python3 nginx && rm -rf /var/lib/apt/lists/*
-
-# Nginx Configuration: Multiplex HF Port 7860 -> Neko UI (8080) & Neko WebRTC (TCP 8081)
-# Neko requires / api / etc. to go to 8080. We proxy everything to 8080 by default.
-RUN echo 'server {\n\
-    listen 7860;\n\
-    server_name _;\n\
-    \n\
-    # Proxy all normal web traffic (UI & API) to Neko on 8080\n\
-    location / {\n\
-    proxy_pass http://127.0.0.1:8080;\n\
-    proxy_http_version 1.1;\n\
-    proxy_set_header Upgrade $http_upgrade;\n\
-    proxy_set_header Connection "upgrade";\n\
-    proxy_set_header Host $host;\n\
-    }\n\
-    }' > /etc/nginx/sites-available/default
-
-# Add Nginx to supervisord so it starts automatically
-RUN echo '[program:nginx]\n\
-    command=/usr/sbin/nginx -g "daemon off;"\n\
-    autorestart=true\n\
-    user=root\n\
-    ' > /etc/neko/supervisord/nginx.conf
+# Install Python 3 (for our game HTTP server)
+RUN apt-get update && apt-get install -y python3 && rm -rf /var/lib/apt/lists/*
 
 # Copy the built game files from Stage 1
 COPY --from=build /app/corona-control-ultimate/dist /var/www/game
@@ -63,7 +40,7 @@ RUN echo "Configuring Chrome policies for auto-startup..." && \
     echo '{"RestoreOnStartup": 4, "RestoreOnStartupURLs": ["http://localhost:8000/"]}' > /etc/opt/chrome/policies/managed/startup.json
 
 # ---- Neko Environment Configuration ----
-# internally bind Neko UI to 8080 (Nginx will proxy 7860 to this)
+# Bind the Neko web interface to 8080 (Matches HF app_port)
 ENV NEKO_BIND=:8080
 
 # We disable authentication for instant seamless access
@@ -81,7 +58,8 @@ ENV NEKO_TCPMUX=8081
 ENV NEKO_ICELITE=true
 
 # Expose the single port HF allows
-EXPOSE 7860
+EXPOSE 8080
+EXPOSE 8081
 
 # We do NOT override ENTRYPOINT or CMD. 
 # We let m1k1o/neko supervisor start normally and pick up our game-server.conf !
