@@ -14,6 +14,9 @@ FROM ghcr.io/m1k1o/neko/nvidia-google-chrome:latest
 # Switch to root to configure the environment
 USER root
 
+# Setup working directory (fixes /app nonexistent error)
+WORKDIR /app
+
 # Install Python 3 for a lightweight absolute zero-dependency static file server
 RUN apt-get update && apt-get install -y python3 && rm -rf /var/lib/apt/lists/*
 
